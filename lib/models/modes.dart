@@ -1,0 +1,2 @@
+
+enum Modes {add,edit}
