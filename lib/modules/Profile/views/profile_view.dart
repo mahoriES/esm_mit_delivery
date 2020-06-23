@@ -1,14 +1,12 @@
 import 'package:async_redux/async_redux.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:esamudaayapp/models/loading_status.dart';
 import 'package:esamudaayapp/modules/Profile/action/profile_update_action.dart';
-import 'package:esamudaayapp/modules/Profile/model/profile_update_model.dart';
+import 'package:esamudaayapp/modules/register/model/register_request_model.dart';
 import 'package:esamudaayapp/redux/states/app_state.dart';
 import 'package:esamudaayapp/utilities/custom_widgets.dart';
-import 'package:esamudaayapp/utilities/keys.dart';
 import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:google_maps_place_picker/google_maps_place_picker.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:regexed_validator/regexed_validator.dart';
 
@@ -89,7 +87,7 @@ class _ProfileViewState extends State<ProfileView> {
                                             return null;
                                           },
                                           autovalidate: true,
-                                          enabled: false,
+//                                          enabled: false,
                                           controller: nameController,
                                           keyboardType: TextInputType.text,
                                           decoration: InputDecoration(
@@ -176,113 +174,115 @@ class _ProfileViewState extends State<ProfileView> {
                             ),
                           ),
                           //address
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(top: 20.0, bottom: 40.0),
-                            child: TextInputBG(
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 10.0, right: 10.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Flexible(
-                                      child: TextFormField(
-                                          maxLines: null,
-                                          // enableInteractiveSelection: false,
-                                          validator: (value) {
-                                            if (value.isEmpty) return null;
-//                                          if (value.length < 10) {
-//                                            return tr(
-//                                                'screen_register.address.empty_error');
+//                          Padding(
+//                            padding:
+//                                const EdgeInsets.only(top: 20.0, bottom: 40.0),
+//                            child: TextInputBG(
+//                              child: Padding(
+//                                padding: const EdgeInsets.only(
+//                                    left: 10.0, right: 10.0),
+//                                child: Row(
+//                                  mainAxisAlignment:
+//                                      MainAxisAlignment.spaceBetween,
+//                                  children: <Widget>[
+//                                    Flexible(
+//                                      child: TextFormField(
+//                                          maxLines: null,
+//                                          // enableInteractiveSelection: false,
+//                                          validator: (value) {
+//                                            if (value.isEmpty) return null;
+////                                          if (value.length < 10) {
+////                                            return tr(
+////                                                'screen_register.address.empty_error');
+////                                            return null;
+////                                          }
 //                                            return null;
-//                                          }
-                                            return null;
-                                          },
-                                          autovalidate: true,
-                                          controller: addressController,
-                                          keyboardType: TextInputType.text,
-                                          decoration: InputDecoration(
-                                            hintText: tr(
-                                                'screen_recommended.address'),
-                                            border: InputBorder.none,
-                                            focusedBorder: InputBorder.none,
-                                            enabledBorder: InputBorder.none,
-                                            errorBorder: InputBorder.none,
-                                            disabledBorder: InputBorder.none,
-                                          ),
-                                          style: const TextStyle(
-                                              color: const Color(0xff1a1a1a),
-                                              fontWeight: FontWeight.w400,
-                                              fontFamily: "Avenir",
-                                              fontStyle: FontStyle.normal,
-                                              fontSize: 13.0),
-                                          textAlign: TextAlign.center),
-                                    ),
-                                    Material(
-                                      type: MaterialType.transparency,
-                                      child: InkWell(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => PlacePicker(
-                                                apiKey: Keys
-                                                    .googleAPIkey, // Put YOUR OWN KEY here.
-                                                onPlacePicked: (result) {
-                                                  // Handle the result in your way
-                                                  print(
-                                                      result?.formattedAddress);
-                                                  // print(result?.a);
-                                                  if (result
-                                                          ?.formattedAddress !=
-                                                      null) {
-                                                    addressController.text =
-                                                        result
-                                                            ?.formattedAddress;
-                                                  }
-//                                                if (result?.postalCode !=
-//                                                    null) {
-//                                                  pinCodeController.text =
-//                                                      result?.postalCode;
-//                                                }
-                                                  latitude = result
-                                                      .geometry.location.lat
-                                                      .toString();
-                                                  longitude = result
-                                                      .geometry.location.lng
-                                                      .toString();
-                                                  print(result.adrAddress);
-                                                  Navigator.of(context).pop();
-                                                },
-//                                              initialPosition: HomePage.kInitialPosition,
-                                                useCurrentLocation: true,
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                        child: Icon(
-                                          Icons.add_location,
-                                          color: Colors.blueAccent,
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
+//                                          },
+//                                          autovalidate: true,
+//                                          controller: addressController,
+//                                          keyboardType: TextInputType.text,
+//                                          decoration: InputDecoration(
+//                                            hintText: tr(
+//                                                'screen_recommended.address'),
+//                                            border: InputBorder.none,
+//                                            focusedBorder: InputBorder.none,
+//                                            enabledBorder: InputBorder.none,
+//                                            errorBorder: InputBorder.none,
+//                                            disabledBorder: InputBorder.none,
+//                                          ),
+//                                          style: const TextStyle(
+//                                              color: const Color(0xff1a1a1a),
+//                                              fontWeight: FontWeight.w400,
+//                                              fontFamily: "Avenir",
+//                                              fontStyle: FontStyle.normal,
+//                                              fontSize: 13.0),
+//                                          textAlign: TextAlign.center),
+//                                    ),
+//                                    Material(
+//                                      type: MaterialType.transparency,
+//                                      child: InkWell(
+//                                        onTap: () {
+//                                          Navigator.push(
+//                                            context,
+//                                            MaterialPageRoute(
+//                                              builder: (context) => PlacePicker(
+//                                                apiKey: Keys
+//                                                    .googleAPIkey, // Put YOUR OWN KEY here.
+//                                                onPlacePicked: (result) {
+//                                                  // Handle the result in your way
+//                                                  print(
+//                                                      result?.formattedAddress);
+//                                                  // print(result?.a);
+//                                                  if (result
+//                                                          ?.formattedAddress !=
+//                                                      null) {
+//                                                    addressController.text =
+//                                                        result
+//                                                            ?.formattedAddress;
+//                                                  }
+////                                                if (result?.postalCode !=
+////                                                    null) {
+////                                                  pinCodeController.text =
+////                                                      result?.postalCode;
+////                                                }
+//                                                  latitude = result
+//                                                      .geometry.location.lat
+//                                                      .toString();
+//                                                  longitude = result
+//                                                      .geometry.location.lng
+//                                                      .toString();
+//                                                  print(result.adrAddress);
+//                                                  Navigator.of(context).pop();
+//                                                },
+////                                              initialPosition: HomePage.kInitialPosition,
+//                                                useCurrentLocation: true,
+//                                              ),
+//                                            ),
+//                                          );
+//                                        },
+//                                        child: Icon(
+//                                          Icons.add_location,
+//                                          color: Colors.blueAccent,
+//                                        ),
+//                                      ),
+//                                    )
+//                                  ],
+//                                ),
+//                              ),
+//                            ),
+//                          ),
 
                           //location
                           //Register_but
                           // Rectangle 10
+                          SizedBox(
+                            height: 30,
+                          ),
                           Material(
                             type: MaterialType.transparency,
                             child: InkWell(
                               onTap: () {
                                 if (nameController.text.isNotEmpty &&
-                                    addressController.text.isNotEmpty &&
                                     phoneNumberController.text.isNotEmpty) {
                                   if ((nameController.text.length < 3 ||
                                       !nameController.text
@@ -298,12 +298,10 @@ class _ProfileViewState extends State<ProfileView> {
                                         msg: tr(
                                             'screen_phone.valid_phone_error_message'));
                                   } else {
-                                    snapshot.profileUpdate(ProfileUpdateRequest(
-                                        latitude: latitude,
-                                        longitude: longitude,
-                                        phoneNumber: snapshot.userPhone,
-                                        name: nameController.text,
-                                        address: addressController.text));
+                                    snapshot.profileUpdate(
+                                        CustomerDetailsRequest(
+                                            role: "AGENT",
+                                            profileName: nameController.text));
                                   }
                                 } else {
                                   Fluttertoast.showToast(
@@ -401,7 +399,7 @@ class _ProfileViewState extends State<ProfileView> {
 class _ViewModel extends BaseModel<AppState> {
   _ViewModel();
   LoadingStatus loadingStatus;
-  Function(ProfileUpdateRequest request) profileUpdate;
+  Function(CustomerDetailsRequest request) profileUpdate;
   Function navigateToHomePage;
   bool isPhoneNumberValid;
   String userPhone;

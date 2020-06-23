@@ -25,13 +25,13 @@
 //}
 class AuthResponse {
   String token;
-  User user;
+  UserNew user;
 
   AuthResponse({this.token, this.user});
 
   AuthResponse.fromJson(Map<String, dynamic> json) {
     token = json['token'];
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    user = json['user'] != null ? new UserNew.fromJson(json['user']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -44,14 +44,14 @@ class AuthResponse {
   }
 }
 
-class User {
+class UserNew {
   String phone;
   bool isActive;
   String userId;
 
-  User({this.phone, this.isActive, this.userId});
+  UserNew({this.phone, this.isActive, this.userId});
 
-  User.fromJson(Map<String, dynamic> json) {
+  UserNew.fromJson(Map<String, dynamic> json) {
     phone = json['phone'];
     isActive = json['is_active'];
     userId = json['user_id'];

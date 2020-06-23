@@ -1,7 +1,10 @@
 import 'package:async_redux/async_redux.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:esamudaayapp/models/User.dart';
 import 'package:esamudaayapp/models/loading_status.dart';
 import 'package:esamudaayapp/modules/AgentHome/action/AgentAction.dart';
 import 'package:esamudaayapp/modules/AgentHome/model/order_response.dart';
+import 'package:esamudaayapp/modules/accounts/action/account_action.dart';
 import 'package:esamudaayapp/redux/states/app_state.dart';
 import 'package:esamudaayapp/utilities/user_manager.dart';
 import 'package:flutter/cupertino.dart';
@@ -44,17 +47,46 @@ class _AgentHomeState extends State<AgentHome> {
                                 child: Align(
                                   alignment: Alignment.bottomRight,
                                   child: // Sign Out
-                                      Padding(
-                                    padding:
-                                        EdgeInsets.only(right: 10, bottom: 8),
-                                    child: Text("Sign Out",
-                                        style: const TextStyle(
-                                            color: const Color(0xffffffff),
-                                            fontWeight: FontWeight.w400,
-                                            fontFamily: "CircularStd-Book",
-                                            fontStyle: FontStyle.normal,
-                                            fontSize: 12.0),
-                                        textAlign: TextAlign.left),
+                                      InkWell(
+                                    onTap: () {
+                                      showDialog(
+                                          context: context,
+                                          child: AlertDialog(
+                                            title: Text("E-samudaay"),
+                                            content: Text(
+                                                    'screen_account.alert_data')
+                                                .tr(),
+                                            actions: <Widget>[
+                                              FlatButton(
+                                                child: Text(tr(
+                                                    'screen_account.cancel')),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                              ),
+                                              FlatButton(
+                                                child: Text(tr(
+                                                    'screen_account.logout'
+                                                        .toLowerCase())),
+                                                onPressed: () async {
+                                                  snapshot.logout();
+                                                },
+                                              )
+                                            ],
+                                          ));
+                                    },
+                                    child: Padding(
+                                      padding:
+                                          EdgeInsets.only(right: 10, bottom: 8),
+                                      child: Text("Sign Out",
+                                          style: const TextStyle(
+                                              color: const Color(0xffffffff),
+                                              fontWeight: FontWeight.w400,
+                                              fontFamily: "CircularStd-Book",
+                                              fontStyle: FontStyle.normal,
+                                              fontSize: 12.0),
+                                          textAlign: TextAlign.left),
+                                    ),
                                   ),
                                 ),
                                 decoration: BoxDecoration(
@@ -80,21 +112,26 @@ class _AgentHomeState extends State<AgentHome> {
                                   top: 0,
                                   right: 10,
                                   child: // Edit
-                                      Row(
-                                    children: <Widget>[
-                                      ImageIcon(
-                                        AssetImage('assets/images/pen2.png'),
-                                        color: Colors.white,
-                                      ),
-                                      Text("Edit",
-                                          style: const TextStyle(
-                                              color: const Color(0xffffffff),
-                                              fontWeight: FontWeight.w400,
-                                              fontFamily: "CircularStd-Book",
-                                              fontStyle: FontStyle.normal,
-                                              fontSize: 12.0),
-                                          textAlign: TextAlign.left),
-                                    ],
+                                      InkWell(
+                                    onTap: () {
+                                      snapshot.navigateToProfile();
+                                    },
+                                    child: Row(
+                                      children: <Widget>[
+                                        ImageIcon(
+                                          AssetImage('assets/images/pen2.png'),
+                                          color: Colors.white,
+                                        ),
+                                        Text("Edit",
+                                            style: const TextStyle(
+                                                color: const Color(0xffffffff),
+                                                fontWeight: FontWeight.w400,
+                                                fontFamily: "CircularStd-Book",
+                                                fontStyle: FontStyle.normal,
+                                                fontSize: 12.0),
+                                            textAlign: TextAlign.left),
+                                      ],
+                                    ),
                                   ),
                                 )
                               ],
@@ -104,7 +141,7 @@ class _AgentHomeState extends State<AgentHome> {
                                 padding:
                                     EdgeInsets.only(left: 32.0, right: 32.0),
                                 child: Text(
-                                  'Agent Name',
+                                  snapshot.user.firstName,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       color: Colors.white,
@@ -419,17 +456,22 @@ class _ViewModel extends BaseModel<AppState> {
   Function(OrderRequest) updateSelectedOrder;
   int currentIndex;
   List<OrderRequest> orders;
-
+  Function logout;
   LoadingStatus loadingStatus;
-
+  Function navigateToProfile;
+  User user;
   _ViewModel.build(
       {this.navigateToStoreDetailsPage,
       this.currentIndex,
       this.loadingStatus,
       this.orders,
+      this.navigateToProfile,
+      this.logout,
+      this.user,
       this.updateSelectedOrder})
       : super(equals: [
           currentIndex,
+          user,
           orders,
           loadingStatus,
         ]);
@@ -440,6 +482,13 @@ class _ViewModel extends BaseModel<AppState> {
     return _ViewModel.build(
         loadingStatus: state.authState.loadingStatus,
         orders: state.homePageState.orders,
+        user: state.authState.user,
+        logout: () {
+          dispatch(LogoutAction());
+        },
+        navigateToProfile: () {
+          dispatch(NavigateAction.pushNamed("/profile"));
+        },
         updateSelectedOrder: (order) {
           dispatch(UpdateSelectedOrder(selectedOrder: order));
         },
