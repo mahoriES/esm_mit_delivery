@@ -59,6 +59,17 @@ class UserManager {
     await prefs.setBool(skipKey, status);
   }
 
+  static Future<bool> getOrderProgressStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool value = prefs.getBool(inProgress);
+    return value;
+  }
+
+  static Future<void> saveOrderProgressStatus({status: bool}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(inProgress, status);
+  }
+
   static Future<bool> getAddressStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool value = prefs.getBool(addressKey);

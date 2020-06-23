@@ -444,7 +444,7 @@ class _ViewModel extends BaseModel<AppState> {
           dispatch(UpdateSelectedOrder(selectedOrder: order));
         },
         navigateToStoreDetailsPage: () {
-          dispatch(NavigateAction.pushNamed('/StoreDetailsView'));
+          dispatch(NavigateAction.pushNamed('/orderDetail'));
         },
         currentIndex: state.homePageState.currentIndex);
   }

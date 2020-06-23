@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:async_redux/async_redux.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:esamudaayapp/modules/AgentOrderDetail/view/order_detail.dart';
 import 'package:esamudaayapp/modules/Profile/views/profile_view.dart';
 import 'package:esamudaayapp/modules/accounts/views/accounts_view.dart';
 import 'package:esamudaayapp/modules/cart/actions/cart_actions.dart';
@@ -154,7 +155,7 @@ class MyAppBase extends StatelessWidget {
           "/myHomeView": (BuildContext context) => new MyHomeView(),
           "/CartView": (BuildContext context) => CartView(),
           "/AccountsView": (BuildContext context) => AccountsView(),
-          "/StoreDetailsView": (BuildContext context) => StoreDetailsView(),
+          "/orderDetail": (BuildContext context) => OrderDetailScreen(),
           "/StoreProductListingView": (BuildContext context) =>
               StoreProductListingView(),
           "/ProductSearchView": (BuildContext context) => ProductSearchView(),

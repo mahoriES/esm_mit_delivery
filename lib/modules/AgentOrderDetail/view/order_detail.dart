@@ -1,31 +1,24 @@
 import 'dart:io';
 
 import 'package:async_redux/async_redux.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:date_format/date_format.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:esamudaayapp/models/loading_status.dart';
+import 'package:esamudaayapp/modules/AgentHome/model/order_response.dart';
 import 'package:esamudaayapp/modules/AgentOrderDetail/action/order_action.dart';
 import 'package:esamudaayapp/modules/home/models/category_response.dart';
 import 'package:esamudaayapp/modules/home/models/merchant_response.dart';
-import 'package:esamudaayapp/modules/AgentHome/model/order_response.dart';
-import 'package:esamudaayapp/modules/home/views/home_page_main_view.dart';
-import 'package:esamudaayapp/modules/store_details/actions/categories_actions.dart';
-import 'package:esamudaayapp/modules/store_details/actions/store_actions.dart';
-import 'package:esamudaayapp/modules/store_details/models/catalog_search_models.dart';
 import 'package:esamudaayapp/redux/states/app_state.dart';
-import 'package:esamudaayapp/repository/cart_datasourse.dart';
-import 'package:esamudaayapp/store.dart';
-import 'package:esamudaayapp/utilities/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-class StoreDetailsView extends StatefulWidget {
+class OrderDetailScreen extends StatefulWidget {
   @override
-  _StoreDetailsViewState createState() => _StoreDetailsViewState();
+  _OrderDetailScreenState createState() => _OrderDetailScreenState();
 }
 
-class _StoreDetailsViewState extends State<StoreDetailsView> {
+class _OrderDetailScreenState extends State<OrderDetailScreen> {
+  File _image;
+  final picker = ImagePicker();
   String convertDateFromString(String strDate) {
     DateTime todayDate = DateTime.parse(strDate);
 
@@ -458,24 +451,14 @@ class _StoreDetailsViewState extends State<StoreDetailsView> {
     }
   }
 
-  imageSelectorGallery() async {
-    var galleryFile = await ImagePicker.pickImage(
-      source: ImageSource.gallery,
-      // maxHeight: 50.0,
-      // maxWidth: 50.0,
-    );
-    print("You selected gallery image : " + galleryFile.path);
-  }
-
   //display image selected from camera
+//display image selected from camera
   imageSelectorCamera(_ViewModel snapshot) async {
-    var cameraFile = await ImagePicker.pickImage(
-      source: ImageSource.camera,
-      //maxHeight: 50.0,
-      //maxWidth: 50.0,
-    );
-
-    print("You selected camera image : " + cameraFile.path);
+    final pickedFile = await picker.getImage(source: ImageSource.camera);
+    setState(() {
+      _image = File(pickedFile.path);
+      snapshot.uploadImage(_image, true);
+    });
   }
 }
 
@@ -512,42 +495,35 @@ class MySeparator extends StatelessWidget {
 }
 
 class _ViewModel extends BaseModel<AppState> {
-  Function(File) uploadImage;
+  Function(File, bool) uploadImage;
+
   OrderRequest orderRequest;
-  Function(String, String) navigateToProductDetails;
-  Function(Categories) updateSelectedCategory;
   OrderRequest selectedOrder;
-  List<CategoriesNew> categories;
+  Function() acceptOrder;
+
   LoadingStatus loadingStatus;
   _ViewModel();
   _ViewModel.build(
-      {this.navigateToProductDetails,
+      {this.acceptOrder,
       this.loadingStatus,
-      this.categories,
       this.selectedOrder,
-      this.updateSelectedCategory,
       this.uploadImage})
-      : super(equals: [selectedOrder, loadingStatus, categories]);
+      : super(equals: [
+          selectedOrder,
+          loadingStatus,
+        ]);
   @override
   BaseModel fromStore() {
     // TODO: implement fromStore
     return _ViewModel.build(
-        categories: state.productState.categories,
-        updateSelectedCategory: (category) {
-          dispatch(UpdateSelectedCategoryAction(selectedCategory: category));
-        },
-        navigateToProductDetails: (categoryId, merchantId) {
-          dispatch(GetCatalogDetailsAction(
-              request: CatalogSearchRequest(
-                  categoryIDs: [categoryId], merchantID: merchantId)));
-          dispatch(
-            NavigateAction.pushNamed('/StoreProductListingView'),
-          );
+        acceptOrder: () {
+          dispatch(AcceptOrderAction());
         },
         loadingStatus: state.authState.loadingStatus,
         selectedOrder: state.homePageState.selectedOrder,
-        uploadImage: (file) {
-          dispatch(UploadImageAction(imageFile: file));
+        uploadImage: (file, isPickup) {
+          dispatch(UploadImageAction(imageFile: file, isPickUp: isPickup));
+          dispatch(AcceptOrderAction());
         });
   }
 }

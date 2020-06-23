@@ -2,6 +2,7 @@ const tokenKey = 'token';
 const userKey = 'user';
 const addressKey = 'address';
 const skipKey = "skip";
+const inProgress = "inProgress";
 const fcmToken = "fcm";
 
 //Errors
