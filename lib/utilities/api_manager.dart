@@ -78,8 +78,7 @@ class APIManager {
 //    dio.interceptors.add(CookieManager(cookieJar));
     if (token != null && token != "") {
       dio.options.headers = {
-        "Authorization":
-            "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxMiwiaXNfYWN0aXZlIjp0cnVlLCJpc19zdXNwZW5kZWQiOmZhbHNlLCJwaG9uZSI6Iis5MTgxMTM5NzAzNzAiLCJ0aGlyZF9wYXJ0eV9pZCI6IjVkNzMwMzc2LTcyZWQtNDc4Yy04ZDVlLTFhM2E2YWVlOTgxNSIsInByb2ZpbGUiOnsicm9sZSI6IkFHRU5UIiwic3VzcGVuZGVkIjpmYWxzZX0sImV4cCI6MTYwMDE5NTQ2MSwib3JpZ19pYXQiOjE1OTI0MTk0NjF9.b8R5juuQFucAvnLVLMPQ7ZIQbYMpeieg5_IHDGjFO9Y",
+        "Authorization": "JWT $token",
       };
     }
     dio.interceptors.add(LogInterceptor(

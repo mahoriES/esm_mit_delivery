@@ -172,33 +172,31 @@ class UserProfile {
 //  }
 //}
 class GetProfileResponse {
-  CUSTOMER cUSTOMER;
+  AGENT agent;
 
-  GetProfileResponse({this.cUSTOMER});
+  GetProfileResponse({this.agent});
 
   GetProfileResponse.fromJson(Map<String, dynamic> json) {
-    cUSTOMER = json['CUSTOMER'] != null
-        ? new CUSTOMER.fromJson(json['CUSTOMER'])
-        : null;
+    agent = json['AGENT'] != null ? new AGENT.fromJson(json['AGENT']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.cUSTOMER != null) {
-      data['CUSTOMER'] = this.cUSTOMER.toJson();
+    if (this.agent != null) {
+      data['AGENT'] = this.agent.toJson();
     }
     return data;
   }
 }
 
-class CUSTOMER {
+class AGENT {
   Data data;
   String token;
   String role;
 
-  CUSTOMER({this.data, this.token, this.role});
+  AGENT({this.data, this.token, this.role});
 
-  CUSTOMER.fromJson(Map<String, dynamic> json) {
+  AGENT.fromJson(Map<String, dynamic> json) {
     data = json['data'] != null ? new Data.fromJson(json['data']) : null;
     token = json['token'];
     role = json['role'];

@@ -62,9 +62,9 @@ class _ViewModel extends BaseModel<AppState> {
       searchResults: state.productState.searchResults,
       searchProduct: (query) async {
         var user = await UserManager.userDetails();
-        dispatch(SearchAction(
-            searchRequest:
-                SearchRequest(phoneNumber: user.phone, searchQuery: query)));
+//        dispatch(SearchAction(
+//            searchRequest:
+//                SearchRequest(phoneNumber: user.phone, searchQuery: query)));
       },
       navigateToDetailsPage: (merchant) {
 //        dispatch(UpdateSelectedMerchantAction(selectedMerchant: merchant));

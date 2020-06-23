@@ -24,18 +24,18 @@ class GetUserDetailAction extends ReduxAction<AppState> {
     if (response.status == ResponseStatus.success200) {
       GetProfileResponse authResponse =
           GetProfileResponse.fromJson(response.data);
-      if (authResponse.cUSTOMER == null) {
+      if (authResponse.agent == null) {
         dispatch(NavigateAction.pushNamed('/registration'));
       } else {
-        await UserManager.saveToken(token: authResponse.cUSTOMER.token);
+        await UserManager.saveToken(token: authResponse.agent.token);
 
         var user = User(
-          id: authResponse.cUSTOMER.data.userProfile.userId,
-          firstName: authResponse.cUSTOMER.data.profileName,
+          id: authResponse.agent.data.userProfile.userId,
+          firstName: authResponse.agent.data.profileName,
 //        address: authResponse.customer.addresses.isEmpty
 //            ? ""
 //            : authResponse.customer.addresses.first.addressLine1,
-          phone: authResponse.cUSTOMER.data.userProfile.phone,
+          phone: authResponse.agent.data.userProfile.phone,
         );
         await UserManager.saveUser(user).then((onValue) {
           store.dispatch(GetUserFromLocalStorageAction());

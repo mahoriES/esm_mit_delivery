@@ -60,13 +60,13 @@ class Order {
   String orderStatus;
   int orderTotal;
   int deliveryCharges;
-  Null businessImages;
+  List<BusinessImages> businessImages;
   String businessName;
   String clusterName;
   String customerName;
-  Null businessPhones;
+  List<String> businessPhones;
   List<String> customerPhones;
-  Null pickupAddress;
+  DeliveryAddress pickupAddress;
   DeliveryAddress deliveryAddress;
   String created;
   List<OrderItems> orderItems;
@@ -85,6 +85,7 @@ class Order {
       this.customerPhones,
       this.pickupAddress,
       this.deliveryAddress,
+      this.orderItems,
       this.created});
 
   Order.fromJson(Map<String, dynamic> json) {
@@ -93,13 +94,25 @@ class Order {
     orderStatus = json['order_status'];
     orderTotal = json['order_total'];
     deliveryCharges = json['delivery_charges'];
-    businessImages = json['business_images'];
+    if (json['business_images'] != null) {
+      businessImages = new List<BusinessImages>();
+      json['business_images'].forEach((v) {
+        businessImages.add(new BusinessImages.fromJson(v));
+      });
+    }
     businessName = json['business_name'];
     clusterName = json['cluster_name'];
     customerName = json['customer_name'];
-    businessPhones = json['business_phones'];
-    customerPhones = json['customer_phones'].cast<String>();
-    pickupAddress = json['pickup_address'];
+    businessPhones = json['business_phones'] != null
+        ? json['business_phones'].cast<String>()
+        : [];
+    customerPhones = json['customer_phones'] != null
+        ? json['customer_phones'].cast<String>()
+        : [];
+    pickupAddress = json['pickup_address'] != null
+        ? new DeliveryAddress.fromJson(json['pickup_address'])
+        : null;
+
     deliveryAddress = json['delivery_address'] != null
         ? new DeliveryAddress.fromJson(json['delivery_address'])
         : null;
@@ -113,13 +126,19 @@ class Order {
     data['order_status'] = this.orderStatus;
     data['order_total'] = this.orderTotal;
     data['delivery_charges'] = this.deliveryCharges;
-    data['business_images'] = this.businessImages;
+    if (this.businessImages != null) {
+      data['business_images'] =
+          this.businessImages.map((v) => v.toJson()).toList();
+    }
     data['business_name'] = this.businessName;
     data['cluster_name'] = this.clusterName;
     data['customer_name'] = this.customerName;
     data['business_phones'] = this.businessPhones;
     data['customer_phones'] = this.customerPhones;
-    data['pickup_address'] = this.pickupAddress;
+
+    if (this.pickupAddress != null) {
+      data['pickup_address'] = this.pickupAddress.toJson();
+    }
     if (this.deliveryAddress != null) {
       data['delivery_address'] = this.deliveryAddress.toJson();
     }
@@ -314,6 +333,28 @@ class Images {
   Images({this.photoId, this.photoUrl, this.contentType});
 
   Images.fromJson(Map<String, dynamic> json) {
+    photoId = json['photo_id'];
+    photoUrl = json['photo_url'];
+    contentType = json['content_type'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['photo_id'] = this.photoId;
+    data['photo_url'] = this.photoUrl;
+    data['content_type'] = this.contentType;
+    return data;
+  }
+}
+
+class BusinessImages {
+  String photoId;
+  String photoUrl;
+  String contentType;
+
+  BusinessImages({this.photoId, this.photoUrl, this.contentType});
+
+  BusinessImages.fromJson(Map<String, dynamic> json) {
     photoId = json['photo_id'];
     photoUrl = json['photo_url'];
     contentType = json['content_type'];

@@ -66,7 +66,7 @@ class _AgentHomeState extends State<AgentHome> {
                                 Container(
                                     width: 51,
                                     height: 51,
-                                    clipBehavior: Clip.antiAlias,
+                                    // clipBehavior: Clip.antiAlias,
                                     child: Image.asset(
                                       'assets/images/path5.png',
                                       color: Colors.white,
@@ -141,7 +141,7 @@ class _AgentHomeState extends State<AgentHome> {
                             agentStatus: snapshot.orders[index].status,
                           ));
                     },
-                    itemCount: 1, // snapshot.orders.length,
+                    itemCount: snapshot.orders.length,
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
                     separatorBuilder: (BuildContext context, int index) {

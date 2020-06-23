@@ -50,16 +50,6 @@ class ValidateOtpAction extends ReduxAction<AppState> {
       if (state.authState.isSignUp) {
         dispatch(NavigateAction.pushNamed("/registration"));
       } else {
-//        UserManager.saveUser(User(
-//          id: authResponse.customer.customerID,
-//          firstName: authResponse.customer.name,
-//          address: authResponse.customer.addresses.isEmpty
-//              ? ""
-//              : authResponse.customer.addresses.first.addressLine1,
-//          phone: authResponse.customer.phoneNumber,
-//        )).then((onValue) {
-//          store.dispatch(GetUserFromLocalStorageAction());
-//        });
         dispatch(AddFCMTokenAction());
         dispatch(GetUserDetailAction());
       }
