@@ -26,5 +26,5 @@ class ApiURL {
   static const getOrderDetails = "/api/v1/delivery/requests/";
   static const addFCMTokenUrl = "api/v1/notifications/mobile/tokens";
   static const getAgentOrderListURL = "api/v1/delivery/requests";
-  static const imageUpload = "/api/v1/media/photo/";
+  static const imageUpload = baseURL + "api/v1/media/photo/";
 }

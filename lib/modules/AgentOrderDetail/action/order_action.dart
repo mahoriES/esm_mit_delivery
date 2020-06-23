@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:esamudaayapp/modules/AgentOrderDetail/model/drop_image.dart';
 import 'package:esamudaayapp/modules/AgentOrderDetail/model/pick_image.dart';
 import 'package:esamudaayapp/utilities/user_manager.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path/path.dart';
 import 'package:async/async.dart';
 import 'dart:io';
@@ -230,6 +231,8 @@ class UploadImageAction extends ReduxAction<AppState> {
 
     var response = await request.send();
     print(response.statusCode);
+    Fluttertoast.showToast(
+        msg: response.reasonPhrase != null ? response.reasonPhrase : "");
     response.stream.transform(utf8.decoder).listen((value) {
       print("value");
       print(value);
@@ -239,7 +242,7 @@ class UploadImageAction extends ReduxAction<AppState> {
 
       if (isPickUp) {
         dispatch(AcceptOrderAction(imageResponse: imageResponse));
-      }
+      } else {}
     });
   }
 

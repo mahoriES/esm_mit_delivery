@@ -32,6 +32,11 @@ class UserManager {
         return value != null && value == true;
       });
 
+  Future<bool> isOrderProgressing() async =>
+      await getOrderProgressStatus().then((value) {
+        return value != null && value == true;
+      });
+
   static Future<void> deleteUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var dbClient = await DatabaseManager().db;

@@ -109,6 +109,12 @@ class Order {
     customerPhones = json['customer_phones'] != null
         ? json['customer_phones'].cast<String>()
         : [];
+    if (json['order_items'] != null) {
+      orderItems = new List<OrderItems>();
+      json['order_items'].forEach((v) {
+        orderItems.add(new OrderItems.fromJson(v));
+      });
+    }
     pickupAddress = json['pickup_address'] != null
         ? new DeliveryAddress.fromJson(json['pickup_address'])
         : null;
@@ -135,7 +141,7 @@ class Order {
     data['customer_name'] = this.customerName;
     data['business_phones'] = this.businessPhones;
     data['customer_phones'] = this.customerPhones;
-
+    data['order_items'] = this.orderItems.map((v) => v.toJson()).toList();
     if (this.pickupAddress != null) {
       data['pickup_address'] = this.pickupAddress.toJson();
     }

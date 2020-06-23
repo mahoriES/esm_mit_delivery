@@ -173,7 +173,7 @@ class APIManager {
 
 Map<String, dynamic> emptyParams = Map<String, dynamic>();
 enum RequestType { get, post, put, patch, delete }
-enum ResponseStatus { success200, error404, error500, error401 }
+enum ResponseStatus { success200, error404, error500, error401, error400 }
 
 class ResponseModel {
   final data;
