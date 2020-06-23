@@ -111,7 +111,7 @@ class UserManager {
   }
 
   String convertDateFromString(String strDate) {
-    DateTime todayDate = DateTime.parse(strDate);
+    DateTime todayDate = DateTime.now(); // DateTime.parse(strDate);
 
     return formatDate(
         todayDate, [dd, ' ', M, ' ', yyyy, ' ', hh, ':', nn, ' ', am]);
