@@ -3,15 +3,13 @@ import 'dart:io';
 import 'package:async_redux/async_redux.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:date_format/date_format.dart';
-import 'package:esamudaayapp/models/User.dart';
 import 'package:esamudaayapp/models/loading_status.dart';
 import 'package:esamudaayapp/modules/AgentHome/model/order_response.dart';
 import 'package:esamudaayapp/modules/AgentOrderDetail/action/order_action.dart';
-import 'package:esamudaayapp/modules/home/models/category_response.dart';
-import 'package:esamudaayapp/modules/home/models/merchant_response.dart';
 import 'package:esamudaayapp/redux/states/app_state.dart';
 import 'package:esamudaayapp/utilities/user_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:image_picker/image_picker.dart';
 
 class OrderDetailScreen extends StatefulWidget {
@@ -105,130 +103,125 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                           Flexible(
                             child: ListView(
                               children: <Widget>[
-                                Card(
+                                Container(
+                                  decoration: BoxDecoration(boxShadow: [
+                                    BoxShadow(
+                                        color: const Color(0x29000000),
+                                        offset: Offset(0, 3),
+                                        blurRadius: 6,
+                                        spreadRadius: 0)
+                                  ], color: const Color(0xffffffff)),
+                                  padding: EdgeInsets.all(20),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: <Widget>[
-                                      Container(
-                                        width: 79,
-                                        height: 79,
-                                        margin: new EdgeInsets.all(10.0),
-                                        decoration: new BoxDecoration(
-                                          shape: BoxShape.rectangle,
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(20.0)),
-                                        ),
-                                        child: buildStatusIcon(snapshot),
-                                      ),
-                                      Flexible(
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 8, right: 8),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              Text(
-                                                'Order ID ${snapshot.selectedOrder.order.orderShortNumber},',
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16,
-                                                  fontFamily: 'Avenir',
-                                                ),
+                                      buildStatusIcon(snapshot),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 8, right: 8),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Text(
+                                              'Order ID ${snapshot.selectedOrder.order.orderShortNumber},',
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 16,
+                                                fontFamily: 'Avenir',
                                               ),
-                                              Text(
-                                                convertDateFromString(snapshot
-                                                    .selectedOrder
-                                                    .order
-                                                    .created),
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 12,
-                                                  fontFamily: 'Avenir',
-                                                ),
+                                            ),
+                                            Text(
+                                              convertDateFromString(snapshot
+                                                  .selectedOrder.order.created),
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 12,
+                                                fontFamily: 'Avenir',
                                               ),
-                                              snapshot.selectedOrder.order
-                                                              .orderStatus ==
-                                                          "COMPLETED" &&
-                                                      snapshot.selectedOrder
-                                                              .status ==
-                                                          "ACCEPTED"
-                                                  ? RichText(
-                                                      text: TextSpan(
-                                                        children: [
-                                                          TextSpan(
-                                                            text: 'Completed',
-                                                            style: TextStyle(
-                                                              color: Color(
-                                                                  0xff505050),
-                                                              fontSize: 12,
-                                                              fontFamily:
-                                                                  'Avenir',
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w900,
-                                                            ),
+                                            ),
+                                            snapshot.selectedOrder.order
+                                                            .orderStatus ==
+                                                        "COMPLETED" &&
+                                                    snapshot.selectedOrder
+                                                            .status ==
+                                                        "ACCEPTED"
+                                                ? RichText(
+                                                    text: TextSpan(
+                                                      children: [
+                                                        TextSpan(
+                                                          text: 'Completed',
+                                                          style: TextStyle(
+                                                            color: Color(
+                                                                0xff505050),
+                                                            fontSize: 12,
+                                                            fontFamily:
+                                                                'Avenir',
+                                                            fontWeight:
+                                                                FontWeight.w900,
                                                           ),
-                                                          TextSpan(
-                                                            text: convertDateFromString(
-                                                                snapshot
-                                                                    .selectedOrder
-                                                                    .order
-                                                                    .created),
-                                                            style: TextStyle(
-                                                              color: Color(
-                                                                  0xff959595),
-                                                              fontSize: 12,
-                                                              fontFamily:
-                                                                  'CircularStd-Book',
-                                                            ),
+                                                        ),
+                                                        TextSpan(
+                                                          text: convertDateFromString(
+                                                              snapshot
+                                                                  .selectedOrder
+                                                                  .order
+                                                                  .created),
+                                                          style: TextStyle(
+                                                            color: Color(
+                                                                0xff959595),
+                                                            fontSize: 12,
+                                                            fontFamily:
+                                                                'CircularStd-Book',
                                                           ),
-                                                        ],
-                                                      ),
-                                                    )
-                                                  : Container(),
-                                              snapshot.selectedOrder.order
-                                                              .orderStatus ==
-                                                          "COMPLETED" &&
-                                                      snapshot.selectedOrder
-                                                              .status ==
-                                                          "ACCEPTED"
-                                                  ? RichText(
-                                                      text: TextSpan(
-                                                        children: [
-                                                          TextSpan(
-                                                            text: 'Distance ',
-                                                            style: TextStyle(
-                                                              color: Color(
-                                                                  0xff505050),
-                                                              fontSize: 12,
-                                                              fontFamily:
-                                                                  'Avenir',
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w900,
-                                                            ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  )
+                                                : Container(),
+                                            snapshot.selectedOrder.order
+                                                            .orderStatus ==
+                                                        "COMPLETED" &&
+                                                    snapshot.selectedOrder
+                                                            .status ==
+                                                        "ACCEPTED"
+                                                ? RichText(
+                                                    text: TextSpan(
+                                                      children: [
+                                                        TextSpan(
+                                                          text: 'Distance ',
+                                                          style: TextStyle(
+                                                            color: Color(
+                                                                0xff505050),
+                                                            fontSize: 12,
+                                                            fontFamily:
+                                                                'Avenir',
+                                                            fontWeight:
+                                                                FontWeight.w900,
                                                           ),
-                                                          TextSpan(
-                                                            text: ': 2 km',
-                                                            style: TextStyle(
-                                                              color: Color(
-                                                                  0xff959595),
-                                                              fontSize: 12,
-                                                              fontFamily:
-                                                                  'CircularStd-Book',
-                                                            ),
+                                                        ),
+                                                        TextSpan(
+                                                          text: ': 2 km',
+                                                          style: TextStyle(
+                                                            color: Color(
+                                                                0xff959595),
+                                                            fontSize: 12,
+                                                            fontFamily:
+                                                                'CircularStd-Book',
                                                           ),
-                                                        ],
-                                                      ),
-                                                    )
-                                                  : Container(),
-                                            ],
-                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  )
+                                                : Container(),
+                                          ],
                                         ),
                                       ),
+                                      Spacer(),
                                       Column(
                                         children: <Widget>[
                                           Text(
@@ -363,12 +356,20 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                       ),
                                     ),
                                   ],
-                                ),
-                                Card(
-                                  child: Column(
-                                    children: orderItemsBuilder(snapshot),
-                                  ),
-                                ),
+                                ), // Rectangle 4
+                                Container(
+                                    margin:
+                                        EdgeInsets.only(bottom: 20, top: 20),
+                                    child: Column(
+                                      children: orderItemsBuilder(snapshot),
+                                    ),
+                                    decoration: BoxDecoration(boxShadow: [
+                                      BoxShadow(
+                                          color: const Color(0x29000000),
+                                          offset: Offset(0, 3),
+                                          blurRadius: 6,
+                                          spreadRadius: 0)
+                                    ], color: const Color(0xffffffff))),
                               ],
                             ),
                           ),
@@ -605,79 +606,79 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
 //    ];
   }
 
-  Column buildStatusIcon(_ViewModel snapshot) {
+  Widget buildStatusIcon(_ViewModel snapshot) {
     if (snapshot.selectedOrder.status == "ACCEPTED" &&
         snapshot.selectedOrder.order.orderStatus == "COMPLETED") {
       return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Icon(
-            Icons.check_circle,
-            color: Colors.green,
-          ),
-          Text(
-            'Completed',
-            style: TextStyle(
-              color: Color(0xff5f5959),
-              fontSize: 12,
-              fontFamily: 'Avenir',
-            ),
-          ),
+          Container(
+              width: 40,
+              height: 40,
+              child: // New
+                  Center(
+                child: Icon(
+                  Icons.check,
+                  color: Colors.white,
+                ),
+              ),
+              decoration:
+                  BoxDecoration(color: Colors.green, shape: BoxShape.circle)),
         ],
       );
     } else if (snapshot.selectedOrder.status == "REJECTED") {
       return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Icon(
-            Icons.remove_circle,
-            color: Colors.red,
-          ),
-          Text(
-            'Rejected',
-            style: TextStyle(
-              color: Color(0xff5f5959),
-              fontSize: 12,
-              fontFamily: 'Avenir',
-            ),
-          ),
+          Container(
+              width: 40,
+              height: 40,
+              child: // New
+                  Center(
+                child: Icon(
+                  Icons.remove,
+                  color: Colors.white,
+                ),
+              ),
+              decoration:
+                  BoxDecoration(color: Colors.red, shape: BoxShape.circle)),
         ],
       );
     } else if (snapshot.selectedOrder.status == "ACCEPTED" &&
         snapshot.selectedOrder.order.orderStatus != "COMPLETED") {
       return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Icon(
-            Icons.refresh,
-            color: Colors.orange,
-          ),
-          Text(
-            'In progress',
-            style: TextStyle(
-              color: Color(0xff5f5959),
-              fontSize: 12,
-              fontFamily: 'Avenir',
-            ),
-          ),
+          Container(
+              width: 40,
+              height: 40,
+              child: // New
+                  Center(
+                child: Icon(
+                  Icons.autorenew,
+                  color: Colors.white,
+                ),
+              ),
+              decoration: BoxDecoration(
+                  color: const Color(0xffdd8126), shape: BoxShape.circle))
         ],
       );
     } else {
       return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Icon(
-            Icons.fiber_new,
-            color: Colors.green,
-          ),
-          Text(
-            'Not Started',
-            style: TextStyle(
-              color: Color(0xff5f5959),
-              fontSize: 12,
-              fontFamily: 'Avenir',
-            ),
-          ),
+          Container(
+              width: 40,
+              height: 40,
+              child: // New
+                  Center(
+                child: Text("New",
+                    style: const TextStyle(
+                        color: const Color(0xffffffff),
+                        fontWeight: FontWeight.w400,
+                        fontFamily: "Avenir",
+                        fontStyle: FontStyle.normal,
+                        fontSize: 12.0),
+                    textAlign: TextAlign.left),
+              ),
+              decoration: BoxDecoration(
+                  color: const Color(0xffff4646), shape: BoxShape.circle)),
         ],
       );
     }

@@ -204,18 +204,20 @@ class StoresListView extends StatelessWidget {
   final String agentStatus;
   final String completed;
   final String distance;
+  final bool taskDetailsPage;
 
-  const StoresListView({
-    Key key,
-    this.orderId,
-    this.date,
-    this.amount,
-    this.address,
-    this.orderStatus,
-    this.completed,
-    this.distance,
-    this.agentStatus,
-  }) : super(key: key);
+  const StoresListView(
+      {Key key,
+      this.orderId,
+      this.date,
+      this.amount,
+      this.address,
+      this.orderStatus,
+      this.completed,
+      this.distance,
+      this.agentStatus,
+      this.taskDetailsPage})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return // Rectangle 8
@@ -350,10 +352,18 @@ class StoresListView extends StatelessWidget {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Icon(
-            Icons.check_circle,
-            color: Colors.green,
-          ),
+          Container(
+              width: 40,
+              height: 40,
+              child: // New
+                  Center(
+                child: Icon(
+                  Icons.check,
+                  color: Colors.white,
+                ),
+              ),
+              decoration:
+                  BoxDecoration(color: Colors.green, shape: BoxShape.circle)),
           SizedBox(
             height: 10,
           ),
@@ -371,10 +381,18 @@ class StoresListView extends StatelessWidget {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Icon(
-            Icons.remove_circle,
-            color: Colors.red,
-          ),
+          Container(
+              width: 40,
+              height: 40,
+              child: // New
+                  Center(
+                child: Icon(
+                  Icons.remove,
+                  color: Colors.white,
+                ),
+              ),
+              decoration:
+                  BoxDecoration(color: Colors.red, shape: BoxShape.circle)),
           SizedBox(
             height: 10,
           ),
@@ -392,10 +410,18 @@ class StoresListView extends StatelessWidget {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Icon(
-            Icons.refresh,
-            color: Colors.orange,
-          ),
+          Container(
+              width: 40,
+              height: 40,
+              child: // New
+                  Center(
+                child: Icon(
+                  Icons.autorenew,
+                  color: Colors.white,
+                ),
+              ),
+              decoration: BoxDecoration(
+                  color: const Color(0xffdd8126), shape: BoxShape.circle)),
           SizedBox(
             height: 10,
           ),

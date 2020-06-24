@@ -1,16 +1,12 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:esamudaayapp/modules/AgentHome/model/order_response.dart';
 import 'package:esamudaayapp/modules/AgentHome/view/AgentHome.dart';
 import 'package:esamudaayapp/modules/accounts/views/accounts_view.dart';
 import 'package:esamudaayapp/modules/home/actions/home_page_actions.dart';
-import 'package:esamudaayapp/modules/home/models/merchant_response.dart';
-import 'package:esamudaayapp/modules/AgentHome/model/order_response.dart';
-import 'package:esamudaayapp/modules/home/views/home_page_main_view.dart';
 import 'package:esamudaayapp/modules/login/actions/login_actions.dart';
 import 'package:esamudaayapp/modules/orders/views/orders_View.dart';
-import 'package:esamudaayapp/modules/search/views/Search_View.dart';
 import 'package:esamudaayapp/redux/states/app_state.dart';
-import 'package:esamudaayapp/utilities/colors.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -39,7 +35,7 @@ class _MyHomeViewState extends State<MyHomeView> with TickerProviderStateMixin {
 //        key: keyOne,
           );
     } else if (index == 1) {
-      return ProductSearchView();
+      return AgentHome();
 //      return CartView(
 //        key: keyTwo,
 //      );
