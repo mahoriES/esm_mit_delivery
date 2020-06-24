@@ -1,6 +1,6 @@
 import 'package:esamudaayapp/models/loading_status.dart';
-import 'package:esamudaayapp/modules/home/models/merchant_response.dart';
 import 'package:esamudaayapp/modules/AgentHome/model/order_response.dart';
+import 'package:esamudaayapp/modules/AgentOrderDetail/model/transit_models.dart';
 import 'package:esamudaayapp/modules/register/model/register_request_model.dart';
 import 'package:meta/meta.dart';
 
@@ -11,9 +11,10 @@ class HomePageState {
   final int currentIndex;
   final List<Photo> banners;
   final OrderRequest selectedOrder;
-
+  final TransitDetails transitDetails;
   HomePageState(
       {@required this.selectedOrder,
+      @required this.transitDetails,
       @required this.currentIndex,
       @required this.loadingStatus,
       @required this.orders,
@@ -31,6 +32,7 @@ class HomePageState {
 
   factory HomePageState.initial() {
     return new HomePageState(
+      transitDetails: null,
       selectedOrder: OrderRequest(),
       loadingStatus: LoadingStatus.success,
       orders: [],
@@ -40,15 +42,16 @@ class HomePageState {
     );
   }
 
-  HomePageState copyWith({
-    LoadingStatus loadingStatus,
-    List<OrderRequest> orders,
-    List<Photo> banners,
-    int currentIndex,
-    String homePageLoadedDate,
-    OrderRequest selectedOrder,
-  }) {
+  HomePageState copyWith(
+      {LoadingStatus loadingStatus,
+      List<OrderRequest> orders,
+      List<Photo> banners,
+      int currentIndex,
+      String homePageLoadedDate,
+      OrderRequest selectedOrder,
+      TransitDetails transitDetails}) {
     return new HomePageState(
+        transitDetails: transitDetails ?? this.transitDetails,
         selectedOrder: selectedOrder ?? this.selectedOrder,
         currentIndex: currentIndex ?? this.currentIndex,
         loadingStatus: loadingStatus ?? this.loadingStatus,

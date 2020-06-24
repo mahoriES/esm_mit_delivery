@@ -1,21 +1,22 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:esamudaayapp/modules/AgentOrderDetail/model/drop_image.dart';
-import 'package:esamudaayapp/modules/AgentOrderDetail/model/pick_image.dart';
-import 'package:esamudaayapp/utilities/user_manager.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:path/path.dart';
-import 'package:async/async.dart';
 import 'dart:io';
-import 'package:http/http.dart' as http;
 
+import 'package:async/async.dart';
 import 'package:async_redux/async_redux.dart';
 import 'package:esamudaayapp/models/loading_status.dart';
 import 'package:esamudaayapp/modules/AgentHome/model/order_response.dart';
+import 'package:esamudaayapp/modules/AgentOrderDetail/model/drop_image.dart';
+import 'package:esamudaayapp/modules/AgentOrderDetail/model/pick_image.dart';
+import 'package:esamudaayapp/modules/AgentOrderDetail/model/transit_models.dart';
 import 'package:esamudaayapp/redux/actions/general_actions.dart';
 import 'package:esamudaayapp/redux/states/app_state.dart';
 import 'package:esamudaayapp/utilities/URLs.dart';
 import 'package:esamudaayapp/utilities/api_manager.dart';
+import 'package:esamudaayapp/utilities/user_manager.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
+import 'package:path/path.dart';
 
 class GetOrderDetailsAction extends ReduxAction<AppState> {
   @override
@@ -34,6 +35,39 @@ class GetOrderDetailsAction extends ReduxAction<AppState> {
       return state.copyWith(
           homePageState:
               state.homePageState.copyWith(selectedOrder: responseModel));
+    }
+  }
+
+  @override
+  FutureOr<void> before() {
+    dispatch(ChangeLoadingStatusAction(LoadingStatus.loading));
+    return super.before();
+  }
+
+  @override
+  void after() {
+    dispatch(ChangeLoadingStatusAction(LoadingStatus.success));
+    super.after();
+  }
+}
+
+class GetTransitDetailsAction extends ReduxAction<AppState> {
+  @override
+  FutureOr<AppState> reduce() async {
+    var response = await APIManager.shared.request(
+        url: ApiURL.getTransitIdURL +
+            '${state.homePageState.selectedOrder.requestId}',
+        params: {"": ""},
+        requestType: RequestType.get);
+    if (response.status == ResponseStatus.error404)
+      throw UserException(response.data['message']);
+    else if (response.status == ResponseStatus.error500)
+      throw UserException('Something went wrong');
+    else {
+      var responseModel = TransitDetails.fromJson(response.data);
+      return state.copyWith(
+          homePageState:
+              state.homePageState.copyWith(transitDetails: responseModel));
     }
   }
 

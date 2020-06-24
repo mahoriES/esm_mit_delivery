@@ -6,6 +6,7 @@ import 'package:date_format/date_format.dart';
 import 'package:esamudaayapp/models/loading_status.dart';
 import 'package:esamudaayapp/modules/AgentHome/model/order_response.dart';
 import 'package:esamudaayapp/modules/AgentOrderDetail/action/order_action.dart';
+import 'package:esamudaayapp/modules/AgentOrderDetail/model/transit_models.dart';
 import 'package:esamudaayapp/redux/states/app_state.dart';
 import 'package:esamudaayapp/utilities/user_manager.dart';
 import 'package:flutter/material.dart';
@@ -90,6 +91,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
               model: _ViewModel(),
               onInit: (store) {
                 store.dispatch(GetOrderDetailsAction());
+                store.dispatch(GetTransitDetailsAction());
               },
               builder: (context, snapshot) {
                 return snapshot.loadingStatus == LoadingStatus.loading
@@ -237,9 +239,10 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                                         .orderItems !=
                                                     null
                                                 ? snapshot.selectedOrder.order
-                                                    .orderItems.length
-                                                    .toString()
-                                                : "0" + " items",
+                                                        .orderItems.length
+                                                        .toString() +
+                                                    " item"
+                                                : "0" + " item",
                                             style: TextStyle(
                                               color: Color(0xff9d9797),
                                               fontFamily: 'Avenir',
@@ -272,7 +275,8 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                         onPressed: () {
                                           // Add your onPressed code here!
                                         },
-                                        child: Icon(Icons.account_circle),
+                                        child: Image.asset(
+                                            'assets/images/person.png'),
                                         backgroundColor:
                                             const Color(0xffb9b8b8),
                                       )
@@ -330,7 +334,8 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                         onPressed: () {
                                           // Add your onPressed code here!
                                         },
-                                        child: Icon(Icons.phone),
+                                        child: Image.asset(
+                                            'assets/images/phone.png'),
                                         backgroundColor:
                                             const Color(0xff5091cd),
                                       )
@@ -739,7 +744,7 @@ class MySeparator extends StatelessWidget {
 
 class _ViewModel extends BaseModel<AppState> {
   Function(File, bool) uploadImage;
-
+  TransitDetails transitDetails;
   OrderRequest orderRequest;
   OrderRequest selectedOrder;
   Function() acceptOrder;
@@ -748,6 +753,7 @@ class _ViewModel extends BaseModel<AppState> {
   _ViewModel();
   _ViewModel.build(
       {this.acceptOrder,
+      this.transitDetails,
       this.loadingStatus,
       this.selectedOrder,
       this.uploadImage})
@@ -764,6 +770,7 @@ class _ViewModel extends BaseModel<AppState> {
         },
         loadingStatus: state.authState.loadingStatus,
         selectedOrder: state.homePageState.selectedOrder,
+        transitDetails: state.homePageState.transitDetails,
         uploadImage: (file, isPickup) {
           dispatch(UploadImageAction(imageFile: file, isPickUp: isPickup));
 //          dispatch(AcceptOrderAction());

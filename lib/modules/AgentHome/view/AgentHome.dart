@@ -21,172 +21,163 @@ class _AgentHomeState extends State<AgentHome> {
   Widget build(BuildContext context) {
     return UserExceptionDialog<AppState>(
       child: Scaffold(
+        appBar: PreferredSize(
+            child: AppBar(
+              backgroundColor: Color(0xff5091cd),
+              flexibleSpace: StoreConnector<AppState, _ViewModel>(
+                  model: _ViewModel(),
+                  builder: (context, snapshot) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        Container(
+                            width: 360,
+                            height: 50,
+                            child: Align(
+                              alignment: Alignment.bottomRight,
+                              child: // Sign Out
+                                  InkWell(
+                                onTap: () {
+                                  showDialog(
+                                      context: context,
+                                      child: AlertDialog(
+                                        title: Text("E-samudaay"),
+                                        content:
+                                            Text('screen_account.alert_data')
+                                                .tr(),
+                                        actions: <Widget>[
+                                          FlatButton(
+                                            child: Text(
+                                                tr('screen_account.cancel')),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                          FlatButton(
+                                            child: Text(tr(
+                                                'screen_account.logout'
+                                                    .toLowerCase())),
+                                            onPressed: () async {
+                                              snapshot.logout();
+                                            },
+                                          )
+                                        ],
+                                      ));
+                                },
+                                child: Padding(
+                                  padding:
+                                      EdgeInsets.only(right: 10, bottom: 8),
+                                  child: Text("Sign Out",
+                                      style: const TextStyle(
+                                          color: const Color(0xffffffff),
+                                          fontWeight: FontWeight.w400,
+                                          fontFamily: "CircularStd-Book",
+                                          fontStyle: FontStyle.normal,
+                                          fontSize: 12.0),
+                                      textAlign: TextAlign.left),
+                                ),
+                              ),
+                            ),
+                            decoration:
+                                BoxDecoration(color: const Color(0xff4982b7))),
+                        Spacer(),
+                        Stack(
+                          alignment: Alignment.center,
+                          children: <Widget>[
+                            Container(
+                                width: 51,
+                                height: 51,
+                                // clipBehavior: Clip.antiAlias,
+                                child: Image.asset(
+                                  'assets/images/path5.png',
+                                  color: Colors.white,
+                                ),
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                        color: const Color(0xffffffff),
+                                        width: 2))),
+                            Positioned(
+                              top: 0,
+                              right: 10,
+                              child: // Edit
+                                  InkWell(
+                                onTap: () {
+                                  snapshot.navigateToProfile();
+                                },
+                                child: Row(
+                                  children: <Widget>[
+                                    ImageIcon(
+                                      AssetImage('assets/images/pen2.png'),
+                                      color: Colors.white,
+                                    ),
+                                    Text("Edit",
+                                        style: const TextStyle(
+                                            color: const Color(0xffffffff),
+                                            fontWeight: FontWeight.w400,
+                                            fontFamily: "CircularStd-Book",
+                                            fontStyle: FontStyle.normal,
+                                            fontSize: 12.0),
+                                        textAlign: TextAlign.left),
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        Container(
+                            margin: EdgeInsets.only(top: 16.0),
+                            padding: EdgeInsets.only(left: 32.0, right: 32.0),
+                            child: Text(
+                              snapshot.user.firstName,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'PlayfairDisplay',
+                                  fontSize: 16.0),
+                            )),
+                        Spacer(),
+                      ],
+                    );
+                  }),
+            ),
+            preferredSize: Size.fromHeight(150)),
         body: StoreConnector<AppState, _ViewModel>(
             model: _ViewModel(),
             builder: (context, snapshot) {
               return ModalProgressHUD(
                 inAsyncCall: snapshot.loadingStatus == LoadingStatus.loading &&
                     snapshot.orders.isEmpty,
-                child: NestedScrollView(
-                  headerSliverBuilder:
-                      (BuildContext context, bool innerBoxIsScrolled) {
-                    return <Widget>[
-                      SliverAppBar(
-                        expandedHeight: 150,
-                        floating: false,
-                        pinned: true,
-                        backgroundColor: Color(0xff5091cd),
-                        flexibleSpace: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-// Rectangle 2
-                            Container(
-                                width: 360,
-                                height: 50,
-                                child: Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: // Sign Out
-                                      InkWell(
-                                    onTap: () {
-                                      showDialog(
-                                          context: context,
-                                          child: AlertDialog(
-                                            title: Text("E-samudaay"),
-                                            content: Text(
-                                                    'screen_account.alert_data')
-                                                .tr(),
-                                            actions: <Widget>[
-                                              FlatButton(
-                                                child: Text(tr(
-                                                    'screen_account.cancel')),
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                              ),
-                                              FlatButton(
-                                                child: Text(tr(
-                                                    'screen_account.logout'
-                                                        .toLowerCase())),
-                                                onPressed: () async {
-                                                  snapshot.logout();
-                                                },
-                                              )
-                                            ],
-                                          ));
-                                    },
-                                    child: Padding(
-                                      padding:
-                                          EdgeInsets.only(right: 10, bottom: 8),
-                                      child: Text("Sign Out",
-                                          style: const TextStyle(
-                                              color: const Color(0xffffffff),
-                                              fontWeight: FontWeight.w400,
-                                              fontFamily: "CircularStd-Book",
-                                              fontStyle: FontStyle.normal,
-                                              fontSize: 12.0),
-                                          textAlign: TextAlign.left),
-                                    ),
-                                  ),
-                                ),
-                                decoration: BoxDecoration(
-                                    color: const Color(0xff4982b7))),
-                            Spacer(),
-                            Stack(
-                              alignment: Alignment.center,
-                              children: <Widget>[
-                                Container(
-                                    width: 51,
-                                    height: 51,
-                                    // clipBehavior: Clip.antiAlias,
-                                    child: Image.asset(
-                                      'assets/images/path5.png',
-                                      color: Colors.white,
-                                    ),
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        border: Border.all(
-                                            color: const Color(0xffffffff),
-                                            width: 2))),
-                                Positioned(
-                                  top: 0,
-                                  right: 10,
-                                  child: // Edit
-                                      InkWell(
-                                    onTap: () {
-                                      snapshot.navigateToProfile();
-                                    },
-                                    child: Row(
-                                      children: <Widget>[
-                                        ImageIcon(
-                                          AssetImage('assets/images/pen2.png'),
-                                          color: Colors.white,
-                                        ),
-                                        Text("Edit",
-                                            style: const TextStyle(
-                                                color: const Color(0xffffffff),
-                                                fontWeight: FontWeight.w400,
-                                                fontFamily: "CircularStd-Book",
-                                                fontStyle: FontStyle.normal,
-                                                fontSize: 12.0),
-                                            textAlign: TextAlign.left),
-                                      ],
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                            Container(
-                                margin: EdgeInsets.only(top: 16.0),
-                                padding:
-                                    EdgeInsets.only(left: 32.0, right: 32.0),
-                                child: Text(
-                                  snapshot.user.firstName,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'PlayfairDisplay',
-                                      fontSize: 16.0),
-                                )),
-                            Spacer(),
-                          ],
-                        ),
-                      ),
-                    ];
+                child: ListView.separated(
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                        onTap: () {
+                          snapshot.updateSelectedOrder(snapshot.orders[index]);
+                          snapshot.navigateToStoreDetailsPage();
+                        },
+                        child: StoresListView(
+                          orderId:
+                              snapshot.orders[index].order.orderShortNumber,
+                          date: UserManager().convertDateFromString(
+                              snapshot.orders[index].order.created),
+                          amount: snapshot.orders[index].order.orderTotal
+                              .toString(),
+                          address: snapshot.orders[index].order.deliveryAddress
+                              .prettyAddress,
+                          completed: "completed date",
+                          distance: "Distance",
+                          orderStatus: snapshot.orders[index].order.orderStatus,
+                          agentStatus: snapshot.orders[index].status,
+                        ));
                   },
-                  body: ListView.separated(
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                          onTap: () {
-                            snapshot
-                                .updateSelectedOrder(snapshot.orders[index]);
-                            snapshot.navigateToStoreDetailsPage();
-                          },
-                          child: StoresListView(
-                            orderId:
-                                snapshot.orders[index].order.orderShortNumber,
-                            date: UserManager().convertDateFromString(
-                                snapshot.orders[index].order.created),
-                            amount: snapshot.orders[index].order.orderTotal
-                                .toString(),
-                            address: snapshot.orders[index].order
-                                .deliveryAddress.prettyAddress,
-                            completed: "completed date",
-                            distance: "Distance",
-                            orderStatus:
-                                snapshot.orders[index].order.orderStatus,
-                            agentStatus: snapshot.orders[index].status,
-                          ));
-                    },
-                    itemCount: snapshot.orders.length,
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    separatorBuilder: (BuildContext context, int index) {
-                      return Container(
-                        height: 10,
-                      );
-                    },
-                  ),
+                  itemCount: snapshot.orders.length,
+                  shrinkWrap: true,
+                  separatorBuilder: (BuildContext context, int index) {
+                    return Container(
+                      height: 10,
+                    );
+                  },
                 ),
               );
             }),
