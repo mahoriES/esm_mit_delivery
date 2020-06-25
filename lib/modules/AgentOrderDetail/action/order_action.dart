@@ -60,9 +60,11 @@ class GetTransitDetailsAction extends ReduxAction<AppState> {
         params: {"": ""},
         requestType: RequestType.get);
     if (response.status == ResponseStatus.error404)
-      throw UserException(response.data['message']);
+      //throw UserException(response.data['message']);
+      return null;
     else if (response.status == ResponseStatus.error500)
-      throw UserException('Something went wrong');
+      return null;
+//      throw UserException('Something went wrong');
     else {
       var responseModel = TransitDetails.fromJson(response.data);
       return state.copyWith(

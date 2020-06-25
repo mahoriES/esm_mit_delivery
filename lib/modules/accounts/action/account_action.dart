@@ -8,9 +8,9 @@ import 'package:esamudaayapp/redux/states/app_state.dart';
 import 'package:esamudaayapp/redux/states/auth_state.dart';
 import 'package:esamudaayapp/redux/states/home_page_state.dart';
 import 'package:esamudaayapp/redux/states/product_state.dart';
-import 'package:esamudaayapp/repository/cart_datasourse.dart';
 import 'package:esamudaayapp/utilities/URLs.dart';
 import 'package:esamudaayapp/utilities/api_manager.dart';
+import 'package:esamudaayapp/utilities/user_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class LogoutAction extends ReduxAction<AppState> {
@@ -18,20 +18,8 @@ class LogoutAction extends ReduxAction<AppState> {
 
   @override
   FutureOr<AppState> reduce() async {
-//    var response = await APIManager.shared.request(
-//        url: ApiURL.logoutURL, requestType: RequestType.post, params: {});
-//
-//    if (response.data['statusCode'] == 200) {
-//      await CartDataSource.deleteAllMerchants();
-//      await CartDataSource.deleteAll();
-//      dispatch(NavigateAction.pushNamedAndRemoveAll('/loginView'));
-//    } else {
-//      Fluttertoast.showToast(msg: response.data['status']);
-//      //throw UserException(response.data['status']);
-//    }
-    await CartDataSource.deleteAllMerchants();
-    await CartDataSource.deleteAll();
-
+    await UserManager.deleteUser();
+    dispatch(NavigateAction.pushNamedAndRemoveAll('/loginView'));
     return state.copyWith(
         authState: AuthState.initial(),
         isLoading: false,

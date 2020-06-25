@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:date_format/date_format.dart';
 import 'package:esamudaayapp/models/User.dart';
-import 'package:esamudaayapp/repository/cart_datasourse.dart';
 import 'package:esamudaayapp/repository/database_manage.dart';
 import 'package:esamudaayapp/utilities/stringConstants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -43,8 +42,8 @@ class UserManager {
     await saveSkipStatus(status: false);
     prefs.remove(tokenKey);
     int resp = await dbClient.delete('User');
-    await dbClient.delete(cartTable);
-    await dbClient.delete(merchantTable);
+//    await dbClient.delete(cartTable);
+//    await dbClient.delete(merchantTable);
     print(resp);
   }
 

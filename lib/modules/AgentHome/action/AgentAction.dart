@@ -7,6 +7,10 @@ import 'package:esamudaayapp/redux/actions/general_actions.dart';
 import 'package:esamudaayapp/redux/states/app_state.dart';
 import 'package:esamudaayapp/utilities/URLs.dart';
 import 'package:esamudaayapp/utilities/api_manager.dart';
+import 'package:esamudaayapp/utilities/location.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:location/location.dart';
 
 class UpdateSelectedOrder extends ReduxAction<AppState> {
   final OrderRequest selectedOrder;
@@ -51,5 +55,57 @@ class GetAgentOrderList extends ReduxAction<AppState> {
   void after() {
     dispatch(ChangeLoadingStatusAction(LoadingStatus.success));
     super.after();
+  }
+}
+
+class GetLocationAction extends ReduxAction<AppState> {
+  @override
+  FutureOr<AppState> reduce() async {
+    LocationData currentLocation;
+
+    var location = new Location();
+
+    var _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return null;
+      }
+    }
+
+    if (await location.hasPermission() == PermissionStatus.granted) {
+      currentLocation = await location.getLocation();
+      if (currentLocation != null) {
+        List<Placemark> placeMark = await Geolocator().placemarkFromCoordinates(
+            currentLocation.latitude, currentLocation.longitude);
+        return state.copyWith(
+            homePageState:
+                state.homePageState.copyWith(currentLocation: placeMark.first));
+      }
+    } else {
+      var status = await location.requestPermission();
+
+      if (status == PermissionStatus.granted) {
+        currentLocation = await location.getLocation();
+        if (currentLocation != null) {
+          List<Placemark> placeMark = await Geolocator()
+              .placemarkFromCoordinates(
+                  currentLocation.latitude, currentLocation.longitude);
+          return state.copyWith(
+              homePageState: state.homePageState
+                  .copyWith(currentLocation: placeMark.first));
+        } else {
+          return null;
+        }
+      } else {
+        Fluttertoast.showToast(
+                msg: "Please enable location permission from phone settings")
+            .whenComplete(() async {
+          Future.delayed(Duration(seconds: 2)).then((value) => goToSettings());
+        });
+        return null;
+      }
+    }
+    return null;
   }
 }

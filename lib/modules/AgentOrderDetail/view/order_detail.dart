@@ -4,13 +4,16 @@ import 'package:async_redux/async_redux.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:date_format/date_format.dart';
 import 'package:esamudaayapp/models/loading_status.dart';
+import 'package:esamudaayapp/modules/AgentHome/action/AgentAction.dart';
 import 'package:esamudaayapp/modules/AgentHome/model/order_response.dart';
 import 'package:esamudaayapp/modules/AgentOrderDetail/action/order_action.dart';
 import 'package:esamudaayapp/modules/AgentOrderDetail/model/transit_models.dart';
 import 'package:esamudaayapp/redux/states/app_state.dart';
+import 'package:esamudaayapp/store.dart';
 import 'package:esamudaayapp/utilities/user_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 
 class OrderDetailScreen extends StatefulWidget {
@@ -405,7 +408,17 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                           ),
                           InkWell(
                             onTap: () {
-                              imageSelectorCamera(snapshot);
+                              if (snapshot.locationDetails != null) {
+                                imageSelectorCamera(snapshot);
+                              } else {
+                                store
+                                    .dispatchFuture(GetLocationAction())
+                                    .whenComplete(() {
+                                  if (snapshot.locationDetails != null) {
+                                    imageSelectorCamera(snapshot);
+                                  }
+                                });
+                              }
                             },
                             child: new Container(
                               height: 65,
@@ -748,19 +761,19 @@ class _ViewModel extends BaseModel<AppState> {
   OrderRequest orderRequest;
   OrderRequest selectedOrder;
   Function() acceptOrder;
-
+  Placemark locationDetails;
+  VoidCallback getLocation;
   LoadingStatus loadingStatus;
   _ViewModel();
   _ViewModel.build(
       {this.acceptOrder,
+      this.getLocation,
       this.transitDetails,
       this.loadingStatus,
+      this.locationDetails,
       this.selectedOrder,
       this.uploadImage})
-      : super(equals: [
-          selectedOrder,
-          loadingStatus,
-        ]);
+      : super(equals: [selectedOrder, loadingStatus, locationDetails]);
   @override
   BaseModel fromStore() {
     // TODO: implement fromStore
@@ -771,6 +784,10 @@ class _ViewModel extends BaseModel<AppState> {
         loadingStatus: state.authState.loadingStatus,
         selectedOrder: state.homePageState.selectedOrder,
         transitDetails: state.homePageState.transitDetails,
+        locationDetails: state.homePageState.currentLocation,
+        getLocation: () {
+          dispatch(GetLocationAction());
+        },
         uploadImage: (file, isPickup) {
           dispatch(UploadImageAction(imageFile: file, isPickUp: isPickup));
 //          dispatch(AcceptOrderAction());
