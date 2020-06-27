@@ -106,9 +106,13 @@ class AcceptOrderAction extends ReduxAction<AppState> {
       await UserManager.saveOrderProgressStatus(status: true);
       dispatch(PickOrderAction(
           pickImage: PickImage(
-              lat: 0.0,
-              lon: 0.0,
-              pickupImages: [PickupImages(photoId: imageResponse.photoId)])));
+              lat: state.homePageState.currentLocation.position.latitude,
+              lon: state.homePageState.currentLocation.position.longitude,
+              pickupImages: [
+            PickupImages(
+                photoId:
+                    imageResponse.photoId != null ? imageResponse.photoId : "")
+          ])));
       return state.copyWith(
           homePageState:
               state.homePageState.copyWith(selectedOrder: responseModel));
@@ -267,6 +271,9 @@ class UploadImageAction extends ReduxAction<AppState> {
 
     var response = await request.send();
     print(response.statusCode);
+    if (isPickUp) {
+      dispatch(AcceptOrderAction(imageResponse: ImageResponse()));
+    } else {}
     Fluttertoast.showToast(
         msg: response.reasonPhrase != null ? response.reasonPhrase : "");
     response.stream.transform(utf8.decoder).listen((value) {

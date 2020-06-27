@@ -705,6 +705,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
   //display image selected from camera
 //display image selected from camera
   imageSelectorCamera(_ViewModel snapshot) async {
+    snapshot.getLocation();
     var orderProgress = await UserManager.getOrderProgressStatus();
     final pickedFile = await picker.getImage(source: ImageSource.camera);
     setState(() {

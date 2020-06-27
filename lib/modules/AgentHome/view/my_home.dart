@@ -32,15 +32,19 @@ class _MyHomeViewState extends State<MyHomeView> with TickerProviderStateMixin {
   Widget currentPage({index: int}) {
     if (index == 0) {
       return AgentHome(
-//        key: keyOne,
-          );
+        isNewOrder: true,
+        withFilter: "PENDING",
+      );
     } else if (index == 1) {
-      return AgentHome();
-//      return CartView(
-//        key: keyTwo,
-//      );
+      return AgentHome(
+        isNewOrder: false,
+        withFilter: "PICKED",
+      );
     } else if (index == 2) {
-      return OrdersView();
+      return AgentHome(
+        isNewOrder: false,
+        withFilter: "DROPPED",
+      );
 //      return ProfileView(
 //        key: keyThree,
 //      );
@@ -61,7 +65,7 @@ class _MyHomeViewState extends State<MyHomeView> with TickerProviderStateMixin {
       bottomNavigationBar: StoreConnector<AppState, _ViewModel>(
           model: _ViewModel(),
           onInit: (store) async {
-            store.dispatch(GetAgentOrderList());
+            //  store.dispatch(GetAgentOrderList());
             store.dispatch(GetUserFromLocalStorageAction());
           },
           builder: (context, snapshot) {
@@ -105,6 +109,27 @@ class _MyHomeViewState extends State<MyHomeView> with TickerProviderStateMixin {
                           new Text(tr('screen_home.tab_bar.in_progress'),
                               style: TextStyle(
                                 color: snapshot.currentIndex == 1
+                                    ? Colors.blue
+                                    : Colors.black,
+                              ))
+                        ],
+                      ),
+                    ),
+                    Container(
+                      color: Color(0xfff8f8f8),
+                      width: 2,
+                    ),
+                    FlatButton(
+                      padding: EdgeInsets.all(10.0),
+                      onPressed: () {
+                        snapshot.updateCurrentIndex(2);
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          new Text(tr('screen_home.tab_bar.completed'),
+                              style: TextStyle(
+                                color: snapshot.currentIndex == 2
                                     ? Colors.blue
                                     : Colors.black,
                               ))

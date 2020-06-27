@@ -7,7 +7,7 @@ import 'package:esamudaayapp/modules/Profile/views/profile_view.dart';
 import 'package:esamudaayapp/modules/accounts/views/accounts_view.dart';
 import 'package:esamudaayapp/modules/cart/actions/cart_actions.dart';
 import 'package:esamudaayapp/modules/cart/views/cart_view.dart';
-import 'package:esamudaayapp/modules/home/views/my_home.dart';
+import 'package:esamudaayapp/modules/AgentHome/view/my_home.dart';
 import 'package:esamudaayapp/modules/login/actions/login_actions.dart';
 import 'package:esamudaayapp/modules/login/views/login_View.dart';
 import 'package:esamudaayapp/modules/orders/views/orders_View.dart';

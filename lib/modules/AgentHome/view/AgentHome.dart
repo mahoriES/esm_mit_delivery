@@ -12,6 +12,11 @@ import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class AgentHome extends StatefulWidget {
+  final bool isNewOrder;
+  final String withFilter;
+
+  const AgentHome({Key key, this.isNewOrder, this.withFilter})
+      : super(key: key);
   @override
   _AgentHomeState createState() => _AgentHomeState();
 }
@@ -25,6 +30,9 @@ class _AgentHomeState extends State<AgentHome> {
             child: AppBar(
               backgroundColor: Color(0xff5091cd),
               flexibleSpace: StoreConnector<AppState, _ViewModel>(
+                  onInit: (store) async {
+                    store.dispatch(GetAgentOrderList());
+                  },
                   model: _ViewModel(),
                   builder: (context, snapshot) {
                     return Column(
@@ -144,6 +152,12 @@ class _AgentHomeState extends State<AgentHome> {
             ),
             preferredSize: Size.fromHeight(150)),
         body: StoreConnector<AppState, _ViewModel>(
+            onInit: (store) async {
+              widget.isNewOrder
+                  ? store.dispatch(GetAgentOrderList(filter: widget.withFilter))
+                  : store.dispatch(
+                      GetAgentTransitOrderList(filter: widget.withFilter));
+            },
             model: _ViewModel(),
             builder: (context, snapshot) {
               return ModalProgressHUD(

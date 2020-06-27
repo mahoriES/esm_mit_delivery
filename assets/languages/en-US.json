@@ -56,9 +56,9 @@
 
   "screen_home": {
     "tab_bar": {
-      "all_order": "ALL ORDERS",
+      "all_order": "NEW ORDERS",
       "in_progress": "IN PROGRESS",
-      "orders": "ORDERS",
+      "completed": "COMPLETED",
       "account": "ACCOUNT"
     },
     "store_near_you": "Stores near you"

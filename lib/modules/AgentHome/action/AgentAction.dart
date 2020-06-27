@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:async_redux/async_redux.dart';
 import 'package:esamudaayapp/models/loading_status.dart';
 import 'package:esamudaayapp/modules/AgentHome/model/order_response.dart';
+import 'package:esamudaayapp/modules/AgentOrderDetail/model/transit_models.dart';
 import 'package:esamudaayapp/redux/actions/general_actions.dart';
 import 'package:esamudaayapp/redux/states/app_state.dart';
 import 'package:esamudaayapp/utilities/URLs.dart';
@@ -26,11 +27,14 @@ class UpdateSelectedOrder extends ReduxAction<AppState> {
 }
 
 class GetAgentOrderList extends ReduxAction<AppState> {
+  final String filter;
+
+  GetAgentOrderList({this.filter});
   @override
   FutureOr<AppState> reduce() async {
     var response = await APIManager.shared.request(
         url: ApiURL.getAgentOrderListURL,
-        params: {"": ""},
+        params: {"filter": "PENDING"},
         requestType: RequestType.get);
     if (response.status == ResponseStatus.error404)
       throw UserException(response.data['message']);
@@ -48,6 +52,43 @@ class GetAgentOrderList extends ReduxAction<AppState> {
   FutureOr<void> before() {
     dispatch(ChangeLoadingStatusAction(LoadingStatus.loading));
 
+    return super.before();
+  }
+
+  @override
+  void after() {
+    dispatch(ChangeLoadingStatusAction(LoadingStatus.success));
+    super.after();
+  }
+}
+
+class GetAgentTransitOrderList extends ReduxAction<AppState> {
+  final String filter;
+
+  GetAgentTransitOrderList({this.filter});
+  @override
+  FutureOr<AppState> reduce() async {
+    var response = await APIManager.shared.request(
+        url: ApiURL.getTransitIdURL + "?filter=$filter",
+        params: {"": ""},
+        requestType: RequestType.get);
+    if (response.status == ResponseStatus.error404)
+      //throw UserException(response.data['message']);
+      return null;
+    else if (response.status == ResponseStatus.error500)
+      return null;
+//      throw UserException('Something went wrong');
+    else {
+      var responseModel = TransitDetails.fromJson(response.data);
+      return state.copyWith(
+          homePageState:
+              state.homePageState.copyWith(transitDetails: responseModel));
+    }
+  }
+
+  @override
+  FutureOr<void> before() {
+    dispatch(ChangeLoadingStatusAction(LoadingStatus.loading));
     return super.before();
   }
 
@@ -107,5 +148,16 @@ class GetLocationAction extends ReduxAction<AppState> {
       }
     }
     return null;
+  }
+}
+
+class UpdateSelectedTabAction extends ReduxAction<AppState> {
+  final index;
+  UpdateSelectedTabAction(this.index);
+
+  @override
+  FutureOr<AppState> reduce() {
+    return state.copyWith(
+        homePageState: state.homePageState.copyWith(currentIndex: index));
   }
 }
