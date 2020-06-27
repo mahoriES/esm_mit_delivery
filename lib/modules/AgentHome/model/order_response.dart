@@ -1,8 +1,10 @@
+import 'package:esamudaayapp/modules/AgentOrderDetail/model/transit_models.dart';
+
 class OrderResponse {
   int count;
   int next;
   int previous;
-  List<OrderRequest> results;
+  List<TransitDetails> results;
 
   OrderResponse({this.count, this.next, this.previous, this.results});
 
@@ -11,9 +13,9 @@ class OrderResponse {
     next = json['next'];
     previous = json['previous'];
     if (json['results'] != null) {
-      results = new List<OrderRequest>();
+      results = new List<TransitDetails>();
       json['results'].forEach((v) {
-        results.add(new OrderRequest.fromJson(v));
+        results.add(new TransitDetails.fromJson(v));
       });
     }
   }

@@ -5,7 +5,6 @@ import 'dart:io';
 import 'package:async/async.dart';
 import 'package:async_redux/async_redux.dart';
 import 'package:esamudaayapp/models/loading_status.dart';
-import 'package:esamudaayapp/modules/AgentHome/model/order_response.dart';
 import 'package:esamudaayapp/modules/AgentOrderDetail/model/drop_image.dart';
 import 'package:esamudaayapp/modules/AgentOrderDetail/model/pick_image.dart';
 import 'package:esamudaayapp/modules/AgentOrderDetail/model/transit_models.dart';
@@ -31,7 +30,7 @@ class GetOrderDetailsAction extends ReduxAction<AppState> {
     else if (response.status == ResponseStatus.error500)
       throw UserException('Something went wrong');
     else {
-      var responseModel = OrderRequest.fromJson(response.data);
+      var responseModel = TransitDetails.fromJson(response.data);
       return state.copyWith(
           homePageState:
               state.homePageState.copyWith(selectedOrder: responseModel));
@@ -56,7 +55,7 @@ class GetTransitDetailsAction extends ReduxAction<AppState> {
   FutureOr<AppState> reduce() async {
     var response = await APIManager.shared.request(
         url: ApiURL.getTransitIdURL +
-            '${state.homePageState.selectedOrder.requestId}',
+            '/${state.homePageState.selectedOrder.requestId}',
         params: {"": ""},
         requestType: RequestType.get);
     if (response.status == ResponseStatus.error404)
@@ -102,7 +101,7 @@ class AcceptOrderAction extends ReduxAction<AppState> {
     else if (response.status == ResponseStatus.error500)
       throw UserException('Something went wrong');
     else {
-      var responseModel = OrderRequest.fromJson(response.data);
+      var responseModel = TransitDetails.fromJson(response.data);
       await UserManager.saveOrderProgressStatus(status: true);
       dispatch(PickOrderAction(
           pickImage: PickImage(
@@ -148,7 +147,7 @@ class PickOrderAction extends ReduxAction<AppState> {
     else if (response.status == ResponseStatus.error500)
       throw UserException('Something went wrong');
     else {
-      var responseModel = OrderRequest.fromJson(response.data);
+      var responseModel = TransitDetails.fromJson(response.data);
       return state.copyWith(
           homePageState:
               state.homePageState.copyWith(selectedOrder: responseModel));
@@ -184,7 +183,7 @@ class DropOrderAction extends ReduxAction<AppState> {
     else if (response.status == ResponseStatus.error500)
       throw UserException('Something went wrong');
     else {
-      var responseModel = OrderRequest.fromJson(response.data);
+      var responseModel = TransitDetails.fromJson(response.data);
       return state.copyWith(
           homePageState:
               state.homePageState.copyWith(selectedOrder: responseModel));
@@ -217,7 +216,7 @@ class RejectOrderAction extends ReduxAction<AppState> {
     else if (response.status == ResponseStatus.error500)
       throw UserException('Something went wrong');
     else {
-      var responseModel = OrderRequest.fromJson(response.data);
+      var responseModel = TransitDetails.fromJson(response.data);
       return state.copyWith(
           homePageState:
               state.homePageState.copyWith(selectedOrder: responseModel));

@@ -1,5 +1,4 @@
 import 'package:esamudaayapp/models/loading_status.dart';
-import 'package:esamudaayapp/modules/AgentHome/model/order_response.dart';
 import 'package:esamudaayapp/modules/AgentOrderDetail/model/transit_models.dart';
 import 'package:esamudaayapp/modules/register/model/register_request_model.dart';
 import 'package:geolocator/geolocator.dart';
@@ -7,11 +6,11 @@ import 'package:meta/meta.dart';
 
 class HomePageState {
   final LoadingStatus loadingStatus;
-  final List<OrderRequest> orders;
+  final List<TransitDetails> orders;
   final String homePageLoadedDate;
   final int currentIndex;
   final List<Photo> banners;
-  final OrderRequest selectedOrder;
+  final TransitDetails selectedOrder;
   final TransitDetails transitDetails;
 
   final Placemark currentLocation;
@@ -39,7 +38,7 @@ class HomePageState {
     return new HomePageState(
       currentLocation: null,
       transitDetails: null,
-      selectedOrder: OrderRequest(),
+      selectedOrder: TransitDetails(),
       loadingStatus: LoadingStatus.success,
       orders: [],
       homePageLoadedDate: "0",
@@ -50,11 +49,11 @@ class HomePageState {
 
   HomePageState copyWith(
       {LoadingStatus loadingStatus,
-      List<OrderRequest> orders,
+      List<TransitDetails> orders,
       List<Photo> banners,
       int currentIndex,
       String homePageLoadedDate,
-      OrderRequest selectedOrder,
+      TransitDetails selectedOrder,
       Placemark currentLocation,
       TransitDetails transitDetails}) {
     return new HomePageState(

@@ -3,7 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:esamudaayapp/models/User.dart';
 import 'package:esamudaayapp/models/loading_status.dart';
 import 'package:esamudaayapp/modules/AgentHome/action/AgentAction.dart';
-import 'package:esamudaayapp/modules/AgentHome/model/order_response.dart';
+import 'package:esamudaayapp/modules/AgentOrderDetail/model/transit_models.dart';
 import 'package:esamudaayapp/modules/accounts/action/account_action.dart';
 import 'package:esamudaayapp/redux/states/app_state.dart';
 import 'package:esamudaayapp/utilities/user_manager.dart';
@@ -14,14 +14,21 @@ import 'package:modal_progress_hud/modal_progress_hud.dart';
 class AgentHome extends StatefulWidget {
   final bool isNewOrder;
   final String withFilter;
+  final Function callAPI;
 
-  const AgentHome({Key key, this.isNewOrder, this.withFilter})
+  const AgentHome({Key key, this.isNewOrder, this.withFilter, this.callAPI})
       : super(key: key);
   @override
   _AgentHomeState createState() => _AgentHomeState();
 }
 
 class _AgentHomeState extends State<AgentHome> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return UserExceptionDialog<AppState>(
@@ -30,9 +37,6 @@ class _AgentHomeState extends State<AgentHome> {
             child: AppBar(
               backgroundColor: Color(0xff5091cd),
               flexibleSpace: StoreConnector<AppState, _ViewModel>(
-                  onInit: (store) async {
-                    store.dispatch(GetAgentOrderList());
-                  },
                   model: _ViewModel(),
                   builder: (context, snapshot) {
                     return Column(
@@ -353,7 +357,7 @@ class StoresListView extends StatelessWidget {
   }
 
   Column buildStatusIcon() {
-    if (agentStatus == "ACCEPTED" && orderStatus == "COMPLETED") {
+    if (agentStatus == "DROPPED" && orderStatus == "COMPLETED") {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -411,7 +415,7 @@ class StoresListView extends StatelessWidget {
           ),
         ],
       );
-    } else if (agentStatus == "ACCEPTED" && orderStatus != "COMPLETED") {
+    } else if (agentStatus == "PICKED" && orderStatus != "COMPLETED") {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -484,9 +488,9 @@ class _ViewModel extends BaseModel<AppState> {
   Function navigateToStoreDetailsPage;
 
   VoidCallback navigateToCart;
-  Function(OrderRequest) updateSelectedOrder;
+  Function(TransitDetails) updateSelectedOrder;
   int currentIndex;
-  List<OrderRequest> orders;
+  List<TransitDetails> orders;
   Function logout;
   LoadingStatus loadingStatus;
   Function navigateToProfile;

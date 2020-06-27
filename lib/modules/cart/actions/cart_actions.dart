@@ -260,7 +260,7 @@ class PlaceOrderAction extends ReduxAction<AppState> {
       Fluttertoast.showToast(msg: 'Order Placed');
       await CartDataSource.deleteAllMerchants();
       await CartDataSource.deleteAll();
-      dispatch(GetCartFromLocal());
+//      dispatch(GetCartFromLocal());
       dispatch(UpdateSelectedTabAction(2));
       dispatch(NavigateAction.pushNamedAndRemoveAll("/myHomeView"));
     } else {

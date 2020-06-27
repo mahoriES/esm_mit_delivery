@@ -1,11 +1,11 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:esamudaayapp/modules/AgentHome/action/AgentAction.dart';
 import 'package:esamudaayapp/modules/AgentHome/model/order_response.dart';
 import 'package:esamudaayapp/modules/AgentHome/view/AgentHome.dart';
 import 'package:esamudaayapp/modules/accounts/views/accounts_view.dart';
 import 'package:esamudaayapp/modules/home/actions/home_page_actions.dart';
 import 'package:esamudaayapp/modules/login/actions/login_actions.dart';
-import 'package:esamudaayapp/modules/orders/views/orders_View.dart';
 import 'package:esamudaayapp/redux/states/app_state.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -31,17 +31,17 @@ class _MyHomeViewState extends State<MyHomeView> with TickerProviderStateMixin {
 
   Widget currentPage({index: int}) {
     if (index == 0) {
-      return AgentHome(
+      return new AgentHome(
         isNewOrder: true,
         withFilter: "PENDING",
       );
     } else if (index == 1) {
-      return AgentHome(
+      return new AgentHome(
         isNewOrder: false,
         withFilter: "PICKED",
       );
     } else if (index == 2) {
-      return AgentHome(
+      return new AgentHome(
         isNewOrder: false,
         withFilter: "DROPPED",
       );
@@ -79,6 +79,7 @@ class _MyHomeViewState extends State<MyHomeView> with TickerProviderStateMixin {
                     FlatButton(
                       padding: EdgeInsets.all(10.0),
                       onPressed: () {
+                        snapshot.getOrderList("PENDING");
                         snapshot.updateCurrentIndex(0);
                       },
                       child: Column(
@@ -101,6 +102,7 @@ class _MyHomeViewState extends State<MyHomeView> with TickerProviderStateMixin {
                     FlatButton(
                       padding: EdgeInsets.all(10.0),
                       onPressed: () {
+                        snapshot.getTransitList("PICKED");
                         snapshot.updateCurrentIndex(1);
                       },
                       child: Column(
@@ -122,6 +124,8 @@ class _MyHomeViewState extends State<MyHomeView> with TickerProviderStateMixin {
                     FlatButton(
                       padding: EdgeInsets.all(10.0),
                       onPressed: () {
+                        snapshot.getTransitList("DROPPED");
+
                         snapshot.updateCurrentIndex(2);
                       },
                       child: Column(
@@ -210,9 +214,13 @@ class _ViewModel extends BaseModel<AppState> {
   Function updateCurrentIndex;
   VoidCallback getMerchants;
   Function(OrderRequest) updateSelectedOrder;
+  Function(String) getTransitList;
+  Function(String) getOrderList;
   int currentIndex;
   _ViewModel.build(
       {this.navigateToAddAddressPage,
+      this.getTransitList,
+      this.getOrderList,
       this.getMerchants,
       this.navigateToProductSearch,
       this.updateCurrentIndex,
@@ -224,11 +232,11 @@ class _ViewModel extends BaseModel<AppState> {
   BaseModel fromStore() {
     // TODO: implement fromStore
     return _ViewModel.build(
-        updateSelectedOrder: (order) {
-          dispatch(UpdateSelectedOrder(selectedOrder: order));
+        getTransitList: (filter) {
+          dispatch(GetAgentTransitOrderList(filter: filter));
         },
-        getMerchants: () {
-          dispatch(GetAgentOrderList());
+        getOrderList: (filter) {
+          dispatch(GetAgentOrderList(filter: filter));
         },
         navigateToAddAddressPage: () {
           dispatch(NavigateAction.pushNamed('/AddAddressView'));

@@ -4,6 +4,7 @@ import 'package:esamudaayapp/modules/AgentOrderDetail/model/pick_image.dart';
 
 class TransitDetails {
   int transitId;
+  int requestId;
   String status;
   PickupPnt pickupPnt;
   PickupPnt dropPnt;
@@ -33,6 +34,7 @@ class TransitDetails {
   TransitDetails.fromJson(Map<String, dynamic> json) {
     transitId = json['transit_id'];
     status = json['status'];
+    requestId = json['request_id'];
     pickupPnt = json['pickup_pnt'] != null
         ? new PickupPnt.fromJson(json['pickup_pnt'])
         : null;
@@ -67,6 +69,7 @@ class TransitDetails {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['transit_id'] = this.transitId;
     data['status'] = this.status;
+    data['request_id'] = this.requestId;
     if (this.pickupPnt != null) {
       data['pickup_pnt'] = this.pickupPnt.toJson();
     }
@@ -170,94 +173,6 @@ class GeoAddr {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['city'] = this.city;
     data['pincode'] = this.pincode;
-    return data;
-  }
-}
-
-class Order {
-  String orderId;
-  String orderShortNumber;
-  String orderStatus;
-  int itemTotal;
-  int otherCharges;
-  int orderTotal;
-  int deliveryCharges;
-  List<BusinessImages> businessImages;
-  String businessName;
-  String clusterName;
-  String customerName;
-  String customerNote;
-  List<String> businessPhones;
-  List<String> customerPhones;
-  List<OrderItems> orderItems;
-
-  Order(
-      {this.orderId,
-      this.orderShortNumber,
-      this.orderStatus,
-      this.itemTotal,
-      this.otherCharges,
-      this.orderTotal,
-      this.deliveryCharges,
-      this.businessImages,
-      this.businessName,
-      this.clusterName,
-      this.customerName,
-      this.customerNote,
-      this.businessPhones,
-      this.customerPhones,
-      this.orderItems});
-
-  Order.fromJson(Map<String, dynamic> json) {
-    orderId = json['order_id'];
-    orderShortNumber = json['order_short_number'];
-    orderStatus = json['order_status'];
-    itemTotal = json['item_total'];
-    otherCharges = json['other_charges'];
-    orderTotal = json['order_total'];
-    deliveryCharges = json['delivery_charges'];
-    if (json['business_images'] != null) {
-      businessImages = new List<BusinessImages>();
-      json['business_images'].forEach((v) {
-        businessImages.add(new BusinessImages.fromJson(v));
-      });
-    }
-    businessName = json['business_name'];
-    clusterName = json['cluster_name'];
-    customerName = json['customer_name'];
-    customerNote = json['customer_note'];
-    businessPhones = json['business_phones'].cast<String>();
-    customerPhones = json['customer_phones'].cast<String>();
-    if (json['order_items'] != null) {
-      orderItems = new List<OrderItems>();
-      json['order_items'].forEach((v) {
-        orderItems.add(new OrderItems.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['order_id'] = this.orderId;
-    data['order_short_number'] = this.orderShortNumber;
-    data['order_status'] = this.orderStatus;
-    data['item_total'] = this.itemTotal;
-    data['other_charges'] = this.otherCharges;
-    data['order_total'] = this.orderTotal;
-    data['delivery_charges'] = this.deliveryCharges;
-    if (this.businessImages != null) {
-      data['business_images'] =
-          this.businessImages.map((v) => v.toJson()).toList();
-    }
-    data['business_name'] = this.businessName;
-    data['cluster_name'] = this.clusterName;
-    data['customer_name'] = this.customerName;
-    data['customer_note'] = this.customerNote;
-    data['business_phones'] = this.businessPhones;
-    data['customer_phones'] = this.customerPhones;
-    if (this.orderItems != null) {
-      data['order_items'] = this.orderItems.map((v) => v.toJson()).toList();
-    }
     return data;
   }
 }

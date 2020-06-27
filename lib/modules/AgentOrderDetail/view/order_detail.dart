@@ -13,8 +13,10 @@ import 'package:esamudaayapp/store.dart';
 import 'package:esamudaayapp/utilities/user_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class OrderDetailScreen extends StatefulWidget {
   @override
@@ -94,7 +96,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
               model: _ViewModel(),
               onInit: (store) {
                 store.dispatch(GetOrderDetailsAction());
-                store.dispatch(GetTransitDetailsAction());
+//                store.dispatch(GetTransitDetailsAction());
               },
               builder: (context, snapshot) {
                 return snapshot.loadingStatus == LoadingStatus.loading
@@ -305,6 +307,13 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                       ),
                                       FloatingActionButton(
                                         onPressed: () {
+                                          var location = snapshot
+                                              .selectedOrder
+                                              .order
+                                              .deliveryAddress
+                                              .locationPoint;
+                                          _launchMaps(location.lat.toString(),
+                                              location.lon.toString());
                                           // Add your onPressed code here!
 //                                          openMapsSheet(context, snapshot);
                                         },
@@ -335,6 +344,9 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                       ),
                                       FloatingActionButton(
                                         onPressed: () {
+                                          _makePhoneCall(
+                                              mobile:
+                                                  "tel:${snapshot.selectedOrder.order.customerPhones.first}");
                                           // Add your onPressed code here!
                                         },
                                         child: Image.asset(
@@ -756,11 +768,38 @@ class MySeparator extends StatelessWidget {
   }
 }
 
+_launchMaps(String lat, String lon) async {
+  String googleMapUrl = "https://www.google.com/maps/dir/?api=1&destination=" +
+      lat +
+      "," +
+      lon +
+      "&travelmode=driving&dir_action=navigate";
+  String googleUrl = 'comgooglemaps://?center=$lat,$lon';
+  String appleUrl = 'https://maps.apple.com/?sll=$lat,$lon';
+  if (await canLaunch("comgooglemaps://")) {
+    print('launching com googleUrl');
+    await launch(googleMapUrl);
+  } else if (await canLaunch(appleUrl)) {
+    print('launching apple url');
+    await launch(googleMapUrl);
+  } else {
+    throw 'Could not launch url';
+  }
+}
+
+_makePhoneCall({String mobile}) async {
+  if (await canLaunch(mobile)) {
+    await launch(mobile);
+  } else {
+    Fluttertoast.showToast(msg: 'No contact details found.');
+  }
+}
+
 class _ViewModel extends BaseModel<AppState> {
   Function(File, bool) uploadImage;
   TransitDetails transitDetails;
   OrderRequest orderRequest;
-  OrderRequest selectedOrder;
+  TransitDetails selectedOrder;
   Function() acceptOrder;
   Placemark locationDetails;
   VoidCallback getLocation;

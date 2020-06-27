@@ -14,7 +14,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:location/location.dart';
 
 class UpdateSelectedOrder extends ReduxAction<AppState> {
-  final OrderRequest selectedOrder;
+  final TransitDetails selectedOrder;
 
   UpdateSelectedOrder({this.selectedOrder});
   @override
@@ -34,7 +34,7 @@ class GetAgentOrderList extends ReduxAction<AppState> {
   FutureOr<AppState> reduce() async {
     var response = await APIManager.shared.request(
         url: ApiURL.getAgentOrderListURL,
-        params: {"filter": "PENDING"},
+        params: {"filter": filter},
         requestType: RequestType.get);
     if (response.status == ResponseStatus.error404)
       throw UserException(response.data['message']);
@@ -69,8 +69,8 @@ class GetAgentTransitOrderList extends ReduxAction<AppState> {
   @override
   FutureOr<AppState> reduce() async {
     var response = await APIManager.shared.request(
-        url: ApiURL.getTransitIdURL + "?filter=$filter",
-        params: {"": ""},
+        url: ApiURL.getTransitIdURL,
+        params: {"filter": filter},
         requestType: RequestType.get);
     if (response.status == ResponseStatus.error404)
       //throw UserException(response.data['message']);
@@ -79,10 +79,10 @@ class GetAgentTransitOrderList extends ReduxAction<AppState> {
       return null;
 //      throw UserException('Something went wrong');
     else {
-      var responseModel = TransitDetails.fromJson(response.data);
+      var responseModel = OrderResponse.fromJson(response.data);
       return state.copyWith(
           homePageState:
-              state.homePageState.copyWith(transitDetails: responseModel));
+              state.homePageState.copyWith(orders: responseModel.results));
     }
   }
 
@@ -148,16 +148,5 @@ class GetLocationAction extends ReduxAction<AppState> {
       }
     }
     return null;
-  }
-}
-
-class UpdateSelectedTabAction extends ReduxAction<AppState> {
-  final index;
-  UpdateSelectedTabAction(this.index);
-
-  @override
-  FutureOr<AppState> reduce() {
-    return state.copyWith(
-        homePageState: state.homePageState.copyWith(currentIndex: index));
   }
 }

@@ -1,22 +1,16 @@
 import 'dart:io';
 
 import 'package:async_redux/async_redux.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:date_format/date_format.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:esamudaayapp/models/loading_status.dart';
+import 'package:esamudaayapp/modules/AgentHome/model/order_response.dart';
 import 'package:esamudaayapp/modules/AgentOrderDetail/action/order_action.dart';
+import 'package:esamudaayapp/modules/AgentOrderDetail/model/transit_models.dart';
 import 'package:esamudaayapp/modules/home/models/category_response.dart';
 import 'package:esamudaayapp/modules/home/models/merchant_response.dart';
-import 'package:esamudaayapp/modules/AgentHome/model/order_response.dart';
-import 'package:esamudaayapp/modules/home/views/home_page_main_view.dart';
-import 'package:esamudaayapp/modules/store_details/actions/categories_actions.dart';
 import 'package:esamudaayapp/modules/store_details/actions/store_actions.dart';
 import 'package:esamudaayapp/modules/store_details/models/catalog_search_models.dart';
 import 'package:esamudaayapp/redux/states/app_state.dart';
-import 'package:esamudaayapp/repository/cart_datasourse.dart';
-import 'package:esamudaayapp/store.dart';
-import 'package:esamudaayapp/utilities/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -516,7 +510,7 @@ class _ViewModel extends BaseModel<AppState> {
   OrderRequest orderRequest;
   Function(String, String) navigateToProductDetails;
   Function(Categories) updateSelectedCategory;
-  OrderRequest selectedOrder;
+  TransitDetails selectedOrder;
   List<CategoriesNew> categories;
   LoadingStatus loadingStatus;
   _ViewModel();

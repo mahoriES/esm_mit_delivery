@@ -2,20 +2,18 @@ import 'dart:async';
 
 import 'package:async_redux/async_redux.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:esamudaayapp/modules/AgentHome/view/my_home.dart';
 import 'package:esamudaayapp/modules/AgentOrderDetail/view/order_detail.dart';
 import 'package:esamudaayapp/modules/Profile/views/profile_view.dart';
 import 'package:esamudaayapp/modules/accounts/views/accounts_view.dart';
-import 'package:esamudaayapp/modules/cart/actions/cart_actions.dart';
+import 'package:esamudaayapp/modules/accounts/views/recommended_shop.dart';
 import 'package:esamudaayapp/modules/cart/views/cart_view.dart';
-import 'package:esamudaayapp/modules/AgentHome/view/my_home.dart';
 import 'package:esamudaayapp/modules/login/actions/login_actions.dart';
 import 'package:esamudaayapp/modules/login/views/login_View.dart';
 import 'package:esamudaayapp/modules/orders/views/orders_View.dart';
-import 'package:esamudaayapp/modules/accounts/views/recommended_shop.dart';
 import 'package:esamudaayapp/modules/orders/views/support.dart';
 import 'package:esamudaayapp/modules/register/view/register_view.dart';
 import 'package:esamudaayapp/modules/search/views/Search_View.dart';
-import 'package:esamudaayapp/modules/store_details/views/store_categories_details_view.dart';
 import 'package:esamudaayapp/modules/store_details/views/store_product_listing_view.dart';
 import 'package:esamudaayapp/presentations/alert.dart';
 import 'package:esamudaayapp/presentations/check_user_widget.dart';
@@ -23,7 +21,6 @@ import 'package:esamudaayapp/presentations/splash_screen.dart';
 import 'package:esamudaayapp/redux/states/app_state.dart';
 import 'package:esamudaayapp/store.dart';
 import 'package:esamudaayapp/utilities/push_notification.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -78,7 +75,7 @@ class _MyAppState extends State<MyApp> {
         model: _ViewModel(),
         onInit: (store) {
           store.dispatch(CheckTokenAction());
-          store.dispatch(GetCartFromLocal());
+//          store.dispatch(GetCartFromLocal());
           store.dispatch(GetUserFromLocalStorageAction());
         },
         builder: (context, snapshot) {
