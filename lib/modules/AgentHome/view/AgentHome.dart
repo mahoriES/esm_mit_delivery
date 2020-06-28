@@ -142,7 +142,7 @@ class _AgentHomeState extends State<AgentHome> {
                             margin: EdgeInsets.only(top: 16.0),
                             padding: EdgeInsets.only(left: 32.0, right: 32.0),
                             child: Text(
-                              snapshot.user.firstName,
+                              snapshot.user?.firstName ?? "",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: Colors.white,

@@ -55,7 +55,7 @@ class GetTransitDetailsAction extends ReduxAction<AppState> {
   FutureOr<AppState> reduce() async {
     var response = await APIManager.shared.request(
         url: ApiURL.getTransitIdURL +
-            '/${state.homePageState.selectedOrder.requestId}',
+            '/${state.homePageState.selectedOrder.transitId}',
         params: {"": ""},
         requestType: RequestType.get);
     if (response.status == ResponseStatus.error404)

@@ -95,8 +95,11 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
           body: StoreConnector<AppState, _ViewModel>(
               model: _ViewModel(),
               onInit: (store) {
-                store.dispatch(GetOrderDetailsAction());
-//                store.dispatch(GetTransitDetailsAction());
+                if (store.state.homePageState.selectedOrder.requestId != null) {
+                  store.dispatch(GetOrderDetailsAction());
+                } else {
+                  store.dispatch(GetTransitDetailsAction());
+                }
               },
               builder: (context, snapshot) {
                 return snapshot.loadingStatus == LoadingStatus.loading
@@ -637,7 +640,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
   }
 
   Widget buildStatusIcon(_ViewModel snapshot) {
-    if (snapshot.selectedOrder.status == "ACCEPTED" &&
+    if (snapshot.selectedOrder.status == "DROPPED" &&
         snapshot.selectedOrder.order.orderStatus == "COMPLETED") {
       return Column(
         children: <Widget>[
@@ -672,7 +675,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                   BoxDecoration(color: Colors.red, shape: BoxShape.circle)),
         ],
       );
-    } else if (snapshot.selectedOrder.status == "ACCEPTED" &&
+    } else if (snapshot.selectedOrder.status == "PICKED" &&
         snapshot.selectedOrder.order.orderStatus != "COMPLETED") {
       return Column(
         children: <Widget>[
