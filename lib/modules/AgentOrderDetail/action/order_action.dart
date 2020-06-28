@@ -68,7 +68,7 @@ class GetTransitDetailsAction extends ReduxAction<AppState> {
       var responseModel = TransitDetails.fromJson(response.data);
       return state.copyWith(
           homePageState:
-              state.homePageState.copyWith(transitDetails: responseModel));
+              state.homePageState.copyWith(selectedOrder: responseModel));
     }
   }
 
@@ -103,6 +103,8 @@ class AcceptOrderAction extends ReduxAction<AppState> {
     else {
       var responseModel = TransitDetails.fromJson(response.data);
       await UserManager.saveOrderProgressStatus(status: true);
+      await UserManager.saveCurrentOrderId(
+          orderId: responseModel.order.orderId);
       dispatch(PickOrderAction(
           pickImage: PickImage(
               lat: state.homePageState.currentLocation.position.latitude,
@@ -174,8 +176,8 @@ class DropOrderAction extends ReduxAction<AppState> {
   @override
   FutureOr<AppState> reduce() async {
     var response = await APIManager.shared.request(
-        url: ApiURL.getOrderDetails +
-            '${state.homePageState.selectedOrder.requestId}',
+        url: ApiURL.getTransitIdURL +
+            '/${state.homePageState.selectedOrder.transitId}/drop',
         params: dropImage.toJson(),
         requestType: RequestType.post);
     if (response.status == ResponseStatus.error404)
@@ -184,6 +186,7 @@ class DropOrderAction extends ReduxAction<AppState> {
       throw UserException('Something went wrong');
     else {
       var responseModel = TransitDetails.fromJson(response.data);
+      await UserManager.saveOrderProgressStatus(status: false);
       return state.copyWith(
           homePageState:
               state.homePageState.copyWith(selectedOrder: responseModel));
@@ -270,9 +273,7 @@ class UploadImageAction extends ReduxAction<AppState> {
 
     var response = await request.send();
     print(response.statusCode);
-    if (isPickUp) {
-      dispatch(AcceptOrderAction(imageResponse: ImageResponse()));
-    } else {}
+
     Fluttertoast.showToast(
         msg: response.reasonPhrase != null ? response.reasonPhrase : "");
     response.stream.transform(utf8.decoder).listen((value) {
@@ -284,7 +285,18 @@ class UploadImageAction extends ReduxAction<AppState> {
 
       if (isPickUp) {
         dispatch(AcceptOrderAction(imageResponse: imageResponse));
-      } else {}
+      } else {
+        dispatch(DropOrderAction(
+            dropImage: DropImage(
+                lat: state.homePageState.currentLocation.position.latitude,
+                lon: state.homePageState.currentLocation.position.longitude,
+                dropImages: [
+              DropImages(
+                  photoId: imageResponse.photoId != null
+                      ? imageResponse.photoId
+                      : "")
+            ])));
+      }
     });
   }
 

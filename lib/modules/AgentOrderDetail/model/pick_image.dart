@@ -29,16 +29,22 @@ class PickImage {
 
 class PickupImages {
   String photoId;
+  String photoUrl;
+  String contentType;
 
-  PickupImages({this.photoId});
+  PickupImages({this.photoId, this.photoUrl, this.contentType});
 
   PickupImages.fromJson(Map<String, dynamic> json) {
     photoId = json['photo_id'];
+    photoUrl = json['photo_url'];
+    contentType = json['content_type'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['photo_id'] = this.photoId;
+    data['photo_url'] = this.photoUrl;
+    data['content_type'] = this.contentType;
     return data;
   }
 }

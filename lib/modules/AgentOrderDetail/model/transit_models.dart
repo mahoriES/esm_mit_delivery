@@ -14,7 +14,7 @@ class TransitDetails {
   String completed;
   int distance;
   List<PickupImages> pickupImages;
-  List<DropImages> dropImages;
+  List<PickupImages> dropImages;
   Order order;
 
   TransitDetails(
@@ -57,9 +57,9 @@ class TransitDetails {
       });
     }
     if (json['drop_images'] != null) {
-      dropImages = new List<DropImages>();
+      dropImages = new List<PickupImages>();
       json['drop_images'].forEach((v) {
-        dropImages.add(new DropImages.fromJson(v));
+        dropImages.add(new PickupImages.fromJson(v));
       });
     }
     order = json['order'] != null ? new Order.fromJson(json['order']) : null;

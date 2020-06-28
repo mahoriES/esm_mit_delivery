@@ -6,10 +6,12 @@ import 'package:esamudaayapp/modules/AgentHome/action/AgentAction.dart';
 import 'package:esamudaayapp/modules/AgentOrderDetail/model/transit_models.dart';
 import 'package:esamudaayapp/modules/accounts/action/account_action.dart';
 import 'package:esamudaayapp/redux/states/app_state.dart';
+import 'package:esamudaayapp/store.dart';
 import 'package:esamudaayapp/utilities/user_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class AgentHome extends StatefulWidget {
   final bool isNewOrder;
@@ -24,9 +26,26 @@ class AgentHome extends StatefulWidget {
 
 class _AgentHomeState extends State<AgentHome> {
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+
+  void _onRefresh(_ViewModel snapshot, store) async {
+    // monitor network fetch
+    await Future.delayed(Duration(milliseconds: 1000));
+    // if failed,use refreshFailed()
+    widget.isNewOrder
+        ? store.dispatch(GetAgentOrderList(filter: widget.withFilter))
+        : store.dispatch(GetAgentTransitOrderList(filter: widget.withFilter));
+    _refreshController.refreshCompleted();
+  }
+
+  void _onLoading() async {
+    // monitor network fetch
+    await Future.delayed(Duration(milliseconds: 1000));
+    // if failed,use loadFailed(),if no data return,use LoadNodata()
+//    items.add((items.length + 1).toString());
+    if (mounted) setState(() {});
+    _refreshController.loadComplete();
   }
 
   @override
@@ -44,8 +63,8 @@ class _AgentHomeState extends State<AgentHome> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
                         Container(
-                            width: 360,
-                            height: 50,
+                            width: MediaQuery.of(context).size.width,
+                            height: 70,
                             child: Align(
                               alignment: Alignment.bottomRight,
                               child: // Sign Out
@@ -154,7 +173,8 @@ class _AgentHomeState extends State<AgentHome> {
                     );
                   }),
             ),
-            preferredSize: Size.fromHeight(150)),
+            preferredSize:
+                Size.fromHeight(MediaQuery.of(context).size.height * 0.25)),
         body: StoreConnector<AppState, _ViewModel>(
             onInit: (store) async {
               widget.isNewOrder
@@ -167,35 +187,75 @@ class _AgentHomeState extends State<AgentHome> {
               return ModalProgressHUD(
                 inAsyncCall: snapshot.loadingStatus == LoadingStatus.loading &&
                     snapshot.orders.isEmpty,
-                child: ListView.separated(
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                        onTap: () {
-                          snapshot.updateSelectedOrder(snapshot.orders[index]);
-                          snapshot.navigateToStoreDetailsPage();
-                        },
-                        child: StoresListView(
-                          orderId:
-                              snapshot.orders[index].order.orderShortNumber,
-                          date: UserManager().convertDateFromString(
-                              snapshot.orders[index].order.created),
-                          amount: snapshot.orders[index].order.orderTotal
-                              .toString(),
-                          address: snapshot.orders[index].order.deliveryAddress
-                              .prettyAddress,
-                          completed: "completed date",
-                          distance: "Distance",
-                          orderStatus: snapshot.orders[index].order.orderStatus,
-                          agentStatus: snapshot.orders[index].status,
-                        ));
+                child: SmartRefresher(
+                  enablePullDown: true,
+                  enablePullUp: true,
+                  header: WaterDropHeader(),
+                  footer: CustomFooter(
+                    builder: (BuildContext context, LoadStatus mode) {
+                      Widget body;
+                      if (mode == LoadStatus.idle) {
+                        body = Text("pull up load");
+                      } else if (mode == LoadStatus.loading) {
+                        body = CupertinoActivityIndicator();
+                      } else if (mode == LoadStatus.failed) {
+                        body = Text("Load Failed!Click retry!");
+                      } else if (mode == LoadStatus.canLoading) {
+                        body = Text("release to load more");
+                      } else {
+                        body = Text("No more Data");
+                      }
+                      return Container(
+                        height: 55.0,
+                        child: Center(child: body),
+                      );
+                    },
+                  ),
+                  controller: _refreshController,
+                  onRefresh: () {
+                    _onRefresh(snapshot, store);
                   },
-                  itemCount: snapshot.orders.length,
-                  shrinkWrap: true,
-                  separatorBuilder: (BuildContext context, int index) {
-                    return Container(
-                      height: 10,
-                    );
-                  },
+                  onLoading: _onLoading,
+                  child: ListView.separated(
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                          onTap: () {
+                            UserManager.saveCurrentOrderId(
+                                orderId: snapshot.orders[index].order.orderId);
+                            snapshot
+                                .updateSelectedOrder(snapshot.orders[index]);
+                            snapshot.navigateToStoreDetailsPage(
+                                widget.withFilter,
+                                widget.isNewOrder
+                                    ? snapshot.orders[index].requestId
+                                        .toString()
+                                    : snapshot.orders[index].transitId
+                                        .toString());
+                          },
+                          child: StoresListView(
+                            orderId:
+                                snapshot.orders[index].order.orderShortNumber,
+                            date: UserManager().convertDateFromString(
+                                snapshot.orders[index].order.created),
+                            amount: snapshot.orders[index].order.orderTotal
+                                .toString(),
+                            address: snapshot.orders[index].order
+                                .deliveryAddress.prettyAddress,
+                            completed: "completed date",
+                            distance: "Distance",
+                            orderStatus:
+                                snapshot.orders[index].order.orderStatus,
+                            agentStatus: snapshot.orders[index].status,
+                          ));
+                    },
+                    itemCount: snapshot.orders.length,
+                    shrinkWrap: true,
+                    separatorBuilder: (BuildContext context, int index) {
+                      return Container(
+                        height: 10,
+                      );
+                    },
+                  ),
                 ),
               );
             }),
@@ -485,7 +545,7 @@ class StoresListView extends StatelessWidget {
 class _ViewModel extends BaseModel<AppState> {
   _ViewModel();
 
-  Function navigateToStoreDetailsPage;
+  Function(String, String) navigateToStoreDetailsPage;
 
   VoidCallback navigateToCart;
   Function(TransitDetails) updateSelectedOrder;
@@ -527,8 +587,9 @@ class _ViewModel extends BaseModel<AppState> {
         updateSelectedOrder: (order) {
           dispatch(UpdateSelectedOrder(selectedOrder: order));
         },
-        navigateToStoreDetailsPage: () {
-          dispatch(NavigateAction.pushNamed('/orderDetail'));
+        navigateToStoreDetailsPage: (type, id) {
+          dispatch(NavigateAction.pushNamed('/orderDetail',
+              arguments: {'TYPE': type, 'id': id}));
         },
         currentIndex: state.homePageState.currentIndex);
   }

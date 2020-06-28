@@ -26,55 +26,15 @@ class OrderDetailScreen extends StatefulWidget {
 class _OrderDetailScreenState extends State<OrderDetailScreen> {
   File _startImage;
   File _endImage;
+  String savedOrderId;
   final picker = ImagePicker();
+  bool sameOrder = false;
   String convertDateFromString(String strDate) {
     DateTime todayDate = DateTime.parse(strDate);
 
     return formatDate(
         todayDate, [dd, ' ', M, ' ', yyyy, ' ', hh, ':', nn, ' ', am]);
   }
-
-//  openMapsSheet(context, _ViewModel snapshot) async {
-//    try {
-//      final title = snapshot.selectedOrder.order.customerName;
-//      final description =
-//          snapshot.selectedOrder.order.deliveryAddress.prettyAddress;
-//      final coords = Coords(31.233568, 121.505504);
-//      final availableMaps = await MapLauncher.installedMaps;
-//
-//      showModalBottomSheet(
-//        context: context,
-//        builder: (BuildContext context) {
-//          return SafeArea(
-//            child: SingleChildScrollView(
-//              child: Container(
-//                child: Wrap(
-//                  children: <Widget>[
-//                    for (var map in availableMaps)
-//                      ListTile(
-//                        onTap: () => map.showMarker(
-//                          coords: coords,
-//                          title: title,
-//                          description: description,
-//                        ),
-//                        title: Text(map.mapName),
-//                        leading: Image(
-//                          image: map.icon,
-//                          height: 30.0,
-//                          width: 30.0,
-//                        ),
-//                      ),
-//                  ],
-//                ),
-//              ),
-//            ),
-//          );
-//        },
-//      );
-//    } catch (e) {
-//      print(e);
-//    }
-//  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,6 +55,8 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
           body: StoreConnector<AppState, _ViewModel>(
               model: _ViewModel(),
               onInit: (store) {
+                orderProgressfordelete();
+                getOrderId();
                 if (store.state.homePageState.selectedOrder.requestId != null) {
                   store.dispatch(GetOrderDetailsAction());
                 } else {
@@ -360,25 +322,119 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                     ],
                                   ),
                                 ),
-                                Row(
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 10.0, right: 10.0),
-                                      child:
-                                          Image.asset('assets/images/path.png'),
-                                    ),
-                                    Flexible(
-                                      child: Text(
-                                        'Ordered Products',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 18,
-                                          fontFamily: 'Avenir',
+
+                                Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      snapshot.selectedOrder.pickupImages
+                                                      .length >
+                                                  0 ||
+                                              _startImage != null
+                                          ? Container(
+                                              child: Row(
+                                                children: <Widget>[
+                                                  Column(
+                                                    children: <Widget>[
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: Text(
+                                                            'Start Picture'),
+                                                      ),
+                                                      _startImage != null
+                                                          ? Image.file(
+                                                              _startImage,
+                                                              width: 100,
+                                                              height: 100,
+                                                              fit: BoxFit.cover,
+                                                            )
+                                                          : Image.network(
+                                                              snapshot
+                                                                  .selectedOrder
+                                                                  .pickupImages
+                                                                  .first
+                                                                  .photoUrl,
+                                                              width: 100,
+                                                              height: 100,
+                                                              fit: BoxFit.cover,
+                                                            )
+                                                    ],
+                                                  )
+                                                ],
+                                              ),
+                                            )
+                                          : Container(),
+                                      snapshot.selectedOrder.dropImages !=
+                                                      null &&
+                                                  snapshot.selectedOrder
+                                                          .dropImages.length >
+                                                      0 ||
+                                              _endImage != null
+                                          ? Container(
+                                              child: Row(
+                                                children: <Widget>[
+                                                  Column(
+                                                    children: <Widget>[
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child:
+                                                            Text('End Picture'),
+                                                      ),
+                                                      _endImage != null
+                                                          ? Image.file(
+                                                              _endImage,
+                                                              width: 100,
+                                                              height: 100,
+                                                              fit: BoxFit.cover,
+                                                            )
+                                                          : Image.network(
+                                                              snapshot
+                                                                  .selectedOrder
+                                                                  .dropImages
+                                                                  .first
+                                                                  .photoUrl,
+                                                              width: 100,
+                                                              height: 100,
+                                                              fit: BoxFit.cover,
+                                                            )
+                                                    ],
+                                                  )
+                                                ],
+                                              ),
+                                            )
+                                          : Container(),
+                                    ],
+                                  ),
+                                ),
+
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 10.0, right: 10.0),
+                                        child: Image.asset(
+                                            'assets/images/path.png'),
+                                      ),
+                                      Flexible(
+                                        child: Text(
+                                          'Ordered Products',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 18,
+                                            fontFamily: 'Avenir',
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ), // Rectangle 4
                                 Container(
                                     margin:
@@ -396,87 +452,119 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                               ],
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: Container(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 10.0),
-                                    child: Image.asset(
-                                        'assets/images/exclamation_cr.png'),
-                                  ),
-                                  Flexible(
-                                    child: Text(
-                                      'Take the product picture before you start',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontFamily: 'Avenir',
-                                        fontWeight: FontWeight.w500,
-                                      ),
+                          snapshot.selectedOrder.status == "PENDING"
+                              ? Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: Container(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              right: 10.0),
+                                          child: Image.asset(
+                                              'assets/images/exclamation_cr.png'),
+                                        ),
+                                        Flexible(
+                                          child: Text(
+                                            'Take the product picture before you start',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontFamily: 'Avenir',
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              if (snapshot.locationDetails != null) {
-                                imageSelectorCamera(snapshot);
-                              } else {
-                                store
-                                    .dispatchFuture(GetLocationAction())
-                                    .whenComplete(() {
-                                  if (snapshot.locationDetails != null) {
-                                    imageSelectorCamera(snapshot);
-                                  }
-                                });
-                              }
-                            },
-                            child: new Container(
-                              height: 65,
-                              decoration: new BoxDecoration(
-                                  gradient: LinearGradient(
-                                colors: [Color(0xff5091cd), Color(0xff36628b)],
-                                stops: [0, 1],
-                                begin: Alignment(1.00, -0.00),
-                                end: Alignment(-1.00, 0.00),
-                                // angle: 270,
-                                // scale: undefined,
-                              )),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  SizedBox(
-                                    width: 15,
+                                )
+                              : Container(),
+                          snapshot.selectedOrder.status == "PENDING" ||
+                                  snapshot.selectedOrder.status == "PICKED"
+                              ? InkWell(
+                                  onTap: () {
+                                    if (snapshot.locationDetails != null) {
+                                      imageSelectorCamera(snapshot);
+                                    } else {
+                                      store
+                                          .dispatchFuture(GetLocationAction())
+                                          .whenComplete(() {
+                                        if (snapshot.locationDetails != null) {
+                                          imageSelectorCamera(snapshot);
+                                        }
+                                      });
+                                    }
+                                  },
+                                  child: new Container(
+                                    height: 65,
+                                    decoration: new BoxDecoration(
+                                        gradient: LinearGradient(
+                                      colors: (savedOrderId ==
+                                              snapshot
+                                                  .selectedOrder.order.orderId)
+                                          ? [
+                                              Color(0xff5091cd),
+                                              Color(0xff36628b)
+                                            ]
+                                          : [
+                                              Color(0xffa7a7a7),
+                                              Color(0xffa7a7a7)
+                                            ],
+                                      stops: [0, 1],
+                                      begin: Alignment(1.00, -0.00),
+                                      end: Alignment(-1.00, 0.00),
+                                      // angle: 270,
+                                      // scale: undefined,
+                                    )),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        SizedBox(
+                                          width: 15,
+                                        ),
+                                        Spacer(),
+                                        new Text(
+                                            snapshot.selectedOrder.status ==
+                                                    "PENDING"
+                                                ? "Start"
+                                                : "End",
+                                            style: TextStyle(
+                                              fontFamily: 'Avenir',
+                                              color: Color(0xffffffff),
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w400,
+                                              fontStyle: FontStyle.normal,
+                                            )),
+                                        Spacer(),
+                                        Icon(
+                                          Icons.arrow_forward_ios,
+                                          color: Colors.white,
+                                        ),
+                                        SizedBox(
+                                          width: 15,
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                  Spacer(),
-                                  new Text("Start",
-                                      style: TextStyle(
-                                        fontFamily: 'Avenir',
-                                        color: Color(0xffffffff),
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w400,
-                                        fontStyle: FontStyle.normal,
-                                      )),
-                                  Spacer(),
-                                  Icon(
-                                    Icons.arrow_forward_ios,
-                                    color: Colors.white,
-                                  ),
-                                  SizedBox(
-                                    width: 15,
-                                  )
-                                ],
-                              ),
-                            ),
-                          )
+                                )
+                              : Container()
                         ],
                       );
               })),
     );
+  }
+
+  Future<String> getOrderId() async {
+    setState(() async {
+      savedOrderId = await UserManager.getCurrentOrderId();
+    });
+  }
+
+  Future orderProgressfordelete() async {
+    await UserManager.saveOrderProgressStatus(status: true);
   }
 
   List<Widget> orderItemsBuilder(_ViewModel snapshot) {
@@ -722,7 +810,8 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
   imageSelectorCamera(_ViewModel snapshot) async {
     snapshot.getLocation();
     var orderProgress = await UserManager.getOrderProgressStatus();
-    final pickedFile = await picker.getImage(source: ImageSource.camera);
+    final pickedFile =
+        await picker.getImage(source: ImageSource.camera, imageQuality: 50);
     setState(() {
       orderProgress != null
           ? orderProgress

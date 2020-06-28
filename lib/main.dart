@@ -7,14 +7,12 @@ import 'package:esamudaayapp/modules/AgentOrderDetail/view/order_detail.dart';
 import 'package:esamudaayapp/modules/Profile/views/profile_view.dart';
 import 'package:esamudaayapp/modules/accounts/views/accounts_view.dart';
 import 'package:esamudaayapp/modules/accounts/views/recommended_shop.dart';
-import 'package:esamudaayapp/modules/cart/views/cart_view.dart';
+
 import 'package:esamudaayapp/modules/login/actions/login_actions.dart';
 import 'package:esamudaayapp/modules/login/views/login_View.dart';
-import 'package:esamudaayapp/modules/orders/views/orders_View.dart';
-import 'package:esamudaayapp/modules/orders/views/support.dart';
+
 import 'package:esamudaayapp/modules/register/view/register_view.dart';
-import 'package:esamudaayapp/modules/search/views/Search_View.dart';
-import 'package:esamudaayapp/modules/store_details/views/store_product_listing_view.dart';
+
 import 'package:esamudaayapp/presentations/alert.dart';
 import 'package:esamudaayapp/presentations/check_user_widget.dart';
 import 'package:esamudaayapp/presentations/splash_screen.dart';
@@ -150,16 +148,14 @@ class MyAppBase extends StatelessWidget {
           "/mobileNumber": (BuildContext context) => new LoginView(),
           "/registration": (BuildContext context) => new Registration(),
           "/myHomeView": (BuildContext context) => new MyHomeView(),
-          "/CartView": (BuildContext context) => CartView(),
+
           "/AccountsView": (BuildContext context) => AccountsView(),
           "/orderDetail": (BuildContext context) => OrderDetailScreen(),
-          "/StoreProductListingView": (BuildContext context) =>
-              StoreProductListingView(),
-          "/ProductSearchView": (BuildContext context) => ProductSearchView(),
+
 //          "/ManageAddresses": (BuildContext context) => ManageAddresses(),
-          "/OrdersView": (BuildContext context) => OrdersView(),
+
           "/SMAlertView": (BuildContext context) => SMAlertView(),
-          "/Support": (BuildContext context) => Support(),
+
           "/RecommendShop": (BuildContext context) => RecommendedShop(),
           "/profile": (BuildContext context) => ProfileView(),
 

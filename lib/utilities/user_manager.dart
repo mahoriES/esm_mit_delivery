@@ -105,6 +105,19 @@ class UserManager {
     return value;
   }
 
+  static Future<void> saveCurrentOrderId({orderId: String}) async {
+    print("save CurrentOrderId : $orderId");
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(orderIdKey, orderId);
+  }
+
+  static Future<String> getCurrentOrderId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String value = prefs.getString(orderIdKey);
+    print("retrived CurrentOrderId : $value");
+    return value;
+  }
+
   static Future<void> saveFcmToken({token: String}) async {
     print("saved token : $token");
     SharedPreferences prefs = await SharedPreferences.getInstance();

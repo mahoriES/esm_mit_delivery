@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:esamudaayapp/repository/cart_datasourse.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -52,7 +51,7 @@ create table if not exists Cart (
 
     try {
       await db.execute('''
-create table if not exists $merchantTable (
+create table if not exists "" (
   _id integer primary key autoincrement,
   shopName text,
   displayPicture text,

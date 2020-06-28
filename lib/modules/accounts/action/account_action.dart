@@ -7,7 +7,7 @@ import 'package:esamudaayapp/redux/actions/general_actions.dart';
 import 'package:esamudaayapp/redux/states/app_state.dart';
 import 'package:esamudaayapp/redux/states/auth_state.dart';
 import 'package:esamudaayapp/redux/states/home_page_state.dart';
-import 'package:esamudaayapp/redux/states/product_state.dart';
+
 import 'package:esamudaayapp/utilities/URLs.dart';
 import 'package:esamudaayapp/utilities/api_manager.dart';
 import 'package:esamudaayapp/utilities/user_manager.dart';
@@ -23,7 +23,6 @@ class LogoutAction extends ReduxAction<AppState> {
     return state.copyWith(
         authState: AuthState.initial(),
         isLoading: false,
-        productState: ProductState.initial(),
         homePageState: HomePageState.initial());
   }
 
