@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:esamudaayapp/models/loading_status.dart';
 import 'package:esamudaayapp/modules/login/actions/login_actions.dart';
 import 'package:esamudaayapp/modules/login/model/get_otp_request.dart';
+import 'package:esamudaayapp/utilities/colors.dart';
 import 'package:esamudaayapp/utilities/custom_widgets.dart';
 import 'package:esamudaayapp/utilities/global.dart' as globals;
 import 'package:esamudaayapp/utilities/stringConstants.dart';
@@ -192,7 +193,7 @@ class _LoginViewState extends State<LoginView> {
                                       ),
                                       Icon(
                                         Icons.phone_android,
-                                        color: Colors.blueAccent,
+                                        color: AppColors.icColors,
                                       )
                                     ],
                                   ),
@@ -235,18 +236,8 @@ class _LoginViewState extends State<LoginView> {
                                                   borderRadius:
                                                       BorderRadius.all(
                                                           Radius.circular(100)),
-                                                  gradient: LinearGradient(
-                                                      begin: Alignment(
-                                                          0.023085936903953545,
-                                                          0.5),
-                                                      end: Alignment(
-                                                          0.980859398841858,
-                                                          0.5),
-                                                      colors: [
-                                                        const Color(0xff00dab2),
-                                                        const Color(0xff3a90d3),
-                                                        const Color(0xff3a90d3)
-                                                      ]))),
+                                                  gradient: AppColors
+                                                      .linearGradient)),
                                         ),
                                         // Get OTP
                                         PositionedDirectional(
@@ -283,38 +274,38 @@ class _LoginViewState extends State<LoginView> {
                             Spacer(
                               flex: 3,
                             ),
-                            Material(
-                              type: MaterialType.transparency,
-                              child: InkWell(
-                                onTap: () {
-                                  snapshot.updateIsSignUp(!snapshot.isSignUp);
-                                },
-                                child: // Already have an account? Login here
-                                    RichText(
-                                        text: TextSpan(children: [
-                                  TextSpan(
-                                      style: const TextStyle(
-                                          color: const Color(0xff1a1a1a),
-                                          fontWeight: FontWeight.w400,
-                                          fontFamily: "Avenir",
-                                          fontStyle: FontStyle.normal,
-                                          fontSize: 14.0),
-                                      text: snapshot.isSignUp
-                                          ? tr("screen_phone.already_customer")
-                                          : tr("screen_phone.new_user")),
-                                  TextSpan(
-                                      style: const TextStyle(
-                                          color: const Color(0xff5091cd),
-                                          fontWeight: FontWeight.w400,
-                                          fontFamily: "Avenir",
-                                          fontStyle: FontStyle.normal,
-                                          fontSize: 14.0),
-                                      text: snapshot.isSignUp
-                                          ? tr("screen_phone.login_here")
-                                          : tr("screen_phone.register_now"))
-                                ])),
-                              ),
-                            ),
+//                            Material(
+//                              type: MaterialType.transparency,
+//                              child: InkWell(
+//                                onTap: () {
+//                                  snapshot.updateIsSignUp(!snapshot.isSignUp);
+//                                },
+//                                child: // Already have an account? Login here
+//                                    RichText(
+//                                        text: TextSpan(children: [
+//                                  TextSpan(
+//                                      style: const TextStyle(
+//                                          color: const Color(0xff1a1a1a),
+//                                          fontWeight: FontWeight.w400,
+//                                          fontFamily: "Avenir",
+//                                          fontStyle: FontStyle.normal,
+//                                          fontSize: 14.0),
+//                                      text: snapshot.isSignUp
+//                                          ? tr("screen_phone.already_customer")
+//                                          : tr("screen_phone.new_user")),
+//                                  TextSpan(
+//                                      style: const TextStyle(
+//                                          color: const Color(0xff5091cd),
+//                                          fontWeight: FontWeight.w400,
+//                                          fontFamily: "Avenir",
+//                                          fontStyle: FontStyle.normal,
+//                                          fontSize: 14.0),
+//                                      text: snapshot.isSignUp
+//                                          ? tr("screen_phone.login_here")
+//                                          : tr("screen_phone.register_now"))
+//                                ])),
+//                              ),
+//                            ),
                             SizedBox(
                               height: 50,
                             )

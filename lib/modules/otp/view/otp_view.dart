@@ -7,6 +7,7 @@ import 'package:esamudaayapp/modules/login/actions/login_actions.dart';
 import 'package:esamudaayapp/modules/otp/action/otp_action.dart';
 import 'package:esamudaayapp/modules/otp/model/validate_otp_request.dart';
 import 'package:esamudaayapp/redux/states/app_state.dart';
+import 'package:esamudaayapp/utilities/colors.dart';
 import 'package:esamudaayapp/utilities/custom_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -64,7 +65,7 @@ class _OtpScreenState extends State<OtpScreen> {
                       leading: new IconButton(
                         icon: new Icon(
                           Icons.arrow_back,
-                          color: Colors.black,
+                          color: AppColors.icColors,
                         ),
                         onPressed: () => Navigator.of(context).pop(),
                       )),
@@ -206,19 +207,8 @@ class _OtpScreenState extends State<OtpScreen> {
                                                         BorderRadius.all(
                                                             Radius.circular(
                                                                 100)),
-                                                    gradient: LinearGradient(
-                                                        begin: Alignment(
-                                                            0.023085936903953545,
-                                                            0.5),
-                                                        end: Alignment(0.980859398841858, 0.5),
-                                                        colors: [
-                                                          const Color(
-                                                              0xff00dab2),
-                                                          const Color(
-                                                              0xff3a90d3),
-                                                          const Color(
-                                                              0xff3a90d3)
-                                                        ]))),
+                                                    gradient: AppColors
+                                                        .linearGradient)),
                                           ),
                                           // Get OTP
                                           PositionedDirectional(

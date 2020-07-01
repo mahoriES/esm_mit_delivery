@@ -7,6 +7,7 @@ import 'package:esamudaayapp/modules/accounts/views/accounts_view.dart';
 import 'package:esamudaayapp/modules/home/actions/home_page_actions.dart';
 import 'package:esamudaayapp/modules/login/actions/login_actions.dart';
 import 'package:esamudaayapp/redux/states/app_state.dart';
+import 'package:esamudaayapp/utilities/colors.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -89,7 +90,7 @@ class _MyHomeViewState extends State<MyHomeView> with TickerProviderStateMixin {
                             tr('screen_home.tab_bar.all_order'),
                             style: TextStyle(
                                 color: snapshot.currentIndex == 0
-                                    ? Colors.blue
+                                    ? AppColors.icColors
                                     : Colors.black),
                           )
                         ],
@@ -111,7 +112,7 @@ class _MyHomeViewState extends State<MyHomeView> with TickerProviderStateMixin {
                           new Text(tr('screen_home.tab_bar.in_progress'),
                               style: TextStyle(
                                 color: snapshot.currentIndex == 1
-                                    ? Colors.blue
+                                    ? AppColors.icColors
                                     : Colors.black,
                               ))
                         ],
@@ -134,7 +135,7 @@ class _MyHomeViewState extends State<MyHomeView> with TickerProviderStateMixin {
                           new Text(tr('screen_home.tab_bar.completed'),
                               style: TextStyle(
                                 color: snapshot.currentIndex == 2
-                                    ? Colors.blue
+                                    ? AppColors.icColors
                                     : Colors.black,
                               ))
                         ],

@@ -8,8 +8,10 @@ import 'package:esamudaayapp/modules/AgentHome/action/AgentAction.dart';
 import 'package:esamudaayapp/modules/AgentHome/model/order_response.dart';
 import 'package:esamudaayapp/modules/AgentOrderDetail/action/order_action.dart';
 import 'package:esamudaayapp/modules/AgentOrderDetail/model/transit_models.dart';
+import 'package:esamudaayapp/modules/AgentOrderDetail/view/image_view.dart';
 import 'package:esamudaayapp/redux/states/app_state.dart';
 import 'package:esamudaayapp/store.dart';
+import 'package:esamudaayapp/utilities/colors.dart';
 import 'package:esamudaayapp/utilities/user_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -26,9 +28,9 @@ class OrderDetailScreen extends StatefulWidget {
 class _OrderDetailScreenState extends State<OrderDetailScreen> {
   File _startImage;
   File _endImage;
-  String savedOrderId;
+
   final picker = ImagePicker();
-  bool sameOrder = false;
+  bool progress = false;
   String convertDateFromString(String strDate) {
     DateTime todayDate = DateTime.parse(strDate);
 
@@ -46,7 +48,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
             leading: IconButton(
                 icon: Icon(
                   Icons.arrow_back,
-                  color: Colors.black,
+                  color: AppColors.icColors,
                 ),
                 onPressed: () async {
                   Navigator.pop(context);
@@ -54,9 +56,13 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
           ),
           body: StoreConnector<AppState, _ViewModel>(
               model: _ViewModel(),
-              onInit: (store) {
-                orderProgressfordelete();
-                getOrderId();
+              onInit: (store) async {
+                // orderProgressfordelete();
+                var orderProgress = await UserManager.getOrderProgressStatus();
+                setState(() {
+                  progress = orderProgress != null ? orderProgress : false;
+                });
+                // getOrderId();
                 if (store.state.homePageState.selectedOrder.requestId != null) {
                   store.dispatch(GetOrderDetailsAction());
                 } else {
@@ -242,6 +248,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                         ),
                                       ),
                                       FloatingActionButton(
+                                        heroTag: null,
                                         onPressed: () {
                                           // Add your onPressed code here!
                                         },
@@ -271,6 +278,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                         ),
                                       ),
                                       FloatingActionButton(
+                                        heroTag: null,
                                         onPressed: () {
                                           var location = snapshot
                                               .selectedOrder
@@ -284,8 +292,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                         },
                                         child: Image.asset(
                                             'assets/images/naviagtion.png'),
-                                        backgroundColor:
-                                            const Color(0xff5091cd),
+                                        backgroundColor: AppColors.icColors,
                                       )
                                     ],
                                   ),
@@ -308,6 +315,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                         ),
                                       ),
                                       FloatingActionButton(
+                                        heroTag: null,
                                         onPressed: () {
                                           _makePhoneCall(
                                               mobile:
@@ -316,102 +324,168 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                         },
                                         child: Image.asset(
                                             'assets/images/phone.png'),
-                                        backgroundColor:
-                                            const Color(0xff5091cd),
+                                        backgroundColor: AppColors.icColors,
                                       )
                                     ],
                                   ),
                                 ),
 
-                                Padding(
-                                  padding: const EdgeInsets.all(20.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      snapshot.selectedOrder.pickupImages
-                                                      .length >
-                                                  0 ||
-                                              _startImage != null
-                                          ? Container(
-                                              child: Row(
-                                                children: <Widget>[
-                                                  Column(
-                                                    children: <Widget>[
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(8.0),
-                                                        child: Text(
-                                                            'Start Picture'),
+                                snapshot.selectedOrder.pickupImages != null
+                                    ? Padding(
+                                        padding: const EdgeInsets.all(20.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            snapshot.selectedOrder.pickupImages
+                                                            .length >
+                                                        0 ||
+                                                    _startImage != null
+                                                ? InkWell(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                ImageDisplay(
+                                                                  image: _startImage !=
+                                                                          null
+                                                                      ? _startImage
+                                                                      : null,
+                                                                  imageUrl: _startImage ==
+                                                                          null
+                                                                      ? snapshot
+                                                                          .selectedOrder
+                                                                          .pickupImages
+                                                                          .first
+                                                                          .photoUrl
+                                                                      : "",
+                                                                )),
+                                                      );
+                                                    },
+                                                    child: Container(
+                                                      child: Row(
+                                                        children: <Widget>[
+                                                          Column(
+                                                            children: <Widget>[
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .all(
+                                                                        8.0),
+                                                                child: Text(
+                                                                    'Start Picture'),
+                                                              ),
+                                                              _startImage !=
+                                                                      null
+                                                                  ? Image.file(
+                                                                      _startImage,
+                                                                      width:
+                                                                          100,
+                                                                      height:
+                                                                          100,
+                                                                      fit: BoxFit
+                                                                          .cover,
+                                                                    )
+                                                                  : Image
+                                                                      .network(
+                                                                      snapshot
+                                                                          .selectedOrder
+                                                                          .pickupImages
+                                                                          .first
+                                                                          .photoUrl,
+                                                                      width:
+                                                                          100,
+                                                                      height:
+                                                                          100,
+                                                                      fit: BoxFit
+                                                                          .cover,
+                                                                    )
+                                                            ],
+                                                          )
+                                                        ],
                                                       ),
-                                                      _startImage != null
-                                                          ? Image.file(
-                                                              _startImage,
-                                                              width: 100,
-                                                              height: 100,
-                                                              fit: BoxFit.cover,
-                                                            )
-                                                          : Image.network(
-                                                              snapshot
-                                                                  .selectedOrder
-                                                                  .pickupImages
-                                                                  .first
-                                                                  .photoUrl,
-                                                              width: 100,
-                                                              height: 100,
-                                                              fit: BoxFit.cover,
-                                                            )
-                                                    ],
+                                                    ),
                                                   )
-                                                ],
-                                              ),
-                                            )
-                                          : Container(),
-                                      snapshot.selectedOrder.dropImages !=
-                                                      null &&
-                                                  snapshot.selectedOrder
-                                                          .dropImages.length >
-                                                      0 ||
-                                              _endImage != null
-                                          ? Container(
-                                              child: Row(
-                                                children: <Widget>[
-                                                  Column(
-                                                    children: <Widget>[
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(8.0),
-                                                        child:
-                                                            Text('End Picture'),
+                                                : Container(),
+                                            snapshot.selectedOrder.dropImages !=
+                                                            null &&
+                                                        snapshot
+                                                                .selectedOrder
+                                                                .dropImages
+                                                                .length >
+                                                            0 ||
+                                                    _endImage != null
+                                                ? InkWell(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                ImageDisplay(
+                                                                  image: _endImage !=
+                                                                          null
+                                                                      ? _endImage
+                                                                      : null,
+                                                                  imageUrl: _endImage ==
+                                                                          null
+                                                                      ? snapshot
+                                                                          .selectedOrder
+                                                                          .dropImages
+                                                                          .first
+                                                                          .photoUrl
+                                                                      : "",
+                                                                )),
+                                                      );
+                                                    },
+                                                    child: Container(
+                                                      child: Row(
+                                                        children: <Widget>[
+                                                          Column(
+                                                            children: <Widget>[
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .all(
+                                                                        8.0),
+                                                                child: Text(
+                                                                    'End Picture'),
+                                                              ),
+                                                              _endImage != null
+                                                                  ? Image.file(
+                                                                      _endImage,
+                                                                      width:
+                                                                          100,
+                                                                      height:
+                                                                          100,
+                                                                      fit: BoxFit
+                                                                          .cover,
+                                                                    )
+                                                                  : Image
+                                                                      .network(
+                                                                      snapshot
+                                                                          .selectedOrder
+                                                                          .dropImages
+                                                                          .first
+                                                                          .photoUrl,
+                                                                      width:
+                                                                          100,
+                                                                      height:
+                                                                          100,
+                                                                      fit: BoxFit
+                                                                          .cover,
+                                                                    )
+                                                            ],
+                                                          )
+                                                        ],
                                                       ),
-                                                      _endImage != null
-                                                          ? Image.file(
-                                                              _endImage,
-                                                              width: 100,
-                                                              height: 100,
-                                                              fit: BoxFit.cover,
-                                                            )
-                                                          : Image.network(
-                                                              snapshot
-                                                                  .selectedOrder
-                                                                  .dropImages
-                                                                  .first
-                                                                  .photoUrl,
-                                                              width: 100,
-                                                              height: 100,
-                                                              fit: BoxFit.cover,
-                                                            )
-                                                    ],
+                                                    ),
                                                   )
-                                                ],
-                                              ),
-                                            )
-                                          : Container(),
-                                    ],
-                                  ),
-                                ),
+                                                : Container(),
+                                          ],
+                                        ),
+                                      )
+                                    : Container(),
 
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
@@ -421,7 +495,9 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                         padding: const EdgeInsets.only(
                                             left: 10.0, right: 10.0),
                                         child: Image.asset(
-                                            'assets/images/path.png'),
+                                          'assets/images/path.png',
+                                          color: AppColors.icColors,
+                                        ),
                                       ),
                                       Flexible(
                                         child: Text(
@@ -485,6 +561,9 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                   snapshot.selectedOrder.status == "PICKED"
                               ? InkWell(
                                   onTap: () {
+                                    if (progress &&
+                                        snapshot.selectedOrder.status ==
+                                            "PENDING") return;
                                     if (snapshot.locationDetails != null) {
                                       imageSelectorCamera(snapshot);
                                     } else {
@@ -501,18 +580,25 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                     height: 65,
                                     decoration: new BoxDecoration(
                                         gradient: LinearGradient(
-                                      colors: (savedOrderId ==
-                                              snapshot
-                                                  .selectedOrder.order.orderId)
+                                      colors: !progress
                                           ? [
-                                              Color(0xff5091cd),
-                                              Color(0xff36628b)
+                                              const Color(0xff5f3a9f),
+                                              const Color(0xff5f3a9f),
+                                              const Color(0xff5f3a9f)
                                             ]
-                                          : [
-                                              Color(0xffa7a7a7),
-                                              Color(0xffa7a7a7)
-                                            ],
-                                      stops: [0, 1],
+                                          : snapshot.selectedOrder.status ==
+                                                  "PICKED"
+                                              ? [
+                                                  const Color(0xff5f3a9f),
+                                                  const Color(0xff5f3a9f),
+                                                  const Color(0xff5f3a9f)
+                                                ]
+                                              : [
+                                                  const Color(0xffa7a7a7),
+                                                  const Color(0xffa7a7a7),
+                                                  const Color(0xffa7a7a7)
+                                                ],
+
                                       begin: Alignment(1.00, -0.00),
                                       end: Alignment(-1.00, 0.00),
                                       // angle: 270,
@@ -557,11 +643,11 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
     );
   }
 
-  Future<String> getOrderId() async {
-    setState(() async {
-      savedOrderId = await UserManager.getCurrentOrderId();
-    });
-  }
+//  Future<String> getOrderId() async {
+//    setState(() async {
+//      savedOrderId = await UserManager.getCurrentOrderId();
+//    });
+//  }
 
   Future orderProgressfordelete() async {
     await UserManager.saveOrderProgressStatus(status: true);
@@ -585,7 +671,11 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                     snapshot.selectedOrder.order.orderItems[index].images !=
                             null
                         ? snapshot.selectedOrder.order.orderItems[index].images
-                            .first.photoUrl
+                                    .length >
+                                0
+                            ? snapshot.selectedOrder.order.orderItems[index]
+                                .images.first.photoUrl
+                            : ""
                         : "",
               ),
             ),
@@ -818,13 +908,12 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
               ? _endImage = File(pickedFile.path)
               : _startImage = File(pickedFile.path)
           : _startImage = File(pickedFile.path);
-
-      snapshot.uploadImage(
-          orderProgress != null
-              ? orderProgress ? _endImage : _startImage
-              : _startImage,
-          orderProgress != null ? orderProgress ? false : true : true);
     });
+    snapshot.uploadImage(
+        orderProgress != null
+            ? orderProgress ? _endImage : _startImage
+            : _startImage,
+        orderProgress != null ? orderProgress ? false : true : true);
   }
 }
 

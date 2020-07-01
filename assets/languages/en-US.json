@@ -25,7 +25,7 @@
   "screen_otp": {
     "get_otp": "Get OTP",
     "resend_otp": "Resend OTP",
-    "hint_text": "We are trying to auto verify your number with SMS sent to",
+    "hint_text": "Please enter the OTP sent to",
     "resend_text": "Resend in",
     "sec": "sec",
     "verify": "Verify",

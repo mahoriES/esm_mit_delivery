@@ -1,6 +1,7 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:esamudaayapp/redux/states/app_state.dart';
+import 'package:esamudaayapp/utilities/colors.dart';
 import 'package:flutter/material.dart';
 
 class LanguageScreen extends StatefulWidget {
@@ -27,7 +28,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
                 Container(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.width * 0.5,
-                  decoration: BoxDecoration(color: const Color(0xff2e82c3)),
+                  decoration: BoxDecoration(color: AppColors.icColors),
                   child: Center(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 15, right: 48.0),

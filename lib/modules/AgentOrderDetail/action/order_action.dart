@@ -100,7 +100,7 @@ class AcceptOrderAction extends ReduxAction<AppState> {
       throw UserException(response.data['message']);
     else if (response.status == ResponseStatus.error500)
       throw UserException('Something went wrong');
-    else {
+    else if (response.status == ResponseStatus.success200) {
       var responseModel = TransitDetails.fromJson(response.data);
       await UserManager.saveOrderProgressStatus(status: true);
       await UserManager.saveCurrentOrderId(
@@ -111,8 +111,9 @@ class AcceptOrderAction extends ReduxAction<AppState> {
               lon: state.homePageState.currentLocation.position.longitude,
               pickupImages: [
             PickupImages(
-                photoId:
-                    imageResponse.photoId != null ? imageResponse.photoId : "")
+              photoId:
+                  imageResponse.photoId != null ? imageResponse.photoId : "",
+            )
           ])));
       return state.copyWith(
           homePageState:
@@ -141,7 +142,7 @@ class PickOrderAction extends ReduxAction<AppState> {
   FutureOr<AppState> reduce() async {
     var response = await APIManager.shared.request(
         url: ApiURL.getOrderDetails +
-            '${state.homePageState.selectedOrder.requestId}',
+            '${state.homePageState.selectedOrder.requestId}/pick',
         params: pickImage.toJson(),
         requestType: RequestType.post);
     if (response.status == ResponseStatus.error404)
