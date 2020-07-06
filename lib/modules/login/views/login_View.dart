@@ -73,6 +73,13 @@ class _LoginViewState extends State<LoginView> {
             return // OTP
 
                 ModalProgressHUD(
+              progressIndicator: Card(
+                child: Image.asset(
+                  'assets/images/indicator.gif',
+                  height: 75,
+                  width: 75,
+                ),
+              ),
               inAsyncCall: snapshot.loadingStatus == LoadingStatus.loading,
               child: Scaffold(
                   body: Padding(

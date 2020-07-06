@@ -104,7 +104,7 @@ class _MyAppState extends State<MyApp> {
 
   Widget loadingSplash() {
     return Container(
-      child: Center(child: Image.asset('assets/images/app_main_icon.png')),
+      child: Center(child: Image.asset('assets/images/splash.png')),
     );
   }
 }
@@ -211,7 +211,9 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Container(
-      child: Center(child: Image.asset('assets/images/app_main_icon.png')),
+      child: Center(
+          child: Hero(
+              tag: "#image", child: Image.asset('assets/images/splash.png'))),
     );
   }
 

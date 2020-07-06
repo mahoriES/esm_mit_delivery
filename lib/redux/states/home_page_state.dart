@@ -1,4 +1,5 @@
 import 'package:esamudaayapp/models/loading_status.dart';
+import 'package:esamudaayapp/modules/AgentHome/model/order_response.dart';
 import 'package:esamudaayapp/modules/AgentOrderDetail/model/transit_models.dart';
 import 'package:esamudaayapp/modules/register/model/register_request_model.dart';
 import 'package:geolocator/geolocator.dart';
@@ -12,11 +13,13 @@ class HomePageState {
   final List<Photo> banners;
   final TransitDetails selectedOrder;
   final TransitDetails transitDetails;
+  final OrderResponse response;
 
   final Placemark currentLocation;
 
   HomePageState(
       {@required this.selectedOrder,
+      @required this.response,
       @required this.transitDetails,
       @required this.currentIndex,
       @required this.loadingStatus,
@@ -36,20 +39,21 @@ class HomePageState {
 
   factory HomePageState.initial() {
     return new HomePageState(
-      currentLocation: null,
-      transitDetails: null,
-      selectedOrder: TransitDetails(),
-      loadingStatus: LoadingStatus.success,
-      orders: [],
-      homePageLoadedDate: "0",
-      currentIndex: 0,
-      banners: <Photo>[],
-    );
+        currentLocation: null,
+        transitDetails: null,
+        selectedOrder: TransitDetails(),
+        loadingStatus: LoadingStatus.success,
+        orders: [],
+        homePageLoadedDate: "0",
+        currentIndex: 0,
+        banners: <Photo>[],
+        response: OrderResponse());
   }
 
   HomePageState copyWith(
       {LoadingStatus loadingStatus,
       List<TransitDetails> orders,
+      OrderResponse response,
       List<Photo> banners,
       int currentIndex,
       String homePageLoadedDate,
@@ -57,6 +61,7 @@ class HomePageState {
       Placemark currentLocation,
       TransitDetails transitDetails}) {
     return new HomePageState(
+        response: response ?? this.response,
         currentLocation: currentLocation ?? this.currentLocation,
         transitDetails: transitDetails ?? this.transitDetails,
         selectedOrder: selectedOrder ?? this.selectedOrder,

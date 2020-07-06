@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>791740966471-l16v6pacv7i4r7v9ivl7rq78q6qukad7.apps.googleusercontent.com</string>
+	<string>477395312345-q6agh26l7h5f2pqn3eamq13ks66g1g2d.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.791740966471-l16v6pacv7i4r7v9ivl7rq78q6qukad7</string>
+	<string>com.googleusercontent.apps.477395312345-q6agh26l7h5f2pqn3eamq13ks66g1g2d</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDF2-v5FsWHGrYD9bccH5iUEarljnnc0hQ</string>
+	<string>AIzaSyAms5YU9pQnNdjEOyjuXW11aPzW4frXImU</string>
 	<key>GCM_SENDER_ID</key>
-	<string>791740966471</string>
+	<string>477395312345</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.esamudaayAgent</string>
+	<string>com.esamudaay.agent</string>
 	<key>PROJECT_ID</key>
-	<string>esamudaay</string>
+	<string>esamudaay-customer</string>
 	<key>STORAGE_BUCKET</key>
-	<string>esamudaay.appspot.com</string>
+	<string>esamudaay-customer.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,8 +29,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:791740966471:ios:7a5b02454a77e936ba7362</string>
+	<string>1:477395312345:ios:e2e2ffcf689b1ff666e8c8</string>
 	<key>DATABASE_URL</key>
-	<string>https://esamudaay.firebaseio.com</string>
+	<string>https://esamudaay-customer.firebaseio.com</string>
 </dict>
 </plist>

@@ -47,7 +47,7 @@ class _AccountsViewState extends State<AccountsView> {
                           style: const TextStyle(
                               color: const Color(0xff3c3c3c),
                               fontWeight: FontWeight.w400,
-                              fontFamily: "CircularStd-Book",
+                              fontFamily: "Avenir",
                               fontStyle: FontStyle.normal,
                               fontSize: 16.0),
                           textAlign: TextAlign.left)
@@ -60,7 +60,7 @@ class _AccountsViewState extends State<AccountsView> {
                           style: const TextStyle(
                               color: const Color(0xff3c3c3c),
                               fontWeight: FontWeight.w400,
-                              fontFamily: "CircularStd-Book",
+                              fontFamily: "Avenir",
                               fontStyle: FontStyle.normal,
                               fontSize: 16.0),
                           textAlign: TextAlign.left)
@@ -76,7 +76,7 @@ class _AccountsViewState extends State<AccountsView> {
                           style: const TextStyle(
                               color: const Color(0xff3c3c3c),
                               fontWeight: FontWeight.w400,
-                              fontFamily: "CircularStd-Book",
+                              fontFamily: "Avenir",
                               fontStyle: FontStyle.normal,
                               fontSize: 16.0),
                           textAlign: TextAlign.left)
@@ -92,7 +92,7 @@ class _AccountsViewState extends State<AccountsView> {
                           style: const TextStyle(
                               color: const Color(0xff3c3c3c),
                               fontWeight: FontWeight.w400,
-                              fontFamily: "CircularStd-Book",
+                              fontFamily: "Avenir",
                               fontStyle: FontStyle.normal,
                               fontSize: 16.0),
                           textAlign: TextAlign.left)

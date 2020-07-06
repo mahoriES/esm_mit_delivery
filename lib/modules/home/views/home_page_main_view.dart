@@ -25,6 +25,13 @@ class _HomePageMainViewState extends State<HomePageMainView> {
             model: _ViewModel(),
             builder: (context, snapshot) {
               return ModalProgressHUD(
+                progressIndicator: Card(
+                  child: Image.asset(
+                    'assets/images/indicator.gif',
+                    height: 75,
+                    width: 75,
+                  ),
+                ),
                 inAsyncCall: snapshot.loadingStatus == LoadingStatus.loading &&
                     snapshot.orders.isEmpty,
                 child: NestedScrollView(

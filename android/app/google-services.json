@@ -1,41 +1,41 @@
 {
   "project_info": {
-    "project_number": "791740966471",
-    "firebase_url": "https://esamudaay.firebaseio.com",
-    "project_id": "esamudaay",
-    "storage_bucket": "esamudaay.appspot.com"
+    "project_number": "477395312345",
+    "firebase_url": "https://esamudaay-customer.firebaseio.com",
+    "project_id": "esamudaay-customer",
+    "storage_bucket": "esamudaay-customer.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:791740966471:android:2b9823bddba73d8eba7362",
+        "mobilesdk_app_id": "1:477395312345:android:852b6babe954d3f466e8c8",
         "android_client_info": {
-          "package_name": "com.example.esamudaay"
+          "package_name": "com.esamudaay.agent"
         }
       },
       "oauth_client": [
         {
-          "client_id": "791740966471-o1acfq24bjch7cbgt3q82godtbv9uh2j.apps.googleusercontent.com",
+          "client_id": "477395312345-9tlr75m4kelqdgau4n8uuk6s3q07hiln.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBAXxVuaEZ-EnE9U0L6ATMjDrNOlqT4euY"
+          "current_key": "AIzaSyCB5eWzRLndIZxpn_XmuyweL6_VPlSuKIE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "791740966471-o1acfq24bjch7cbgt3q82godtbv9uh2j.apps.googleusercontent.com",
+              "client_id": "477395312345-9tlr75m4kelqdgau4n8uuk6s3q07hiln.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "791740966471-l16v6pacv7i4r7v9ivl7rq78q6qukad7.apps.googleusercontent.com",
+              "client_id": "477395312345-q6agh26l7h5f2pqn3eamq13ks66g1g2d.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.esamudaayAgent"
+                "bundle_id": "com.esamudaay.agent"
               }
             }
           ]
@@ -44,34 +44,34 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:791740966471:android:fb8f6636e9eab227ba7362",
+        "mobilesdk_app_id": "1:477395312345:android:1a7e7f3a80d216ad66e8c8",
         "android_client_info": {
-          "package_name": "com.example.esamudaayAgent"
+          "package_name": "com.esamudaay.customer"
         }
       },
       "oauth_client": [
         {
-          "client_id": "791740966471-o1acfq24bjch7cbgt3q82godtbv9uh2j.apps.googleusercontent.com",
+          "client_id": "477395312345-9tlr75m4kelqdgau4n8uuk6s3q07hiln.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBAXxVuaEZ-EnE9U0L6ATMjDrNOlqT4euY"
+          "current_key": "AIzaSyCB5eWzRLndIZxpn_XmuyweL6_VPlSuKIE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "791740966471-o1acfq24bjch7cbgt3q82godtbv9uh2j.apps.googleusercontent.com",
+              "client_id": "477395312345-9tlr75m4kelqdgau4n8uuk6s3q07hiln.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "791740966471-l16v6pacv7i4r7v9ivl7rq78q6qukad7.apps.googleusercontent.com",
+              "client_id": "477395312345-q6agh26l7h5f2pqn3eamq13ks66g1g2d.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.esamudaayAgent"
+                "bundle_id": "com.esamudaay.agent"
               }
             }
           ]

@@ -60,7 +60,12 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                 // orderProgressfordelete();
                 var orderProgress = await UserManager.getOrderProgressStatus();
                 setState(() {
-                  progress = orderProgress != null ? orderProgress : false;
+                  progress = orderProgress != null
+                      ? orderProgress
+                      : store.state.homePageState.selectedOrder.status ==
+                              "PICKED"
+                          ? true
+                          : false;
                 });
                 // getOrderId();
                 if (store.state.homePageState.selectedOrder.requestId != null) {
@@ -73,7 +78,11 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                 return snapshot.loadingStatus == LoadingStatus.loading
                     ? Container(
                         child: Center(
-                          child: CircularProgressIndicator(),
+                          child: Image.asset(
+                            'assets/images/indicator.gif',
+                            height: 75,
+                            width: 75,
+                          ),
                         ),
                       )
                     : Column(
@@ -871,7 +880,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                   color: const Color(0xffdd8126), shape: BoxShape.circle))
         ],
       );
-    } else {
+    } else if (snapshot.selectedOrder.status == "PENDING") {
       return Column(
         children: <Widget>[
           Container(
@@ -906,14 +915,28 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
       orderProgress != null
           ? orderProgress
               ? _endImage = File(pickedFile.path)
-              : _startImage = File(pickedFile.path)
-          : _startImage = File(pickedFile.path);
+              : snapshot.selectedOrder.status == "PICKED"
+                  ? _endImage = File(pickedFile.path)
+                  : _startImage = File(pickedFile.path)
+          : snapshot.selectedOrder.status == "PICKED"
+              ? _endImage = File(pickedFile.path)
+              : _startImage = File(pickedFile.path);
     });
     snapshot.uploadImage(
         orderProgress != null
-            ? orderProgress ? _endImage : _startImage
-            : _startImage,
-        orderProgress != null ? orderProgress ? false : true : true);
+            ? orderProgress
+                ? _endImage
+                : snapshot.selectedOrder.status == "PICKED"
+                    ? _endImage
+                    : _startImage
+            : snapshot.selectedOrder.status == "PICKED"
+                ? _endImage
+                : _startImage,
+        orderProgress != null
+            ? orderProgress
+                ? snapshot.selectedOrder.status == "PICKED" ? false : true
+                : snapshot.selectedOrder.status == "PICKED" ? false : true
+            : snapshot.selectedOrder.status == "PICKED" ? false : true);
   }
 }
 

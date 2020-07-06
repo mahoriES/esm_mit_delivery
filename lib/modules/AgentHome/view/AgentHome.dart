@@ -3,10 +3,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:esamudaayapp/models/User.dart';
 import 'package:esamudaayapp/models/loading_status.dart';
 import 'package:esamudaayapp/modules/AgentHome/action/AgentAction.dart';
+import 'package:esamudaayapp/modules/AgentHome/model/order_response.dart';
 import 'package:esamudaayapp/modules/AgentOrderDetail/model/transit_models.dart';
 import 'package:esamudaayapp/modules/accounts/action/account_action.dart';
 import 'package:esamudaayapp/redux/states/app_state.dart';
 import 'package:esamudaayapp/store.dart';
+import 'package:esamudaayapp/utilities/colors.dart';
+import 'package:esamudaayapp/utilities/custom_widgets.dart';
 import 'package:esamudaayapp/utilities/user_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -33,18 +36,27 @@ class _AgentHomeState extends State<AgentHome> {
     // monitor network fetch
     await Future.delayed(Duration(milliseconds: 1000));
     // if failed,use refreshFailed()
+
     widget.isNewOrder
         ? store.dispatch(GetAgentOrderList(filter: widget.withFilter))
         : store.dispatch(GetAgentTransitOrderList(filter: widget.withFilter));
     _refreshController.refreshCompleted();
   }
 
-  void _onLoading() async {
+  void _onLoading(_ViewModel snapshot) async {
     // monitor network fetch
     await Future.delayed(Duration(milliseconds: 1000));
     // if failed,use loadFailed(),if no data return,use LoadNodata()
 //    items.add((items.length + 1).toString());
-    if (mounted) setState(() {});
+
+    if (snapshot.response.next != null) {
+      widget.isNewOrder
+          ? store.dispatch(GetAgentOrderList(
+              filter: widget.withFilter, url: snapshot.response.next))
+          : store.dispatch(GetAgentTransitOrderList(
+              filter: widget.withFilter, url: snapshot.response.next));
+    }
+
     _refreshController.loadComplete();
   }
 
@@ -185,17 +197,37 @@ class _AgentHomeState extends State<AgentHome> {
             model: _ViewModel(),
             builder: (context, snapshot) {
               return ModalProgressHUD(
+                progressIndicator: Card(
+                  child: Image.asset(
+                    'assets/images/indicator.gif',
+                    height: 75,
+                    width: 75,
+                  ),
+                ),
                 inAsyncCall: snapshot.loadingStatus == LoadingStatus.loading &&
                     snapshot.orders.isEmpty,
                 child: SmartRefresher(
                   enablePullDown: true,
                   enablePullUp: true,
-                  header: WaterDropHeader(),
+                  header: WaterDropHeader(
+                    refresh: Image.asset(
+                      'assets/images/indicator.gif',
+                      height: 75,
+                      width: 75,
+                    ),
+                    complete: Image.asset(
+                      'assets/images/indicator.gif',
+                      height: 75,
+                      width: 75,
+                    ),
+                    waterDropColor: AppColors.icColors,
+                  ),
                   footer: CustomFooter(
+                    loadStyle: LoadStyle.ShowWhenLoading,
                     builder: (BuildContext context, LoadStatus mode) {
                       Widget body;
                       if (mode == LoadStatus.idle) {
-                        body = Text("pull up load");
+                        body = Text("");
                       } else if (mode == LoadStatus.loading) {
                         body = CupertinoActivityIndicator();
                       } else if (mode == LoadStatus.failed) {
@@ -215,47 +247,55 @@ class _AgentHomeState extends State<AgentHome> {
                   onRefresh: () {
                     _onRefresh(snapshot, store);
                   },
-                  onLoading: _onLoading,
-                  child: ListView.separated(
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                          onTap: () {
-                            UserManager.saveCurrentOrderId(
-                                orderId: snapshot.orders[index].order.orderId);
-                            snapshot
-                                .updateSelectedOrder(snapshot.orders[index]);
-                            snapshot.navigateToStoreDetailsPage(
-                                widget.withFilter,
-                                widget.isNewOrder
-                                    ? snapshot.orders[index].requestId
-                                        .toString()
-                                    : snapshot.orders[index].transitId
-                                        .toString());
+                  onLoading: () {
+                    _onLoading(snapshot);
+                  },
+                  child: snapshot.orders.isEmpty
+                      ? snapshot.loadingStatus != LoadingStatus.loading
+                          ? EmptyView()
+                          : Container()
+                      : ListView.separated(
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                                onTap: () {
+                                  UserManager.saveCurrentOrderId(
+                                      orderId:
+                                          snapshot.orders[index].order.orderId);
+                                  snapshot.updateSelectedOrder(
+                                      snapshot.orders[index]);
+                                  snapshot.navigateToStoreDetailsPage(
+                                      widget.withFilter,
+                                      widget.isNewOrder
+                                          ? snapshot.orders[index].requestId
+                                              .toString()
+                                          : snapshot.orders[index].transitId
+                                              .toString());
+                                },
+                                child: StoresListView(
+                                  orderId: snapshot
+                                      .orders[index].order.orderShortNumber,
+                                  date: UserManager().convertDateFromString(
+                                      snapshot.orders[index].order.created),
+                                  amount: snapshot
+                                      .orders[index].order.orderTotal
+                                      .toString(),
+                                  address: snapshot.orders[index].order
+                                      .deliveryAddress.prettyAddress,
+                                  completed: "completed date",
+                                  distance: "Distance",
+                                  orderStatus:
+                                      snapshot.orders[index].order.orderStatus,
+                                  agentStatus: snapshot.orders[index].status,
+                                ));
                           },
-                          child: StoresListView(
-                            orderId:
-                                snapshot.orders[index].order.orderShortNumber,
-                            date: UserManager().convertDateFromString(
-                                snapshot.orders[index].order.created),
-                            amount: snapshot.orders[index].order.orderTotal
-                                .toString(),
-                            address: snapshot.orders[index].order
-                                .deliveryAddress.prettyAddress,
-                            completed: "completed date",
-                            distance: "Distance",
-                            orderStatus:
-                                snapshot.orders[index].order.orderStatus,
-                            agentStatus: snapshot.orders[index].status,
-                          ));
-                    },
-                    itemCount: snapshot.orders.length,
-                    shrinkWrap: true,
-                    separatorBuilder: (BuildContext context, int index) {
-                      return Container(
-                        height: 10,
-                      );
-                    },
-                  ),
+                          itemCount: snapshot.orders.length,
+                          shrinkWrap: true,
+                          separatorBuilder: (BuildContext context, int index) {
+                            return Container(
+                              height: 10,
+                            );
+                          },
+                        ),
                 ),
               );
             }),
@@ -475,7 +515,7 @@ class StoresListView extends StatelessWidget {
           ),
         ],
       );
-    } else if (agentStatus == "PICKED" && orderStatus != "COMPLETED") {
+    } else if (agentStatus == "PICKED") {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -504,7 +544,7 @@ class StoresListView extends StatelessWidget {
           ),
         ],
       );
-    } else {
+    } else if (agentStatus == "PENDING") {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -555,6 +595,7 @@ class _ViewModel extends BaseModel<AppState> {
   LoadingStatus loadingStatus;
   Function navigateToProfile;
   User user;
+  OrderResponse response;
   _ViewModel.build(
       {this.navigateToStoreDetailsPage,
       this.currentIndex,
@@ -563,13 +604,9 @@ class _ViewModel extends BaseModel<AppState> {
       this.navigateToProfile,
       this.logout,
       this.user,
-      this.updateSelectedOrder})
-      : super(equals: [
-          currentIndex,
-          user,
-          orders,
-          loadingStatus,
-        ]);
+      this.updateSelectedOrder,
+      this.response})
+      : super(equals: [currentIndex, user, orders, loadingStatus, response]);
 
   @override
   BaseModel fromStore() {
@@ -591,6 +628,59 @@ class _ViewModel extends BaseModel<AppState> {
           dispatch(NavigateAction.pushNamed('/orderDetail',
               arguments: {'TYPE': type, 'id': id}));
         },
+        response: state.homePageState.response,
         currentIndex: state.homePageState.currentIndex);
+  }
+}
+
+class EmptyView extends StatelessWidget {
+  const EmptyView({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Stack(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(0.0),
+                child: ClipPath(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.45,
+                    color: const Color(0xfff0f0f0),
+                  ),
+                  clipper: CustomClipPath(),
+                ),
+              ),
+              Positioned(
+                  bottom: 20,
+                  right: MediaQuery.of(context).size.width * 0.15,
+                  child: Image.asset(
+                    'assets/images/clipart.png',
+                    fit: BoxFit.cover,
+                  )),
+            ],
+          ),
+          SizedBox(
+            height: 50,
+          ),
+          Text('',
+                  style: const TextStyle(
+                      color: const Color(0xff1f1f1f),
+                      fontWeight: FontWeight.w400,
+                      fontFamily: "Avenir",
+                      fontStyle: FontStyle.normal,
+                      fontSize: 20.0),
+                  textAlign: TextAlign.left)
+              .tr(),
+        ],
+      ),
+    );
   }
 }

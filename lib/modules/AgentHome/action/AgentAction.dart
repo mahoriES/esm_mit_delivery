@@ -28,8 +28,9 @@ class UpdateSelectedOrder extends ReduxAction<AppState> {
 
 class GetAgentOrderList extends ReduxAction<AppState> {
   final String filter;
+  final String url;
 
-  GetAgentOrderList({this.filter});
+  GetAgentOrderList({this.filter, this.url});
   @override
   FutureOr<AppState> reduce() async {
     var response = await APIManager.shared.request(
@@ -42,6 +43,11 @@ class GetAgentOrderList extends ReduxAction<AppState> {
       throw UserException('Something went wrong');
     else {
       var responseModel = OrderResponse.fromJson(response.data);
+      if (url != null) {
+        var pastOrders = state.homePageState.orders;
+        var currentOrders = responseModel.results;
+        responseModel.results = pastOrders + currentOrders;
+      }
       return state.copyWith(
           homePageState:
               state.homePageState.copyWith(orders: responseModel.results));
@@ -64,12 +70,13 @@ class GetAgentOrderList extends ReduxAction<AppState> {
 
 class GetAgentTransitOrderList extends ReduxAction<AppState> {
   final String filter;
+  final String url;
 
-  GetAgentTransitOrderList({this.filter});
+  GetAgentTransitOrderList({this.filter, this.url});
   @override
   FutureOr<AppState> reduce() async {
     var response = await APIManager.shared.request(
-        url: ApiURL.getTransitIdURL,
+        url: url != null ? url : ApiURL.getTransitIdURL,
         params: {"filter": filter},
         requestType: RequestType.get);
     if (response.status == ResponseStatus.error404)
@@ -80,6 +87,12 @@ class GetAgentTransitOrderList extends ReduxAction<AppState> {
 //      throw UserException('Something went wrong');
     else {
       var responseModel = OrderResponse.fromJson(response.data);
+      if (url != null) {
+        var pastOrders = state.homePageState.orders;
+        var currentOrders = responseModel.results;
+        responseModel.results = pastOrders + currentOrders;
+      }
+
       return state.copyWith(
           homePageState:
               state.homePageState.copyWith(orders: responseModel.results));

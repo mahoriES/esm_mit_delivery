@@ -105,6 +105,8 @@ class AcceptOrderAction extends ReduxAction<AppState> {
       await UserManager.saveOrderProgressStatus(status: true);
       await UserManager.saveCurrentOrderId(
           orderId: responseModel.order.orderId);
+      state.homePageState.orders
+          .removeWhere((item) => item.transitId == responseModel.transitId);
       dispatch(PickOrderAction(
           pickImage: PickImage(
               lat: state.homePageState.currentLocation.position.latitude,
@@ -188,6 +190,8 @@ class DropOrderAction extends ReduxAction<AppState> {
     else {
       var responseModel = TransitDetails.fromJson(response.data);
       await UserManager.saveOrderProgressStatus(status: false);
+      state.homePageState.orders
+          .removeWhere((item) => item.transitId == responseModel.transitId);
       return state.copyWith(
           homePageState:
               state.homePageState.copyWith(selectedOrder: responseModel));

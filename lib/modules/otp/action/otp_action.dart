@@ -47,12 +47,9 @@ class ValidateOtpAction extends ReduxAction<AppState> {
     if (response.status == ResponseStatus.success200) {
       AuthResponse authResponse = AuthResponse.fromJson(response.data);
       await UserManager.saveToken(token: authResponse.token);
-      if (state.authState.isSignUp) {
-        dispatch(NavigateAction.pushNamed("/registration"));
-      } else {
-        dispatch(AddFCMTokenAction());
-        dispatch(GetUserDetailAction());
-      }
+
+      dispatch(AddFCMTokenAction());
+      dispatch(GetUserDetailAction());
     } else {
       if (response.data['message'] != null) {
         Fluttertoast.showToast(msg: response.data['message']);

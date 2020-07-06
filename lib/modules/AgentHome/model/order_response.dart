@@ -2,8 +2,8 @@ import 'package:esamudaayapp/modules/AgentOrderDetail/model/transit_models.dart'
 
 class OrderResponse {
   int count;
-  int next;
-  int previous;
+  String next;
+  String previous;
   List<TransitDetails> results;
 
   OrderResponse({this.count, this.next, this.previous, this.results});

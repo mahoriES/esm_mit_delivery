@@ -89,6 +89,10 @@ class _MyHomeViewState extends State<MyHomeView> with TickerProviderStateMixin {
                           new Text(
                             tr('screen_home.tab_bar.all_order'),
                             style: TextStyle(
+                                fontWeight: FontWeight.w800,
+                                fontFamily: "Avenir",
+                                fontStyle: FontStyle.normal,
+                                fontSize: 13.0,
                                 color: snapshot.currentIndex == 0
                                     ? AppColors.icColors
                                     : Colors.black),
@@ -111,6 +115,10 @@ class _MyHomeViewState extends State<MyHomeView> with TickerProviderStateMixin {
                         children: <Widget>[
                           new Text(tr('screen_home.tab_bar.in_progress'),
                               style: TextStyle(
+                                fontWeight: FontWeight.w800,
+                                fontFamily: "Avenir",
+                                fontStyle: FontStyle.normal,
+                                fontSize: 13.0,
                                 color: snapshot.currentIndex == 1
                                     ? AppColors.icColors
                                     : Colors.black,
@@ -134,6 +142,10 @@ class _MyHomeViewState extends State<MyHomeView> with TickerProviderStateMixin {
                         children: <Widget>[
                           new Text(tr('screen_home.tab_bar.completed'),
                               style: TextStyle(
+                                fontWeight: FontWeight.w800,
+                                fontFamily: "Avenir",
+                                fontStyle: FontStyle.normal,
+                                fontSize: 13.0,
                                 color: snapshot.currentIndex == 2
                                     ? AppColors.icColors
                                     : Colors.black,
