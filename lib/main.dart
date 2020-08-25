@@ -39,6 +39,7 @@ void main() {
       Locale('en', 'US'),
       Locale('ka', 'IN'),
       Locale('ml', 'IN'),
+      Locale('ta', 'IN')
     ],
     path: 'assets/languages',
   ));

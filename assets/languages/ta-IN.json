@@ -1,0 +1,164 @@
+{
+
+  "common": {
+    "closed": "Closed",
+    "view_store": "View Store"
+  },
+
+  "screen_language": {
+    "title": "உங்களுக்கு விருப்பமான மொழியைத் தேர்வுசெய்க"
+
+  },
+
+  "screen_phone": {
+    "get_otp": "OTP ஐப் பெறுக",
+    "hint_text": " உங்களுடைய கைபேசி எண்ணை உள்ளிடவும்",
+    "valid_phone_error_message": "Please enter valid phone number",
+    "new_user": "கணக்கு இல்லையா? ",
+    "register_now": "இப்போதுபதிவு செய்யுங்கள்",
+    "login_here": "Login here",
+    "already_customer": "Already have an account ? ",
+    "sign_up": "பதிவுபெறுக",
+    "login": "உள்நுழைய"
+  },
+
+  "screen_otp": {
+    "get_otp": "Get OTP",
+    "resend_otp": "OTP ஐ மீண்டும் அனுப்பு",
+    "hint_text": "அனுப்பப்பட்ட OTP ஐ உள்ளிடவும்",
+    "resend_text": "Resend in",
+    "sec": "sec",
+    "verify": "சரிபார்க்கவும்",
+    "error": {
+      "plz_verify_otp": "Please enter OTP"
+    }
+  },
+
+  "screen_register": {
+    "title": "Complete your registration",
+    "address": {
+      "title": "முகவரி",
+      "empty_error": "Please enter your address."
+    },
+    "pin_code": {
+      "title": "Circle",
+      "validation_error": "Please enter valid circle",
+      "empty_error": "Please enter your circle."
+    },
+    "register": "பதிவு",
+    "update": "Update",
+    "name": {
+      "title": "Full Name",
+      "validation_error": "Please enter valid name",
+      "empty_error": "Please enter your full name."
+    }
+  },
+
+  "screen_home": {
+    "tab_bar": {
+      "all_order": "புதிய ஆர்டர்கள்",
+      "in_progress": "செயலில் உள்ளது",
+      "completed": "நிறைவு",
+      "account": "கணக்கு"
+    },
+    "store_near_you": "உங்களுக்கு அருகிலுள்ள கடைகள்"
+
+  },
+
+  "screen_search": {
+    "search": "Search"
+  },
+
+  "shop": {
+    "delivery_ok" : "டெலிவரி கிடைக்கிறது",
+    "delivery_no" : "Delivery Not Available",
+    "item_category": "Item Categories",
+    "pickup_order": "Pickup Order"
+  },
+
+  "product_list": {
+    "search_placeholder" : "Search for item"
+  },
+
+  "cart": {
+    "title": "கூடை",
+    "view_cart": "VIEW ITEMS",
+    "total": "TOTAL",
+    "payment_details": "Payment Details",
+    "total_amount": "Total amount",
+    "delivery": "Delivery",
+    "pickup": "Pickup",
+    "note": "Note",
+    "store_address": "Store address",
+    "confirm_order_detail": "Confirm your order and wait for notification from merchant on order screen",
+    "confirm_order": "CONFIRM ORDER",
+    "add_more": "Add more",
+    "empty_cart": "Empty Cart",
+    "empty_hint": "Look like you haven't added anything to your cart yet",
+    "please_collect": "Please collect order from the store when its ready"
+  },
+
+  "screen_account":{
+    "title": "கணக்கு",
+    "profile": "சுயவிவரம்",
+    "recommend": "Recommend A Store",
+    "about": "About",
+    "language": "மொழி",
+    "logout": "வெளியேறு",
+    "alert_data": "Are you sure ! do you want to logout?",
+    "cancel": "Cancel"
+  },
+
+  "screen_recommended": {
+      "title": "Recommend A Store",
+    "name": "Shop Name",
+    "address": "Shop Address",
+    "phone": "Shop phone number",
+    "recommend": "Recommend"
+  },
+
+  "screen_order": {
+    "title": "Orders",
+    "payment_details": "Payment Details",
+    "item_total": "Item Total",
+    "total": "Total amount",
+    "pending": "Pending",
+    "not_found": "No Order Found",
+    "empty_content": "Look like you haven’t order anything yet Lets start !",
+    "cancelled": "Cancelled",
+    "completed": "Completed",
+    "confirmed": "Confirmed",
+    "not_available": "Items Not Available",
+    "cancel_order": "Cancel order",
+    "re_order": "Re-Order",
+    "payment": "Payment",
+    "update_order": "Update Order",
+    "missing": "Missing Items",
+    "please_pay": "Please pay your bill amount to the merchant directly using Cash, Card or UPI",
+    "rate": "Rate us",
+    "rate_ok": "Rating submitted successfully",
+    "rate_our": "Rate our service",
+    "feedback": "Please enter a feedback",
+    "write_feedback": "Write your feedback",
+    "ok": "Ok",
+    "submit": "Submit"
+  },
+
+  "screen_support": {
+    "title": "Support",
+    "issue":"select issues",
+    "the_order":"Merchant is not confirming the order",
+    "my_order":"Cancel my order",
+    "delayed?":"Why is my order delayed?",
+    "Leakage":"Leakage in the order",
+    "Items_are":"Items are missing in the order",
+    "Wrong_order":"Wrong order delivered",
+    "spoilt":"Items are stale or spoilt",
+    "not_received":"Order not received",
+    "submit": "Submit",
+    "type_hint": "Type in your text",
+    "select_issue_error": "Please select an issue."
+  }
+
+
+}

@@ -1,6 +1,6 @@
-package com.esamudaay.agent
+package com.esamudaay.customer
 
 import io.flutter.embedding.android.FlutterActivity
 
-class MainActivity: FlutterActivity() {
+class   MainActivity: FlutterActivity() {
 }

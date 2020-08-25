@@ -5,13 +5,13 @@ import 'package:esamudaayapp/models/loading_status.dart';
 import 'package:esamudaayapp/redux/states/app_state.dart';
 
 class ChangeLoadingStatusAction extends ReduxAction<AppState> {
-  final LoadingStatus status;
-  ChangeLoadingStatusAction(this.status);
+  final LoadingStatus loadingStatus;
+  ChangeLoadingStatusAction(this.loadingStatus);
 
   @override
   AppState reduce() {
     // TODO: implement reduce
     return state.copyWith(
-        authState: state.authState.copyWith(loadingStatus: status));
+        authState: state.authState.copyWith(loadingStatus: loadingStatus));
   }
 }

@@ -1,7 +1,7 @@
 //Login
 
 class ApiURL {
-  static const developmentURL = "http://13.127.43.195/api/ChangePay/";
+  //static const developmentURL = "http://13.127.43.195/api/ChangePay/";
   static const eSamudayDevelopmentURL = "https://api.test.esamudaay.com/";
   static const liveURL = "https://sewer-viewer.com";
   static const baseURL = eSamudayDevelopmentURL;
