@@ -58,12 +58,11 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
               model: _ViewModel(),
               onInit: (store) async {
                 // orderProgressfordelete();
-                var orderProgress = await UserManager.getOrderProgressStatus();
+                // await UserManager.saveOrderProgressStatus(status: false);
+                // var orderProgress = await UserManager.getOrderProgressStatus();
                 setState(() {
-                  progress = orderProgress != null
-                      ? orderProgress
-                      : store.state.homePageState.selectedOrder.status ==
-                              "PICKED"
+                  progress =
+                      store.state.homePageState.selectedOrder.status == "PICKED"
                           ? true
                           : false;
                 });
@@ -537,53 +536,63 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                               ],
                             ),
                           ),
-                          snapshot.selectedOrder.status == "PENDING"
-                              ? Padding(
-                                  padding: const EdgeInsets.all(20.0),
-                                  child: Container(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              right: 10.0),
-                                          child: Image.asset(
-                                              'assets/images/exclamation_cr.png'),
-                                        ),
-                                        Flexible(
-                                          child: Text(
-                                            'Take the product picture before you start',
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontFamily: 'Avenir',
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                )
-                              : Container(),
+                          // snapshot.selectedOrder.status == "PENDING"
+                          //     ? Padding(
+                          //         padding: const EdgeInsets.all(20.0),
+                          //         child: Container(
+                          //           child: Row(
+                          //             mainAxisAlignment:
+                          //                 MainAxisAlignment.center,
+                          //             children: <Widget>[
+                          //               Padding(
+                          //                 padding: const EdgeInsets.only(
+                          //                     right: 10.0),
+                          //                 child: Image.asset(
+                          //                     'assets/images/exclamation_cr.png'),
+                          //               ),
+                          //               Flexible(
+                          //                 child: Text(
+                          //                   'Take the product picture before you start',
+                          //                   style: TextStyle(
+                          //                     color: Colors.black,
+                          //                     fontFamily: 'Avenir',
+                          //                     fontWeight: FontWeight.w500,
+                          //                   ),
+                          //                 ),
+                          //               ),
+                          //             ],
+                          //           ),
+                          //         ),
+                          //       )
+                          //     : Container(),
                           snapshot.selectedOrder.status == "PENDING" ||
                                   snapshot.selectedOrder.status == "PICKED"
                               ? InkWell(
-                                  onTap: () {
+                                  onTap: () async {
                                     if (progress &&
                                         snapshot.selectedOrder.status ==
                                             "PENDING") return;
-                                    if (snapshot.locationDetails != null) {
-                                      imageSelectorCamera(snapshot);
-                                    } else {
-                                      store
-                                          .dispatchFuture(GetLocationAction())
-                                          .whenComplete(() {
-                                        if (snapshot.locationDetails != null) {
-                                          imageSelectorCamera(snapshot);
-                                        }
-                                      });
-                                    }
+
+                                    bool isPickup =
+                                        snapshot.selectedOrder.status ==
+                                                "PICKED"
+                                            ? false
+                                            : true;
+                                    if (isPickup)
+                                      snapshot.acceptOrder();
+                                    else
+                                      snapshot.dropOrder();
+                                    // if (snapshot.locationDetails != null) {
+                                    //   imageSelectorCamera(snapshot);
+                                    // } else {
+                                    //   store
+                                    //       .dispatchFuture(GetLocationAction())
+                                    //       .whenComplete(() {
+                                    //     if (snapshot.locationDetails != null) {
+                                    //       imageSelectorCamera(snapshot);
+                                    //     }
+                                    //   });
+                                    // }
                                   },
                                   child: new Container(
                                     height: 65,
@@ -658,9 +667,9 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
 //    });
 //  }
 
-  Future orderProgressfordelete() async {
-    await UserManager.saveOrderProgressStatus(status: true);
-  }
+  // Future orderProgressfordelete() async {
+  //   await UserManager.saveOrderProgressStatus(status: true);
+  // }
 
   List<Widget> orderItemsBuilder(_ViewModel snapshot) {
     List<Widget> builder = List.generate(
@@ -902,42 +911,49 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
         ],
       );
     }
+    return SizedBox.shrink();
   }
 
   //display image selected from camera
 //display image selected from camera
-  imageSelectorCamera(_ViewModel snapshot) async {
-    snapshot.getLocation();
-    var orderProgress = await UserManager.getOrderProgressStatus();
-    final pickedFile =
-        await picker.getImage(source: ImageSource.camera, imageQuality: 50);
-    setState(() {
-      orderProgress != null
-          ? orderProgress
-              ? _endImage = File(pickedFile.path)
-              : snapshot.selectedOrder.status == "PICKED"
-                  ? _endImage = File(pickedFile.path)
-                  : _startImage = File(pickedFile.path)
-          : snapshot.selectedOrder.status == "PICKED"
-              ? _endImage = File(pickedFile.path)
-              : _startImage = File(pickedFile.path);
-    });
-    snapshot.uploadImage(
-        orderProgress != null
-            ? orderProgress
-                ? _endImage
-                : snapshot.selectedOrder.status == "PICKED"
-                    ? _endImage
-                    : _startImage
-            : snapshot.selectedOrder.status == "PICKED"
-                ? _endImage
-                : _startImage,
-        orderProgress != null
-            ? orderProgress
-                ? snapshot.selectedOrder.status == "PICKED" ? false : true
-                : snapshot.selectedOrder.status == "PICKED" ? false : true
-            : snapshot.selectedOrder.status == "PICKED" ? false : true);
-  }
+  // imageSelectorCamera(_ViewModel snapshot) async {
+  //   snapshot.getLocation();
+  //   var orderProgress = await UserManager.getOrderProgressStatus();
+  //   final pickedFile =
+  //       await picker.getImage(source: ImageSource.camera, imageQuality: 50);
+  //   setState(() {
+  //     orderProgress != null
+  //         ? orderProgress
+  //             ? _endImage = File(pickedFile.path)
+  //             : snapshot.selectedOrder.status == "PICKED"
+  //                 ? _endImage = File(pickedFile.path)
+  //                 : _startImage = File(pickedFile.path)
+  //         : snapshot.selectedOrder.status == "PICKED"
+  //             ? _endImage = File(pickedFile.path)
+  //             : _startImage = File(pickedFile.path);
+  //   });
+  //   snapshot.uploadImage(
+  //       orderProgress != null
+  //           ? orderProgress
+  //               ? _endImage
+  //               : snapshot.selectedOrder.status == "PICKED"
+  //                   ? _endImage
+  //                   : _startImage
+  //           : snapshot.selectedOrder.status == "PICKED"
+  //               ? _endImage
+  //               : _startImage,
+  //       orderProgress != null
+  //           ? orderProgress
+  //               ? snapshot.selectedOrder.status == "PICKED"
+  //                   ? false
+  //                   : true
+  //               : snapshot.selectedOrder.status == "PICKED"
+  //                   ? false
+  //                   : true
+  //           : snapshot.selectedOrder.status == "PICKED"
+  //               ? false
+  //               : true);
+  // }
 }
 
 class MySeparator extends StatelessWidget {
@@ -1000,41 +1016,47 @@ _makePhoneCall({String mobile}) async {
 }
 
 class _ViewModel extends BaseModel<AppState> {
-  Function(File, bool) uploadImage;
+  // Function(File, bool) uploadImage;
   TransitDetails transitDetails;
   OrderRequest orderRequest;
   TransitDetails selectedOrder;
   Function() acceptOrder;
+  Function() dropOrder;
   Placemark locationDetails;
   VoidCallback getLocation;
   LoadingStatus loadingStatus;
   _ViewModel();
-  _ViewModel.build(
-      {this.acceptOrder,
-      this.getLocation,
-      this.transitDetails,
-      this.loadingStatus,
-      this.locationDetails,
-      this.selectedOrder,
-      this.uploadImage})
-      : super(equals: [selectedOrder, loadingStatus, locationDetails]);
+  _ViewModel.build({
+    this.acceptOrder,
+    this.dropOrder,
+    this.getLocation,
+    this.transitDetails,
+    this.loadingStatus,
+    this.locationDetails,
+    this.selectedOrder,
+    // this.uploadImage,
+  }) : super(equals: [selectedOrder, loadingStatus, locationDetails]);
   @override
   BaseModel fromStore() {
     // TODO: implement fromStore
     return _ViewModel.build(
-        acceptOrder: () {
-          dispatch(AcceptOrderAction());
-        },
-        loadingStatus: state.authState.loadingStatus,
-        selectedOrder: state.homePageState.selectedOrder,
-        transitDetails: state.homePageState.transitDetails,
-        locationDetails: state.homePageState.currentLocation,
-        getLocation: () {
-          dispatch(GetLocationAction());
-        },
-        uploadImage: (file, isPickup) {
-          dispatch(UploadImageAction(imageFile: file, isPickUp: isPickup));
-//          dispatch(AcceptOrderAction());
-        });
+      acceptOrder: () {
+        dispatch(AcceptOrderAction());
+      },
+      dropOrder: () {
+        dispatch(DropOrderAction());
+      },
+      loadingStatus: state.authState.loadingStatus,
+      selectedOrder: state.homePageState.selectedOrder,
+      transitDetails: state.homePageState.transitDetails,
+      locationDetails: state.homePageState.currentLocation,
+      getLocation: () {
+        dispatch(GetLocationAction());
+      },
+//       uploadImage: (file, isPickup) {
+//         dispatch(UploadImageAction(imageFile: file, isPickUp: isPickup));
+// //          dispatch(AcceptOrderAction());
+//       },
+    );
   }
 }

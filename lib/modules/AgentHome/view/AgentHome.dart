@@ -258,9 +258,9 @@ class _AgentHomeState extends State<AgentHome> {
                           itemBuilder: (context, index) {
                             return InkWell(
                                 onTap: () {
-                                  UserManager.saveCurrentOrderId(
-                                      orderId:
-                                          snapshot.orders[index].order.orderId);
+                                  // UserManager.saveCurrentOrderId(
+                                  //     orderId:
+                                  //         snapshot.orders[index].order.orderId);
                                   snapshot.updateSelectedOrder(
                                       snapshot.orders[index]);
                                   snapshot.navigateToStoreDetailsPage(

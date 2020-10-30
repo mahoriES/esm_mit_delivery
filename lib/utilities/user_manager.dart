@@ -31,10 +31,10 @@ class UserManager {
         return value != null && value == true;
       });
 
-  Future<bool> isOrderProgressing() async =>
-      await getOrderProgressStatus().then((value) {
-        return value != null && value == true;
-      });
+  // Future<bool> isOrderProgressing() async =>
+  //     await getOrderProgressStatus().then((value) {
+  //       return value != null && value == true;
+  //     });
 
   static Future<void> deleteUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -63,16 +63,16 @@ class UserManager {
     await prefs.setBool(skipKey, status);
   }
 
-  static Future<bool> getOrderProgressStatus() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool value = prefs.getBool(inProgress);
-    return value;
-  }
+  // static Future<bool> getOrderProgressStatus() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   bool value = prefs.getBool(inProgress);
+  //   return value;
+  // }
 
-  static Future<void> saveOrderProgressStatus({status: bool}) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(inProgress, status);
-  }
+  // static Future<void> saveOrderProgressStatus({status: bool}) async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   await prefs.setBool(inProgress, status);
+  // }
 
   static Future<bool> getAddressStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -105,18 +105,18 @@ class UserManager {
     return value;
   }
 
-  static Future<void> saveCurrentOrderId({orderId: String}) async {
-    print("save CurrentOrderId : $orderId");
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString(orderIdKey, orderId);
-  }
+  // static Future<void> saveCurrentOrderId({orderId: String}) async {
+  //   print("save CurrentOrderId : $orderId");
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   await prefs.setString(orderIdKey, orderId);
+  // }
 
-  static Future<String> getCurrentOrderId() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String value = prefs.getString(orderIdKey);
-    print("retrived CurrentOrderId : $value");
-    return value;
-  }
+  // static Future<String> getCurrentOrderId() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   String value = prefs.getString(orderIdKey);
+  //   print("retrived CurrentOrderId : $value");
+  //   return value;
+  // }
 
   static Future<void> saveFcmToken({token: String}) async {
     print("saved token : $token");

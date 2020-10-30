@@ -1,8 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:async/async.dart';
 import 'package:async_redux/async_redux.dart';
 import 'package:esamudaayapp/models/loading_status.dart';
 import 'package:esamudaayapp/modules/AgentOrderDetail/model/drop_image.dart';
@@ -13,9 +9,6 @@ import 'package:esamudaayapp/redux/states/app_state.dart';
 import 'package:esamudaayapp/utilities/URLs.dart';
 import 'package:esamudaayapp/utilities/api_manager.dart';
 import 'package:esamudaayapp/utilities/user_manager.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:http/http.dart' as http;
-import 'package:path/path.dart';
 
 class GetOrderDetailsAction extends ReduxAction<AppState> {
   @override
@@ -102,24 +95,25 @@ class AcceptOrderAction extends ReduxAction<AppState> {
       throw UserException('Something went wrong');
     else if (response.status == ResponseStatus.success200) {
       var responseModel = TransitDetails.fromJson(response.data);
-      await UserManager.saveOrderProgressStatus(status: true);
-      await UserManager.saveCurrentOrderId(
-          orderId: responseModel.order.orderId);
+      // await UserManager.saveOrderProgressStatus(status: true);
+      // await UserManager.saveCurrentOrderId(
+      //     orderId: responseModel.order.orderId);
       state.homePageState.orders
           .removeWhere((item) => item.transitId == responseModel.transitId);
       dispatch(PickOrderAction(
-          pickImage: PickImage(
-              lat: state.homePageState.currentLocation.position.latitude,
-              lon: state.homePageState.currentLocation.position.longitude,
-              pickupImages: [
-            PickupImages(
-              photoId:
-                  imageResponse.photoId != null ? imageResponse.photoId : "",
-            )
-          ])));
-      return state.copyWith(
-          homePageState:
-              state.homePageState.copyWith(selectedOrder: responseModel));
+          // pickImage: PickImage(
+          //     lat: state.homePageState.currentLocation.position.latitude,
+          //     lon: state.homePageState.currentLocation.position.longitude,
+          //     pickupImages: [
+          //       PickupImages(
+          //         photoId:
+          //             imageResponse.photoId != null ? imageResponse.photoId : "",
+          //       )
+          //     ]),
+          ));
+      // return state.copyWith(
+      //     homePageState:
+      //         state.homePageState.copyWith(selectedOrder: responseModel));
     }
   }
 
@@ -142,17 +136,23 @@ class PickOrderAction extends ReduxAction<AppState> {
   PickOrderAction({this.pickImage});
   @override
   FutureOr<AppState> reduce() async {
+    print('********** pick order action');
+
     var response = await APIManager.shared.request(
-        url: ApiURL.getOrderDetails +
-            '${state.homePageState.selectedOrder.requestId}/pick',
-        params: pickImage.toJson(),
-        requestType: RequestType.post);
+      url: ApiURL.getOrderDetails +
+          '${state.homePageState.selectedOrder.requestId}/pick',
+      params: {"lat": 0.0, "lon": 0.0}, //pickImage?.toJson(),
+      requestType: RequestType.post,
+    );
+    print('********** pick order action response => $response');
     if (response.status == ResponseStatus.error404)
       throw UserException(response.data['message']);
     else if (response.status == ResponseStatus.error500)
       throw UserException('Something went wrong');
     else {
+      // await UserManager.saveOrderProgressStatus(status: true);
       var responseModel = TransitDetails.fromJson(response.data);
+
       return state.copyWith(
           homePageState:
               state.homePageState.copyWith(selectedOrder: responseModel));
@@ -176,20 +176,24 @@ class DropOrderAction extends ReduxAction<AppState> {
   final DropImage dropImage;
 
   DropOrderAction({this.dropImage});
+
   @override
   FutureOr<AppState> reduce() async {
+    print(
+        "drop order action => ${state.homePageState.selectedOrder.transitId}");
     var response = await APIManager.shared.request(
-        url: ApiURL.getTransitIdURL +
-            '/${state.homePageState.selectedOrder.transitId}/drop',
-        params: dropImage.toJson(),
-        requestType: RequestType.post);
+      url: ApiURL.getTransitIdURL +
+          '/${state.homePageState.selectedOrder.transitId}/drop',
+      params: {"lat": 0.0, "lon": 0.0},
+      requestType: RequestType.post,
+    );
     if (response.status == ResponseStatus.error404)
       throw UserException(response.data['message']);
     else if (response.status == ResponseStatus.error500)
       throw UserException('Something went wrong');
     else {
       var responseModel = TransitDetails.fromJson(response.data);
-      await UserManager.saveOrderProgressStatus(status: false);
+      // await UserManager.saveOrderProgressStatus(status: false);
       state.homePageState.orders
           .removeWhere((item) => item.transitId == responseModel.transitId);
       return state.copyWith(
@@ -244,76 +248,76 @@ class RejectOrderAction extends ReduxAction<AppState> {
   }
 }
 
-class UploadImageAction extends ReduxAction<AppState> {
-  final File imageFile;
-  final bool isPickUp;
+// class UploadImageAction extends ReduxAction<AppState> {
+//   final File imageFile;
+//   final bool isPickUp;
 
-  UploadImageAction({this.imageFile, this.isPickUp});
-  @override
-  FutureOr<AppState> reduce() async {
-    String token = await UserManager.getToken();
+//   UploadImageAction({this.imageFile, this.isPickUp});
+//   @override
+//   FutureOr<AppState> reduce() async {
+//     String token = await UserManager.getToken();
 
-    var stream =
-        new http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
-    var length = await imageFile.length();
+//     var stream =
+//         new http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
+//     var length = await imageFile.length();
 
-    var uri = Uri.parse(ApiURL.imageUpload);
-    print(uri);
+//     var uri = Uri.parse(ApiURL.imageUpload);
+//     print(uri);
 
-    var request = new http.MultipartRequest("POST", uri);
-    if (token != null && token != "") {
-      Map<String, String> headers = {"Authorization": "JWT $token"};
-      request.headers.addAll(headers);
-    }
+//     var request = new http.MultipartRequest("POST", uri);
+//     if (token != null && token != "") {
+//       Map<String, String> headers = {"Authorization": "JWT $token"};
+//       request.headers.addAll(headers);
+//     }
 
-    var multipartFile = new http.MultipartFile(
-      'file',
-      stream,
-      length,
-      filename: basename(imageFile.path),
-    );
-    //contentType: new MediaType('image', 'png'));
+//     var multipartFile = new http.MultipartFile(
+//       'file',
+//       stream,
+//       length,
+//       filename: basename(imageFile.path),
+//     );
+//     //contentType: new MediaType('image', 'png'));
 
-    request.files.add(multipartFile);
+//     request.files.add(multipartFile);
 
-    var response = await request.send();
-    print(response.statusCode);
+//     var response = await request.send();
+//     print(response.statusCode);
 
-    Fluttertoast.showToast(
-        msg: response.reasonPhrase != null ? response.reasonPhrase : "");
-    response.stream.transform(utf8.decoder).listen((value) {
-      print("value");
-      print(value);
-      final body = json.decode(value);
-      print(body);
-      ImageResponse imageResponse = ImageResponse.fromJson(body);
+//     Fluttertoast.showToast(
+//         msg: response.reasonPhrase != null ? response.reasonPhrase : "");
+//     response.stream.transform(utf8.decoder).listen((value) {
+//       print("value");
+//       print(value);
+//       final body = json.decode(value);
+//       print(body);
+//       ImageResponse imageResponse = ImageResponse.fromJson(body);
 
-      if (isPickUp) {
-        dispatch(AcceptOrderAction(imageResponse: imageResponse));
-      } else {
-        dispatch(DropOrderAction(
-            dropImage: DropImage(
-                lat: state.homePageState.currentLocation.position.latitude,
-                lon: state.homePageState.currentLocation.position.longitude,
-                dropImages: [
-              DropImages(
-                  photoId: imageResponse.photoId != null
-                      ? imageResponse.photoId
-                      : "")
-            ])));
-      }
-    });
-  }
+//       if (isPickUp) {
+//         dispatch(AcceptOrderAction(imageResponse: imageResponse));
+//       } else {
+//         dispatch(DropOrderAction(
+//             dropImage: DropImage(
+//                 lat: state.homePageState.currentLocation.position.latitude,
+//                 lon: state.homePageState.currentLocation.position.longitude,
+//                 dropImages: [
+//               DropImages(
+//                   photoId: imageResponse.photoId != null
+//                       ? imageResponse.photoId
+//                       : "")
+//             ])));
+//       }
+//     });
+//   }
 
-  @override
-  FutureOr<void> before() {
-    dispatch(ChangeLoadingStatusAction(LoadingStatus.loading));
-    return super.before();
-  }
+//   @override
+//   FutureOr<void> before() {
+//     dispatch(ChangeLoadingStatusAction(LoadingStatus.loading));
+//     return super.before();
+//   }
 
-  @override
-  void after() {
-    dispatch(ChangeLoadingStatusAction(LoadingStatus.success));
-    super.after();
-  }
-}
+//   @override
+//   void after() {
+//     dispatch(ChangeLoadingStatusAction(LoadingStatus.success));
+//     super.after();
+//   }
+// }
