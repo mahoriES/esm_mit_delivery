@@ -1,5 +1,6 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:date_format/date_format.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:esamudaayapp/models/loading_status.dart';
 import 'package:esamudaayapp/modules/AgentHome/model/order_response.dart';
 import 'package:esamudaayapp/modules/home/actions/home_page_actions.dart';
@@ -56,7 +57,7 @@ class _HomePageMainViewState extends State<HomePageMainView> {
                                 padding:
                                     EdgeInsets.only(left: 32.0, right: 32.0),
                                 child: Text(
-                                  'Agent Name',
+                                  tr("screen_home.Agent_Name"),
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       color: Colors.white,
@@ -173,7 +174,7 @@ class StoresListView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    'Order ID $orderId',
+                    "${tr('screen_home.Order_ID')} $orderId",
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 16,
@@ -189,7 +190,7 @@ class StoresListView extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    'Amount : Rs.$amount',
+                    "${tr('screen_home.Amount')} : Rs.$amount",
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 12,
@@ -209,7 +210,7 @@ class StoresListView extends StatelessWidget {
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                text: 'Completed',
+                                text: tr('screen_home.Completed'),
                                 style: TextStyle(
                                   color: Color(0xff505050),
                                   fontSize: 12,
@@ -234,7 +235,7 @@ class StoresListView extends StatelessWidget {
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                text: 'Distance ',
+                                text: '${tr('screen_home.Distance')} ',
                                 style: TextStyle(
                                   color: Color(0xff505050),
                                   fontSize: 12,
@@ -280,7 +281,7 @@ class StoresListView extends StatelessWidget {
             color: Colors.green,
           ),
           Text(
-            'Completed',
+            tr('screen_home.Completed'),
             style: TextStyle(
               color: Color(0xff5f5959),
               fontSize: 12,
@@ -298,7 +299,7 @@ class StoresListView extends StatelessWidget {
             color: Colors.red,
           ),
           Text(
-            'Rejected',
+            tr('screen_home.Rejected'),
             style: TextStyle(
               color: Color(0xff5f5959),
               fontSize: 12,
@@ -316,7 +317,7 @@ class StoresListView extends StatelessWidget {
             color: Colors.orange,
           ),
           Text(
-            'In progress',
+            tr('screen_home.In_progress'),
             style: TextStyle(
               color: Color(0xff5f5959),
               fontSize: 12,
@@ -334,7 +335,7 @@ class StoresListView extends StatelessWidget {
             color: Colors.green,
           ),
           Text(
-            'Not Started',
+            tr('screen_home.Not_Started'),
             style: TextStyle(
               color: Color(0xff5f5959),
               fontSize: 12,

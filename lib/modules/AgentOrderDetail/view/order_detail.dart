@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:async_redux/async_redux.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:date_format/date_format.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:esamudaayapp/models/loading_status.dart';
 import 'package:esamudaayapp/modules/AgentHome/action/AgentAction.dart';
 import 'package:esamudaayapp/modules/AgentHome/model/order_response.dart';
@@ -60,11 +61,13 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                 // orderProgressfordelete();
                 // await UserManager.saveOrderProgressStatus(status: false);
                 // var orderProgress = await UserManager.getOrderProgressStatus();
-                setState(() {
-                  progress =
-                      store.state.homePageState.selectedOrder.status == "PICKED"
-                          ? true
-                          : false;
+                WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                  setState(() {
+                    progress = store.state.homePageState.selectedOrder.status ==
+                            "PICKED"
+                        ? true
+                        : false;
+                  });
                 });
                 // getOrderId();
                 if (store.state.homePageState.selectedOrder.requestId != null) {
@@ -114,7 +117,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                               CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Text(
-                                              'Order ID ${snapshot.selectedOrder.order.orderShortNumber},',
+                                              '${tr("screen_home.Order_ID")} ${snapshot.selectedOrder.order.orderShortNumber},',
                                               style: TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 16,
@@ -140,7 +143,8 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                                     text: TextSpan(
                                                       children: [
                                                         TextSpan(
-                                                          text: 'Completed',
+                                                          text: tr(
+                                                              "screen_home.Completed"),
                                                           style: TextStyle(
                                                             color: Color(
                                                                 0xff505050),
@@ -179,7 +183,8 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                                     text: TextSpan(
                                                       children: [
                                                         TextSpan(
-                                                          text: 'Distance ',
+                                                          text:
+                                                              '${tr('screen_home.Distance')} ',
                                                           style: TextStyle(
                                                             color: Color(
                                                                 0xff505050),
@@ -338,162 +343,166 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                   ),
                                 ),
 
-                                snapshot.selectedOrder.pickupImages != null
-                                    ? Padding(
-                                        padding: const EdgeInsets.all(20.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            snapshot.selectedOrder.pickupImages
-                                                            .length >
-                                                        0 ||
-                                                    _startImage != null
-                                                ? InkWell(
-                                                    onTap: () {
-                                                      Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                ImageDisplay(
-                                                                  image: _startImage !=
-                                                                          null
-                                                                      ? _startImage
-                                                                      : null,
-                                                                  imageUrl: _startImage ==
-                                                                          null
-                                                                      ? snapshot
-                                                                          .selectedOrder
-                                                                          .pickupImages
-                                                                          .first
-                                                                          .photoUrl
-                                                                      : "",
-                                                                )),
-                                                      );
-                                                    },
-                                                    child: Container(
-                                                      child: Row(
-                                                        children: <Widget>[
-                                                          Column(
-                                                            children: <Widget>[
-                                                              Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .all(
-                                                                        8.0),
-                                                                child: Text(
-                                                                    'Start Picture'),
-                                                              ),
-                                                              _startImage !=
-                                                                      null
-                                                                  ? Image.file(
-                                                                      _startImage,
-                                                                      width:
-                                                                          100,
-                                                                      height:
-                                                                          100,
-                                                                      fit: BoxFit
-                                                                          .cover,
-                                                                    )
-                                                                  : Image
-                                                                      .network(
-                                                                      snapshot
-                                                                          .selectedOrder
-                                                                          .pickupImages
-                                                                          .first
-                                                                          .photoUrl,
-                                                                      width:
-                                                                          100,
-                                                                      height:
-                                                                          100,
-                                                                      fit: BoxFit
-                                                                          .cover,
-                                                                    )
-                                                            ],
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  )
-                                                : Container(),
-                                            snapshot.selectedOrder.dropImages !=
-                                                            null &&
-                                                        snapshot
-                                                                .selectedOrder
-                                                                .dropImages
-                                                                .length >
-                                                            0 ||
-                                                    _endImage != null
-                                                ? InkWell(
-                                                    onTap: () {
-                                                      Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                ImageDisplay(
-                                                                  image: _endImage !=
-                                                                          null
-                                                                      ? _endImage
-                                                                      : null,
-                                                                  imageUrl: _endImage ==
-                                                                          null
-                                                                      ? snapshot
-                                                                          .selectedOrder
-                                                                          .dropImages
-                                                                          .first
-                                                                          .photoUrl
-                                                                      : "",
-                                                                )),
-                                                      );
-                                                    },
-                                                    child: Container(
-                                                      child: Row(
-                                                        children: <Widget>[
-                                                          Column(
-                                                            children: <Widget>[
-                                                              Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .all(
-                                                                        8.0),
-                                                                child: Text(
-                                                                    'End Picture'),
-                                                              ),
-                                                              _endImage != null
-                                                                  ? Image.file(
-                                                                      _endImage,
-                                                                      width:
-                                                                          100,
-                                                                      height:
-                                                                          100,
-                                                                      fit: BoxFit
-                                                                          .cover,
-                                                                    )
-                                                                  : Image
-                                                                      .network(
-                                                                      snapshot
-                                                                          .selectedOrder
-                                                                          .dropImages
-                                                                          .first
-                                                                          .photoUrl,
-                                                                      width:
-                                                                          100,
-                                                                      height:
-                                                                          100,
-                                                                      fit: BoxFit
-                                                                          .cover,
-                                                                    )
-                                                            ],
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  )
-                                                : Container(),
-                                          ],
-                                        ),
-                                      )
-                                    : Container(),
+                                // snapshot.selectedOrder.pickupImages != null
+                                //     ? Padding(
+                                //         padding: const EdgeInsets.all(20.0),
+                                //         child: Row(
+                                //           mainAxisAlignment:
+                                //               MainAxisAlignment.spaceBetween,
+                                //           children: <Widget>[
+                                //             snapshot.selectedOrder.pickupImages
+                                //                             .length >
+                                //                         0 ||
+                                //                     _startImage != null
+                                //                 ? InkWell(
+                                //                     onTap: () {
+                                //                       Navigator.push(
+                                //                         context,
+                                //                         MaterialPageRoute(
+                                //                             builder: (context) =>
+                                //                                 ImageDisplay(
+                                //                                   image: _startImage !=
+                                //                                           null
+                                //                                       ? _startImage
+                                //                                       : null,
+                                //                                   imageUrl: _startImage ==
+                                //                                           null
+                                //                                       ? snapshot
+                                //                                           .selectedOrder
+                                //                                           .pickupImages
+                                //                                           .first
+                                //                                           .photoUrl
+                                //                                       : "",
+                                //                                 )),
+                                //                       );
+                                //                     },
+                                //                     child: Container(
+                                //                       child: Row(
+                                //                         children: <Widget>[
+                                //                           Column(
+                                //                             children: <Widget>[
+                                //                               Padding(
+                                //                                 padding:
+                                //                                     const EdgeInsets
+                                //                                             .all(
+                                //                                         8.0),
+                                //                                 child: Text(
+                                //                                     'Start Picture'),
+                                //                               ),
+                                //                               _startImage !=
+                                //                                       null
+                                //                                   ? Image.file(
+                                //                                       _startImage,
+                                //                                       width:
+                                //                                           100,
+                                //                                       height:
+                                //                                           100,
+                                //                                       fit: BoxFit
+                                //                                           .cover,
+                                //                                     )
+                                //                                   : Image
+                                //                                       .network(
+                                //                                       snapshot
+                                //                                           .selectedOrder
+                                //                                           .pickupImages
+                                //                                           .first
+                                //                                           .photoUrl,
+                                //                                       width:
+                                //                                           100,
+                                //                                       height:
+                                //                                           100,
+                                //                                       fit: BoxFit
+                                //                                           .cover,
+                                //                                     )
+                                //                             ],
+                                //                           )
+                                //                         ],
+                                //                       ),
+                                //                     ),
+                                //                   )
+                                //                 : Container(),
+                                //             snapshot.selectedOrder.dropImages !=
+                                //                             null &&
+                                //                         snapshot
+                                //                                 .selectedOrder
+                                //                                 .dropImages
+                                //                                 .length >
+                                //                             0 ||
+                                //                     _endImage != null
+                                //                 ? InkWell(
+                                //                     onTap: () {
+                                //                       Navigator.push(
+                                //                         context,
+                                //                         MaterialPageRoute(
+                                //                             builder: (context) =>
+                                //                                 ImageDisplay(
+                                //                                   image: _endImage !=
+                                //                                           null
+                                //                                       ? _endImage
+                                //                                       : null,
+                                //                                   imageUrl: _endImage ==
+                                //                                           null
+                                //                                       ? snapshot
+                                //                                           .selectedOrder
+                                //                                           .dropImages
+                                //                                           .first
+                                //                                           .photoUrl
+                                //                                       : "",
+                                //                                 )),
+                                //                       );
+                                //                     },
+                                //                     child: Container(
+                                //                       child: Row(
+                                //                         children: <Widget>[
+                                //                           Column(
+                                //                             children: <Widget>[
+                                //                               Padding(
+                                //                                 padding:
+                                //                                     const EdgeInsets
+                                //                                             .all(
+                                //                                         8.0),
+                                //                                 child: Text(
+                                //                                     'End Picture'),
+                                //                               ),
+                                //                               _endImage != null
+                                //                                   ? Image.file(
+                                //                                       _endImage,
+                                //                                       width:
+                                //                                           100,
+                                //                                       height:
+                                //                                           100,
+                                //                                       fit: BoxFit
+                                //                                           .cover,
+                                //                                     )
+                                //                                   : Image
+                                //                                       .network(
+                                //                                       snapshot
+                                //                                           .selectedOrder
+                                //                                           .dropImages
+                                //                                           .first
+                                //                                           .photoUrl,
+                                //                                       width:
+                                //                                           100,
+                                //                                       height:
+                                //                                           100,
+                                //                                       fit: BoxFit
+                                //                                           .cover,
+                                //                                     )
+                                //                             ],
+                                //                           )
+                                //                         ],
+                                //                       ),
+                                //                     ),
+                                //                   )
+                                //                 : Container(),
+                                //           ],
+                                //         ),
+                                //       )
+                                //     : Container(),
+
+                                ImageUploadWidget(snapshot.selectedOrder),
+
+                                SizedBox(height: 20),
 
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
@@ -509,7 +518,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                       ),
                                       Flexible(
                                         child: Text(
-                                          'Ordered Products',
+                                          tr("screen_home.Ordered_Products"),
                                           style: TextStyle(
                                             color: Colors.black,
                                             fontSize: 18,
@@ -633,8 +642,8 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                         new Text(
                                             snapshot.selectedOrder.status ==
                                                     "PENDING"
-                                                ? "Start"
-                                                : "End",
+                                                ? tr("screen_home.Start")
+                                                : tr("screen_home.End"),
                                             style: TextStyle(
                                               fontFamily: 'Avenir',
                                               color: Color(0xffffffff),
@@ -733,7 +742,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Spacer(),
-        Text('Total Coast',
+        Text(tr("screen_home.Total_Cost"),
             style: TextStyle(
               fontFamily: 'Avenir',
               color: Color(0xff000000),
@@ -897,7 +906,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
               height: 40,
               child: // New
                   Center(
-                child: Text("New",
+                child: Text(tr("screen_home.New"),
                     style: const TextStyle(
                         color: const Color(0xffffffff),
                         fontWeight: FontWeight.w400,
@@ -1011,7 +1020,7 @@ _makePhoneCall({String mobile}) async {
   if (await canLaunch(mobile)) {
     await launch(mobile);
   } else {
-    Fluttertoast.showToast(msg: 'No contact details found.');
+    Fluttertoast.showToast(msg: tr('screen_support.No_contact_details_found'));
   }
 }
 
@@ -1057,6 +1066,134 @@ class _ViewModel extends BaseModel<AppState> {
 //         dispatch(UploadImageAction(imageFile: file, isPickUp: isPickup));
 // //          dispatch(AcceptOrderAction());
 //       },
+    );
+  }
+}
+
+class ImageUploadWidget extends StatelessWidget {
+  final TransitDetails transitDetails;
+  const ImageUploadWidget(this.transitDetails, {Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 30),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (transitDetails.pickupImages != null &&
+              transitDetails.pickupImages.isNotEmpty) ...[
+            Wrap(
+              spacing: 10,
+              runSpacing: 10,
+              children: List.generate(
+                transitDetails.pickupImages.length,
+                (index) => InkWell(
+                  onTap: () => showGeneralDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    pageBuilder: (context, _, __) => ImageDisplay(
+                      imageUrl: transitDetails.pickupImages[index].photoUrl,
+                    ),
+                  ),
+                  child: Container(
+                    width: 100,
+                    height: 100,
+                    color: Colors.grey[300],
+                    child: CachedNetworkImage(
+                      height: double.infinity,
+                      width: double.infinity,
+                      imageUrl: transitDetails.pickupImages[index].photoUrl,
+                      fit: BoxFit.contain,
+                      placeholder: (context, url) => Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                      errorWidget: (context, url, _) => Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+          if (transitDetails.status == "PICKED") ...[
+            InkWell(
+              onTap: () {},
+              child: Container(
+                color: Colors.grey[400],
+                width: 100,
+                height: 100,
+                padding: EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.add_circle_outline),
+                    Text(tr('screen_support.Upload_Pick_Up_Images')),
+                  ],
+                ),
+              ),
+            ),
+          ],
+          SizedBox(height: 20),
+          if (transitDetails.dropImages != null &&
+              transitDetails.dropImages.isNotEmpty) ...[
+            Wrap(
+              spacing: 10,
+              runSpacing: 10,
+              children: List.generate(
+                transitDetails.pickupImages.length,
+                (index) => InkWell(
+                  onTap: () => showGeneralDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    pageBuilder: (context, _, __) => ImageDisplay(
+                      imageUrl: transitDetails.pickupImages[index].photoUrl,
+                    ),
+                  ),
+                  child: Container(
+                    width: 100,
+                    height: 100,
+                    color: Colors.grey[300],
+                    child: CachedNetworkImage(
+                      height: double.infinity,
+                      width: double.infinity,
+                      imageUrl: transitDetails.pickupImages[index].photoUrl,
+                      fit: BoxFit.contain,
+                      placeholder: (context, url) => Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                      errorWidget: (context, url, _) => Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+          if (transitDetails.status == "DROPPED") ...[
+            InkWell(
+              onTap: () {},
+              child: Container(
+                color: Colors.grey[400],
+                width: 100,
+                height: 100,
+                padding: EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.add_circle_outline),
+                    Text(tr('screen_support.Upload_Drop_Images')),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ],
+      ),
     );
   }
 }

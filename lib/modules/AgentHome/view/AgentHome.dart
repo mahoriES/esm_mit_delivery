@@ -111,7 +111,7 @@ class _AgentHomeState extends State<AgentHome> {
                                 child: Padding(
                                   padding:
                                       EdgeInsets.only(right: 10, bottom: 8),
-                                  child: Text("Sign Out",
+                                  child: Text(tr("screen_account.Sign_Out"),
                                       style: const TextStyle(
                                           color: const Color(0xffffffff),
                                           fontWeight: FontWeight.w400,
@@ -155,7 +155,7 @@ class _AgentHomeState extends State<AgentHome> {
                                       AssetImage('assets/images/pen2.png'),
                                       color: Colors.white,
                                     ),
-                                    Text("Edit",
+                                    Text(tr("screen_account.Edit"),
                                         style: const TextStyle(
                                             color: const Color(0xffffffff),
                                             fontWeight: FontWeight.w400,
