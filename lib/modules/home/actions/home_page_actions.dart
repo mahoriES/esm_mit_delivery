@@ -1,46 +1,46 @@
-import 'dart:async';
+// import 'dart:async';
 
-import 'package:async_redux/async_redux.dart';
-import 'package:esamudaayapp/models/loading_status.dart';
-import 'package:esamudaayapp/modules/AgentHome/model/order_response.dart';
-import 'package:esamudaayapp/modules/register/model/register_request_model.dart';
-import 'package:esamudaayapp/redux/actions/general_actions.dart';
-import 'package:esamudaayapp/redux/states/app_state.dart';
-import 'package:esamudaayapp/utilities/api_manager.dart';
+// import 'package:async_redux/async_redux.dart';
+// import 'package:esamudaayapp/models/loading_status.dart';
+// import 'package:esamudaayapp/modules/AgentHome/model/order_response.dart';
+// import 'package:esamudaayapp/modules/register/model/register_request_model.dart';
+// import 'package:esamudaayapp/redux/actions/general_actions.dart';
+// import 'package:esamudaayapp/redux/states/app_state.dart';
+// import 'package:esamudaayapp/utilities/api_manager.dart';
 
-class GetBannerDetailsAction extends ReduxAction<AppState> {
-  @override
-  FutureOr<AppState> reduce() async {
-    var response = await APIManager.shared.request(
-        url: "api/v1/clusters/${state.authState.cluster.clusterId}/banners",
-        params: {"": ""},
-        requestType: RequestType.get);
-    if (response.status == ResponseStatus.error404)
-      throw UserException(response.data['message']);
-    else if (response.status == ResponseStatus.error500)
-      throw UserException('Something went wrong');
-    else {
-      List<Photo> responseModel = [];
-      response.data.forEach((v) => responseModel.add(Photo.fromJson(v)));
+// class GetBannerDetailsAction extends ReduxAction<AppState> {
+//   @override
+//   FutureOr<AppState> reduce() async {
+//     var response = await APIManager.shared.request(
+//         url: "api/v1/clusters/${state.authState.cluster.clusterId}/banners",
+//         params: {"": ""},
+//         requestType: RequestType.get);
+//     if (response.status == ResponseStatus.error404)
+//       throw UserException(response.data['message']);
+//     else if (response.status == ResponseStatus.error500)
+//       throw UserException('Something went wrong');
+//     else {
+//       List<Photo> responseModel = [];
+//       response.data.forEach((v) => responseModel.add(Photo.fromJson(v)));
 
-      return state.copyWith(
-          homePageState: state.homePageState.copyWith(banners: responseModel));
-    }
-  }
+//       return state.copyWith(
+//           homePageState: state.homePageState.copyWith(banners: responseModel));
+//     }
+//   }
 
-  @override
-  FutureOr<void> before() {
-    dispatch(ChangeLoadingStatusAction(LoadingStatus.loading));
+//   @override
+//   FutureOr<void> before() {
+//     dispatch(ChangeLoadingStatusAction(LoadingStatus.loading));
 
-    return super.before();
-  }
+//     return super.before();
+//   }
 
-  @override
-  void after() {
-    dispatch(ChangeLoadingStatusAction(LoadingStatus.success));
-    super.after();
-  }
-}
+//   @override
+//   void after() {
+//     dispatch(ChangeLoadingStatusAction(LoadingStatus.success));
+//     super.after();
+//   }
+// }
 
 //class GetClusterDetailsAction extends ReduxAction<AppState> {
 //  @override
@@ -108,26 +108,15 @@ class GetBannerDetailsAction extends ReduxAction<AppState> {
 //  }
 //}
 
-class UpdateSelectedTabAction extends ReduxAction<AppState> {
-  final index;
-  UpdateSelectedTabAction(this.index);
+// class UpdateSelectedOrder extends ReduxAction<AppState> {
+//   final OrderRequest selectedOrder;
 
-  @override
-  FutureOr<AppState> reduce() {
-    return state.copyWith(
-        homePageState: state.homePageState.copyWith(currentIndex: index));
-  }
-}
-
-class UpdateSelectedOrder extends ReduxAction<AppState> {
-  final OrderRequest selectedOrder;
-
-  UpdateSelectedOrder({this.selectedOrder});
-  @override
-  FutureOr<AppState> reduce() {
-    // TODO: implement reduce
-//    return state.copyWith(
-//        homePageState:
-//            state.homePageState.copyWith(selectedOrder: selectedOrder));
-  }
-}
+//   UpdateSelectedOrder({this.selectedOrder});
+//   @override
+//   FutureOr<AppState> reduce() {
+//     // TODO: implement reduce
+// //    return state.copyWith(
+// //        homePageState:
+// //            state.homePageState.copyWith(selectedOrder: selectedOrder));
+//   }
+// }

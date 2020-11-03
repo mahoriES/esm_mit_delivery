@@ -1,265 +1,168 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:esamudaayapp/models/User.dart';
 import 'package:esamudaayapp/modules/AgentHome/action/AgentAction.dart';
 import 'package:esamudaayapp/modules/AgentHome/model/order_response.dart';
 import 'package:esamudaayapp/modules/AgentHome/view/AgentHome.dart';
 import 'package:esamudaayapp/modules/accounts/views/accounts_view.dart';
-import 'package:esamudaayapp/modules/home/actions/home_page_actions.dart';
 import 'package:esamudaayapp/modules/login/actions/login_actions.dart';
 import 'package:esamudaayapp/redux/states/app_state.dart';
 import 'package:esamudaayapp/utilities/colors.dart';
-import 'package:flutter/foundation.dart';
+import 'package:esamudaayapp/utilities/sizeconfig.dart';
 import 'package:flutter/material.dart';
 
-class MyHomeView extends StatefulWidget {
-  MyHomeView({
-    Key key,
-  }) : super(key: key);
-  @override
-  _MyHomeViewState createState() => _MyHomeViewState();
-}
+import 'custom_appbar.dart';
 
-class _MyHomeViewState extends State<MyHomeView> with TickerProviderStateMixin {
+class MyHomeView extends StatelessWidget {
   final PageStorageBucket bucket = PageStorageBucket();
 
-  final Key keyOne = PageStorageKey('dailyLog');
+  final List<String> tabTitles = [
+    "new_order",
+    "accepted",
+    "in_progress",
+    "completed"
+  ];
 
-  final Key keyTwo = PageStorageKey('projects');
-
-  final Key keyThree = PageStorageKey('queue');
-
-  GlobalKey globalKey = new GlobalKey(debugLabel: 'btm_app_bar');
-
-  Widget currentPage({index: int}) {
-    if (index == 0) {
-      return new AgentHome(
-        isNewOrder: true,
-        withFilter: "PENDING",
-      );
-    } else if (index == 1) {
-      return new AgentHome(
-        isNewOrder: false,
-        withFilter: "PICKED",
-      );
-    } else if (index == 2) {
-      return new AgentHome(
-        isNewOrder: false,
-        withFilter: "DROPPED",
-      );
-//      return ProfileView(
-//        key: keyThree,
-//      );
-    } else {
-      return AccountsView();
-//      return ProductDetailsView();
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
+  final List<String> tabType = [
+    OrderStatusStrings.pending,
+    OrderStatusStrings.accepted,
+    OrderStatusStrings.picked,
+    OrderStatusStrings.dropped,
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: StoreConnector<AppState, _ViewModel>(
-          model: _ViewModel(),
-          onInit: (store) async {
-            //  store.dispatch(GetAgentOrderList());
-            store.dispatch(GetUserFromLocalStorageAction());
-          },
-          builder: (context, snapshot) {
-            return BottomAppBar(
-                child: Container(
-              height: 60,
-              child: Row(
+    SizeConfig().init(context);
+    return StoreConnector<AppState, _ViewModel>(
+        model: _ViewModel(),
+        onInit: (store) async {
+          // to get the user name displayed in bottom app bar.
+          store.dispatch(GetUserFromLocalStorageAction());
+          // get the order list data for initally selected tab.
+          store.dispatch(GetAgentOrderList(
+              filter: tabType[store.state.homePageState.currentIndex]));
+        },
+        builder: (context, snapshot) {
+          return Scaffold(
+            drawer: Drawer(
+              child: AccountsView(),
+            ),
+            appBar: CustomAppbar(
+              name: snapshot.user?.firstName ?? "",
+              onEdit: () => snapshot.navigateToProfile(),
+            ),
+            bottomNavigationBar: BottomAppBar(
+              child: Container(
+                height: 60.toHeight,
+                child: Row(
                   mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    FlatButton(
-                      padding: EdgeInsets.all(10.0),
-                      onPressed: () {
-                        snapshot.getOrderList("PENDING");
-                        snapshot.updateCurrentIndex(0);
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          new Text(
-                            tr('screen_home.tab_bar.all_order'),
-                            style: TextStyle(
-                                fontWeight: FontWeight.w800,
-                                fontFamily: "Avenir",
-                                fontStyle: FontStyle.normal,
-                                fontSize: 13.0,
-                                color: snapshot.currentIndex == 0
-                                    ? AppColors.icColors
-                                    : Colors.black),
-                          )
-                        ],
-                      ),
-                    ),
-                    Container(
-                      color: Color(0xfff8f8f8),
-                      width: 2,
-                    ),
-                    FlatButton(
-                      padding: EdgeInsets.all(10.0),
-                      onPressed: () {
-                        snapshot.getTransitList("PICKED");
-                        snapshot.updateCurrentIndex(1);
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          new Text(tr('screen_home.tab_bar.in_progress'),
-                              style: TextStyle(
-                                fontWeight: FontWeight.w800,
-                                fontFamily: "Avenir",
-                                fontStyle: FontStyle.normal,
-                                fontSize: 13.0,
-                                color: snapshot.currentIndex == 1
-                                    ? AppColors.icColors
-                                    : Colors.black,
-                              ))
-                        ],
-                      ),
-                    ),
-                    Container(
-                      color: Color(0xfff8f8f8),
-                      width: 2,
-                    ),
-                    FlatButton(
-                      padding: EdgeInsets.all(10.0),
-                      onPressed: () {
-                        snapshot.getTransitList("DROPPED");
+                  children: List.generate(
+                    tabTitles.length,
+                    (index) => Expanded(
+                      child: Container(
+                        height: 60.toHeight,
+                        decoration: BoxDecoration(
+                          border: Border(
+                            top: BorderSide(
+                              color: snapshot.currentIndex == index
+                                  ? AppColors.icColors
+                                  : Colors.transparent,
+                              width: 3,
+                            ),
+                          ),
+                        ),
+                        child: Container(
+                          margin: EdgeInsets.only(top: 10.toHeight),
+                          decoration: BoxDecoration(
+                            border: Border(
+                              right:
+                                  BorderSide(color: Colors.grey[300], width: 1),
+                            ),
+                          ),
+                          child: FlatButton(
+                            padding: EdgeInsets.all(10.toWidth),
+                            onPressed: () {
+                              snapshot.updateCurrentIndex(index);
 
-                        snapshot.updateCurrentIndex(2);
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          new Text(tr('screen_home.tab_bar.completed'),
-                              style: TextStyle(
-                                fontWeight: FontWeight.w800,
-                                fontFamily: "Avenir",
-                                fontStyle: FontStyle.normal,
-                                fontSize: 13.0,
-                                color: snapshot.currentIndex == 2
-                                    ? AppColors.icColors
-                                    : Colors.black,
-                              ))
-                        ],
+                              if (snapshot.orders[tabType[index]] == null) {
+                                (tabType[index] == OrderStatusStrings.pending ||
+                                        tabType[index] ==
+                                            OrderStatusStrings.accepted)
+                                    ? snapshot.getOrderList(tabType[index])
+                                    : snapshot.getTransitList(tabType[index]);
+                              }
+                            },
+                            child: FittedBox(
+                              child: new Text(
+                                tr('screen_home.tab_bar.${tabTitles[index]}'),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w800,
+                                  fontFamily: "Avenir",
+                                  fontStyle: FontStyle.normal,
+                                  fontSize: 13.toFont,
+                                  color: snapshot.currentIndex == index
+                                      ? AppColors.icColors
+                                      : Colors.black,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                  ]),
-            ));
-            return BottomNavigationBar(
-              currentIndex: snapshot.currentIndex,
-              type: BottomNavigationBarType.fixed,
-              items: [
-                BottomNavigationBarItem(
-                  icon: Container(),
-                  title: new Text(
-                    tr('screen_home.tab_bar.all_order'),
                   ),
                 ),
-                BottomNavigationBarItem(
-                  icon: Container(),
-                  title: new Text(
-                    tr('screen_home.tab_bar.in_progress'),
-                  ),
-                ),
-//                BottomNavigationBarItem(
-//                    icon: ImageIcon(
-//                      AssetImage('assets/images/path338.png'),
-//                      color: Colors.black,
-//                    ),
-//                    activeIcon: ImageIcon(
-//                      AssetImage('assets/images/path338.png'),
-//                      color: AppColors.mainColor,
-//                    ),
-//                    title: Text(
-//                      tr('screen_home.tab_bar.orders'),
-//                    )),
-//                BottomNavigationBarItem(
-//                    icon: ImageIcon(
-//                      AssetImage('assets/images/path5.png'),
-//                      color: Colors.black,
-//                    ),
-//                    activeIcon: ImageIcon(
-//                      AssetImage('assets/images/path5.png'),
-//                      color: AppColors.mainColor,
-//                    ),
-//                    title: Text(
-//                      'screen_home.tab_bar.account',
-//                    ).tr())
-              ],
-              onTap: (index) {
-                snapshot.updateCurrentIndex(index);
-              },
-            );
-          }),
-      body: StoreConnector<AppState, _ViewModel>(
-          model: _ViewModel(),
-          builder: (context, snapshot) {
-            return PageStorage(
-                bucket: bucket,
-                child: currentPage(index: snapshot.currentIndex));
-          }),
-    );
-  }
-
-  double height(BuildContext context, int totalItemCount) {
-    var totalHeight = MediaQuery.of(context).size.height;
-    var emptySpace = totalHeight - 250 + 150;
-    var numberOfItemsInEmptySpace = (emptySpace ~/ 150).toInt();
-    var remainingItemCount = totalItemCount - numberOfItemsInEmptySpace;
-    return emptySpace + (130 * remainingItemCount);
+              ),
+            ),
+            body: PageStorage(
+              bucket: bucket,
+              child: AgentHome(
+                orderType: tabType[snapshot.currentIndex],
+              ),
+            ),
+          );
+        });
   }
 }
 
 class _ViewModel extends BaseModel<AppState> {
   _ViewModel();
-  Function navigateToAddAddressPage;
-  Function navigateToProductSearch;
   Function updateCurrentIndex;
-  VoidCallback getMerchants;
-  Function(OrderRequest) updateSelectedOrder;
   Function(String) getTransitList;
   Function(String) getOrderList;
+  Map<String, OrderResponse> orders;
   int currentIndex;
-  _ViewModel.build(
-      {this.navigateToAddAddressPage,
-      this.getTransitList,
-      this.getOrderList,
-      this.getMerchants,
-      this.navigateToProductSearch,
-      this.updateCurrentIndex,
-      this.updateSelectedOrder,
-      this.currentIndex})
-      : super(equals: [currentIndex]);
+  Function navigateToProfile;
+  User user;
+  _ViewModel.build({
+    this.getTransitList,
+    this.getOrderList,
+    this.orders,
+    this.updateCurrentIndex,
+    this.user,
+    this.currentIndex,
+    this.navigateToProfile,
+  }) : super(equals: [currentIndex, orders]);
 
   @override
   BaseModel fromStore() {
-    // TODO: implement fromStore
     return _ViewModel.build(
-        getTransitList: (filter) {
-          dispatch(GetAgentTransitOrderList(filter: filter));
-        },
-        getOrderList: (filter) {
-          dispatch(GetAgentOrderList(filter: filter));
-        },
-        navigateToAddAddressPage: () {
-          dispatch(NavigateAction.pushNamed('/AddAddressView'));
-        },
-        navigateToProductSearch: () {
-          dispatch(NavigateAction.pushNamed('/ProductSearchView'));
-        },
-        updateCurrentIndex: (index) {
-          dispatch(UpdateSelectedTabAction(index));
-        },
-        currentIndex: state.homePageState.currentIndex);
+      getTransitList: (filter) {
+        dispatch(GetAgentTransitOrderList(filter: filter));
+      },
+      orders: state.homePageState.ordersList,
+      getOrderList: (filter) {
+        dispatch(GetAgentOrderList(filter: filter));
+      },
+      user: state.authState.user,
+      navigateToProfile: () {
+        dispatch(NavigateAction.pushNamed("/profile"));
+      },
+      updateCurrentIndex: (index) {
+        dispatch(UpdateSelectedTabAction(index));
+      },
+      currentIndex: state.homePageState.currentIndex,
+    );
   }
 }

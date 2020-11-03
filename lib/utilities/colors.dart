@@ -8,6 +8,7 @@ class AppColors {
   static const green = Color(0xff64ab03);
   static const offWhitish = const Color(0xfff0f2f6);
   static const icColors = Color(0xff5f3a9f);
+  static const appBarColor = Color(0xff5091cd);
 
   static const linearGradient = LinearGradient(
       begin: Alignment(0.27639952301979065, 0.5),
