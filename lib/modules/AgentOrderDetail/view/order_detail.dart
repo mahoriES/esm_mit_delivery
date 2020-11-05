@@ -309,10 +309,19 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                             SizedBox(height: 10.toHeight),
                             _ImagesView(
                               images: snapshot.selectedOrder.pickupImages,
-                              showUploadOprion:
+                              showUploadOption:
                                   status == OrderStatusStrings.picked,
                               isPickUpImageUpload: true,
-                              onUploadImage: snapshot.uploadImage,
+                              onUploadImage: (file) => snapshot.uploadImage(
+                                file,
+                                snapshot.selectedOrder.pickupImages,
+                              ),
+                              removeImage: (index) {
+                                snapshot.selectedOrder.pickupImages
+                                    .removeAt(index);
+                                snapshot.updateImages(
+                                    snapshot.selectedOrder.pickupImages);
+                              },
                             ),
                             if (snapshot.selectedOrder.dropImages != null &&
                                 snapshot
@@ -331,10 +340,19 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                             SizedBox(height: 10.toHeight),
                             _ImagesView(
                               images: snapshot.selectedOrder.dropImages,
-                              showUploadOprion:
+                              showUploadOption:
                                   status == OrderStatusStrings.dropped,
                               isPickUpImageUpload: false,
-                              onUploadImage: snapshot.uploadImage,
+                              onUploadImage: (file) => snapshot.uploadImage(
+                                file,
+                                snapshot.selectedOrder.dropImages,
+                              ),
+                              removeImage: (index) {
+                                snapshot.selectedOrder.dropImages
+                                    .removeAt(index);
+                                snapshot.updateImages(
+                                    snapshot.selectedOrder.dropImages);
+                              },
                             ),
                           ],
                         ),
@@ -431,14 +449,16 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
 
 class _ImagesView extends StatelessWidget {
   final List<ImageResponse> images;
-  final bool showUploadOprion;
+  final bool showUploadOption;
   final bool isPickUpImageUpload;
   final Function(File) onUploadImage;
+  final Function(int) removeImage;
   _ImagesView({
     @required this.images,
-    @required this.showUploadOprion,
+    @required this.showUploadOption,
     @required this.isPickUpImageUpload,
     @required this.onUploadImage,
+    @required this.removeImage,
     Key key,
   }) : super(key: key);
 
@@ -452,7 +472,7 @@ class _ImagesView extends StatelessWidget {
         length + 1,
         (index) {
           if (index == length) {
-            return showUploadOprion
+            return showUploadOption
                 ? InkWell(
                     onTap: () async {
                       PickedFile pickedFile = await ImagePicker().getImage(
@@ -498,17 +518,38 @@ class _ImagesView extends StatelessWidget {
               width: 100.toWidth,
               height: 100.toHeight,
               color: Colors.grey[300],
-              child: CachedNetworkImage(
-                height: double.infinity,
-                width: double.infinity,
-                imageUrl: images[index].photoUrl,
-                fit: BoxFit.contain,
-                placeholder: (context, url) => Center(
-                  child: CircularProgressIndicator(),
-                ),
-                errorWidget: (context, url, _) => Center(
-                  child: CircularProgressIndicator(),
-                ),
+              child: Stack(
+                children: [
+                  CachedNetworkImage(
+                    height: double.infinity,
+                    width: double.infinity,
+                    imageUrl: images[index].photoUrl,
+                    fit: BoxFit.contain,
+                    placeholder: (context, url) => Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                    errorWidget: (context, url, _) => Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                  if (showUploadOption) ...[
+                    Positioned(
+                      right: 0,
+                      top: 0,
+                      child: InkWell(
+                        child: Card(
+                          elevation: 4,
+                          margin: EdgeInsets.zero,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50.toFont),
+                          ),
+                          child: Icon(Icons.clear),
+                        ),
+                        onTap: () => removeImage(index),
+                      ),
+                    ),
+                  ]
+                ],
               ),
             ),
           );
@@ -694,26 +735,24 @@ _makePhoneCall({String mobile}) async {
 }
 
 class _ViewModel extends BaseModel<AppState> {
-  Function(File) uploadImage;
+  Function(File, List<ImageResponse>) uploadImage;
+  Function(List<ImageResponse>) updateImages;
   TransitDetails selectedOrder;
   Function() acceptOrder;
   Function() pickOrder;
   Function() dropOrder;
   Function() rejectOrder;
   LoadingStatus loadingStatus;
-  List<ImageResponse> pickupImages;
-  List<ImageResponse> dropImages;
   _ViewModel();
   _ViewModel.build({
     this.acceptOrder,
     this.pickOrder,
     this.dropOrder,
     this.rejectOrder,
-    this.pickupImages,
-    this.dropImages,
     this.loadingStatus,
     this.selectedOrder,
     this.uploadImage,
+    this.updateImages,
   }) : super(equals: [selectedOrder, loadingStatus]);
   @override
   BaseModel fromStore() {
@@ -730,12 +769,13 @@ class _ViewModel extends BaseModel<AppState> {
       rejectOrder: () {
         dispatch(RejectOrderAction());
       },
-      pickupImages: state.homePageState.selectedOrder.pickupImages,
-      dropImages: state.homePageState.selectedOrder.dropImages,
       loadingStatus: state.authState.loadingStatus,
       selectedOrder: state.homePageState.selectedOrder,
-      uploadImage: (file) {
-        dispatch(UploadImageAction(file));
+      uploadImage: (file, existingImages) {
+        dispatch(UploadImageAction(file, existingImages));
+      },
+      updateImages: (images) {
+        dispatch(UpdateOrderImagesAction(images));
       },
     );
   }

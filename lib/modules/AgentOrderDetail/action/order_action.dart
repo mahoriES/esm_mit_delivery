@@ -254,7 +254,9 @@ class RejectOrderAction extends ReduxAction<AppState> {
 
 class UploadImageAction extends ReduxAction<AppState> {
   final File imageFile;
-  UploadImageAction(this.imageFile);
+  final List<ImageResponse> existingImages;
+
+  UploadImageAction(this.imageFile, this.existingImages);
 
   @override
   FutureOr<AppState> reduce() async {
@@ -286,7 +288,7 @@ class UploadImageAction extends ReduxAction<AppState> {
         throw UserException('Something went wrong');
       else {
         ImageResponse _imageResponse = ImageResponse.fromJson(response.data);
-        dispatch(LinkUploadedImageToOrder(_imageResponse));
+        dispatch(UpdateOrderImagesAction(existingImages..add(_imageResponse)));
       }
     } else {
       throw Exception('Auth Failed');
@@ -307,9 +309,9 @@ class UploadImageAction extends ReduxAction<AppState> {
   }
 }
 
-class LinkUploadedImageToOrder extends ReduxAction<AppState> {
-  final ImageResponse imageResponse;
-  LinkUploadedImageToOrder(this.imageResponse);
+class UpdateOrderImagesAction extends ReduxAction<AppState> {
+  final List<ImageResponse> imageResponse;
+  UpdateOrderImagesAction(this.imageResponse);
 
   @override
   FutureOr<AppState> reduce() async {
@@ -317,9 +319,8 @@ class LinkUploadedImageToOrder extends ReduxAction<AppState> {
       url: ApiURL.putImageInOrder +
           '${state.homePageState.selectedOrder.transitId}/images',
       params: {
-        "images": [
-          imageResponse.toJson(),
-        ]
+        "images": List.generate(
+            imageResponse.length, (index) => imageResponse[index].toJson())
       },
       requestType: RequestType.put,
     );
