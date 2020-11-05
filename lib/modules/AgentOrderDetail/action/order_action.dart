@@ -131,21 +131,17 @@ class PickOrderAction extends ReduxAction<AppState> {
   PickOrderAction({this.pickImage});
   @override
   FutureOr<AppState> reduce() async {
-    print('********** pick order action');
-
     var response = await APIManager.shared.request(
       url: ApiURL.getOrderDetails +
           '${state.homePageState.selectedOrder.requestId}/pick',
-      params: {"lat": 0.0, "lon": 0.0}, //pickImage?.toJson(),
+      params: {}, //pickImage?.toJson(),
       requestType: RequestType.post,
     );
-    print('********** pick order action response => $response');
     if (response.status == ResponseStatus.error404)
       throw UserException(response.data['message']);
     else if (response.status == ResponseStatus.error500)
       throw UserException('Something went wrong');
     else {
-      // await UserManager.saveOrderProgressStatus(status: true);
       var responseModel = TransitDetails.fromJson(response.data);
       // disptach these events to refresh the orders list
       dispatch(GetAgentOrderList(filter: OrderStatusStrings.accepted));
@@ -178,12 +174,10 @@ class DropOrderAction extends ReduxAction<AppState> {
 
   @override
   FutureOr<AppState> reduce() async {
-    print(
-        "drop order action => ${state.homePageState.selectedOrder.transitId}");
     var response = await APIManager.shared.request(
       url: ApiURL.getTransitIdURL +
           '/${state.homePageState.selectedOrder.transitId}/drop',
-      params: {"lat": 0.0, "lon": 0.0},
+      params: {},
       requestType: RequestType.post,
     );
     if (response.status == ResponseStatus.error404)

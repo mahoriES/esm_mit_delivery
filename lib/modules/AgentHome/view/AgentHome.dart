@@ -111,7 +111,7 @@ class _AgentHomeState extends State<AgentHome> {
                             snapshot.updateSelectedOrder(_details);
                             snapshot.navigateToStoreDetailsPage();
                           },
-                          child: _StoresListView(
+                          child: _OrdersListView(
                             orderId: _details.order.orderShortNumber,
                             date: UserManager()
                                 .convertDateFromString(_details.order.created),
@@ -145,7 +145,7 @@ class _AgentHomeState extends State<AgentHome> {
   }
 }
 
-class _StoresListView extends StatelessWidget {
+class _OrdersListView extends StatelessWidget {
   final String orderId;
   final String date;
   final String amount;
@@ -154,7 +154,7 @@ class _StoresListView extends StatelessWidget {
   final String agentStatus;
   final String distance;
 
-  const _StoresListView({
+  const _OrdersListView({
     Key key,
     this.orderId,
     this.date,

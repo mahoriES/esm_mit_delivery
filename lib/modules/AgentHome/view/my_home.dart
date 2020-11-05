@@ -32,6 +32,7 @@ class MyHomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // SizeConfig service needs to be initialized only once before being used anywhere throughout the app.
     SizeConfig().init(context);
     return StoreConnector<AppState, _ViewModel>(
         model: _ViewModel(),
