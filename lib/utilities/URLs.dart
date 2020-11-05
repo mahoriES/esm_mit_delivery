@@ -28,4 +28,5 @@ class ApiURL {
   static const getAgentOrderListURL = "api/v1/delivery/requests";
   static const imageUpload = baseURL + "api/v1/media/photo/";
   static const getTransitIdURL = "api/v1/delivery/transits";
+  static const putImageInOrder = "/api/v1/delivery/transits/";
 }

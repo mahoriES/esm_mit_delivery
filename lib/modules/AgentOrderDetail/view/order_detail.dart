@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:async_redux/async_redux.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:date_format/date_format.dart';
@@ -5,6 +6,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:esamudaayapp/models/loading_status.dart';
 import 'package:esamudaayapp/modules/AgentHome/model/order_response.dart';
 import 'package:esamudaayapp/modules/AgentOrderDetail/action/order_action.dart';
+import 'package:esamudaayapp/modules/AgentOrderDetail/model/pick_image.dart';
 import 'package:esamudaayapp/modules/AgentOrderDetail/model/transit_models.dart';
 import 'package:esamudaayapp/modules/AgentOrderDetail/view/image_view.dart';
 import 'package:esamudaayapp/presentations/confirm_dialogue.dart';
@@ -25,7 +27,6 @@ class OrderDetailScreen extends StatefulWidget {
 }
 
 class _OrderDetailScreenState extends State<OrderDetailScreen> {
-  final picker = ImagePicker();
   String convertDateFromString(String strDate) {
     DateTime todayDate = DateTime.parse(strDate);
 
@@ -286,7 +287,58 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                           ],
                         ),
                       ),
-                      ImageUploadWidget(snapshot.selectedOrder),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 20.toWidth),
+                        width: double.infinity,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (snapshot.selectedOrder.pickupImages != null &&
+                                snapshot
+                                    .selectedOrder.pickupImages.isNotEmpty) ...[
+                              Text(
+                                "Pickup Images:",
+                                style: TextStyle(
+                                  fontSize: 16.toFont,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Avenir',
+                                ),
+                              ),
+                            ],
+                            SizedBox(height: 10.toHeight),
+                            _ImagesView(
+                              images: snapshot.selectedOrder.pickupImages,
+                              showUploadOprion:
+                                  status == OrderStatusStrings.picked,
+                              isPickUpImageUpload: true,
+                              onUploadImage: snapshot.uploadImage,
+                            ),
+                            if (snapshot.selectedOrder.dropImages != null &&
+                                snapshot
+                                    .selectedOrder.dropImages.isNotEmpty) ...[
+                              SizedBox(height: 10.toHeight),
+                              Text(
+                                "Drop Images:",
+                                style: TextStyle(
+                                  fontSize: 16.toFont,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Avenir',
+                                ),
+                              ),
+                            ],
+                            SizedBox(height: 10.toHeight),
+                            _ImagesView(
+                              images: snapshot.selectedOrder.dropImages,
+                              showUploadOprion:
+                                  status == OrderStatusStrings.dropped,
+                              isPickUpImageUpload: false,
+                              onUploadImage: snapshot.uploadImage,
+                            ),
+                          ],
+                        ),
+                      ),
                       SizedBox(height: 20.toHeight),
                       Padding(
                         padding: EdgeInsets.all(8.toFont),
@@ -327,76 +379,47 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                           color: const Color(0xffffffff),
                         ),
                       ),
-                      status != OrderStatusStrings.dropped
-                          ? InkWell(
-                              onTap: () async {
-                                String _statusString = status ==
-                                        OrderStatusStrings.pending
-                                    ? tr("screen_home.accept")
-                                    : status == OrderStatusStrings.accepted
-                                        ? tr("screen_home.pickup")
-                                        : status == OrderStatusStrings.picked
-                                            ? tr("screen_home.drop")
-                                            : status;
-                                showDialog(
-                                  context: context,
-                                  builder: (context) => ConfirmActionDialogue(
-                                    message:
-                                        "Are you sure you want to $_statusString order ${snapshot.selectedOrder.order.orderShortNumber} ?",
-                                    onConfirm: () {
-                                      if (status ==
-                                          OrderStatusStrings.pending) {
-                                        snapshot.acceptOrder();
-                                      } else if (status ==
-                                          OrderStatusStrings.accepted) {
-                                        snapshot.pickOrder();
-                                      } else if (status ==
-                                          OrderStatusStrings.picked) {
-                                        snapshot.dropOrder();
-                                      }
-                                    },
+                      if (status != OrderStatusStrings.dropped &&
+                          status != OrderStatusStrings.rejected) ...[
+                        status == OrderStatusStrings.pending
+                            ? Row(
+                                children: [
+                                  Expanded(
+                                    child: _BottomActionButton(
+                                      tr("screen_home.reject"),
+                                      snapshot
+                                          .selectedOrder.order.orderShortNumber,
+                                      () => snapshot.rejectOrder(),
+                                    ),
                                   ),
-                                );
-                              },
-                              child: new Container(
-                                height: 65.toHeight,
-                                decoration: new BoxDecoration(
-                                  color: AppColors.icColors,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    SizedBox(width: 15.toWidth),
-                                    Spacer(),
-                                    new Text(
-                                      status == OrderStatusStrings.pending
-                                          ? tr("screen_home.accept")
-                                          : status ==
-                                                  OrderStatusStrings.accepted
-                                              ? tr("screen_home.pickup")
-                                              : status ==
-                                                      OrderStatusStrings.picked
-                                                  ? tr("screen_home.drop")
-                                                  : status,
-                                      style: TextStyle(
-                                        fontFamily: 'Avenir',
-                                        color: Color(0xffffffff),
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w400,
-                                        fontStyle: FontStyle.normal,
-                                      ),
+                                  SizedBox(width: 5.toWidth),
+                                  Expanded(
+                                    child: _BottomActionButton(
+                                      tr("screen_home.accept"),
+                                      snapshot
+                                          .selectedOrder.order.orderShortNumber,
+                                      () => snapshot.acceptOrder(),
                                     ),
-                                    Spacer(),
-                                    Icon(
-                                      Icons.arrow_forward_ios,
-                                      color: Colors.white,
-                                    ),
-                                    SizedBox(width: 15.toWidth)
-                                  ],
-                                ),
+                                  ),
+                                ],
+                              )
+                            : _BottomActionButton(
+                                status == OrderStatusStrings.accepted
+                                    ? tr("screen_home.pickup")
+                                    : status == OrderStatusStrings.picked
+                                        ? tr("screen_home.drop")
+                                        : "",
+                                snapshot.selectedOrder.order.orderShortNumber,
+                                () {
+                                  if (status == OrderStatusStrings.accepted) {
+                                    snapshot.pickOrder();
+                                  } else if (status ==
+                                      OrderStatusStrings.picked) {
+                                    snapshot.dropOrder();
+                                  }
+                                },
                               ),
-                            )
-                          : Container()
+                      ],
                     ],
                   ),
                 );
@@ -404,47 +427,153 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
       ),
     );
   }
+}
 
-  //display image selected from camera
-//display image selected from camera
-  // imageSelectorCamera(_ViewModel snapshot) async {
-  //   snapshot.getLocation();
-  //   var orderProgress = await UserManager.getOrderProgressStatus();
-  //   final pickedFile =
-  //       await picker.getImage(source: ImageSource.camera, imageQuality: 50);
-  //   setState(() {
-  //     orderProgress != null
-  //         ? orderProgress
-  //             ? _endImage = File(pickedFile.path)
-  //             : snapshot.selectedOrder.status == "PICKED"
-  //                 ? _endImage = File(pickedFile.path)
-  //                 : _startImage = File(pickedFile.path)
-  //         : snapshot.selectedOrder.status == "PICKED"
-  //             ? _endImage = File(pickedFile.path)
-  //             : _startImage = File(pickedFile.path);
-  //   });
-  //   snapshot.uploadImage(
-  //       orderProgress != null
-  //           ? orderProgress
-  //               ? _endImage
-  //               : snapshot.selectedOrder.status == "PICKED"
-  //                   ? _endImage
-  //                   : _startImage
-  //           : snapshot.selectedOrder.status == "PICKED"
-  //               ? _endImage
-  //               : _startImage,
-  //       orderProgress != null
-  //           ? orderProgress
-  //               ? snapshot.selectedOrder.status == "PICKED"
-  //                   ? false
-  //                   : true
-  //               : snapshot.selectedOrder.status == "PICKED"
-  //                   ? false
-  //                   : true
-  //           : snapshot.selectedOrder.status == "PICKED"
-  //               ? false
-  //               : true);
-  // }
+class _ImagesView extends StatelessWidget {
+  final List<ImageResponse> images;
+  final bool showUploadOprion;
+  final bool isPickUpImageUpload;
+  final Function(File) onUploadImage;
+  _ImagesView({
+    @required this.images,
+    @required this.showUploadOprion,
+    @required this.isPickUpImageUpload,
+    @required this.onUploadImage,
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    int length = (images?.length ?? 0);
+    return Wrap(
+      spacing: 10,
+      runSpacing: 10,
+      children: List.generate(
+        length + 1,
+        (index) {
+          if (index == length) {
+            return showUploadOprion
+                ? InkWell(
+                    onTap: () async {
+                      PickedFile pickedFile = await ImagePicker().getImage(
+                          source: ImageSource.camera, imageQuality: 25);
+                      onUploadImage(File(pickedFile.path));
+                    },
+                    child: Container(
+                      width: 100.toWidth,
+                      height: 100.toHeight,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: AppColors.icColors, width: 2),
+                      ),
+                      padding: EdgeInsets.all(10.toFont),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.add_circle_outline,
+                              color: AppColors.icColors),
+                          SizedBox(height: 10.toHeight),
+                          Text(
+                            tr(isPickUpImageUpload
+                                ? 'screen_support.Upload_Pick_Up_Images'
+                                : 'screen_support.Upload_Drop_Images'),
+                            style: TextStyle(color: AppColors.icColors),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                : SizedBox.shrink();
+          }
+          return InkWell(
+            onTap: () => showGeneralDialog(
+              barrierDismissible: false,
+              context: context,
+              pageBuilder: (context, _, __) => ImageDisplay(
+                imageUrl: images[index].photoUrl,
+              ),
+            ),
+            child: Container(
+              width: 100.toWidth,
+              height: 100.toHeight,
+              color: Colors.grey[300],
+              child: CachedNetworkImage(
+                height: double.infinity,
+                width: double.infinity,
+                imageUrl: images[index].photoUrl,
+                fit: BoxFit.contain,
+                placeholder: (context, url) => Center(
+                  child: CircularProgressIndicator(),
+                ),
+                errorWidget: (context, url, _) => Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _BottomActionButton extends StatelessWidget {
+  final String statusString;
+  final String orderShortNumber;
+  final Function() onConfirm;
+  const _BottomActionButton(
+    this.statusString,
+    this.orderShortNumber,
+    this.onConfirm, {
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () async {
+        showDialog(
+          context: context,
+          builder: (context) => ConfirmActionDialogue(
+            message:
+                "Are you sure you want to $statusString order $orderShortNumber ?",
+            onConfirm: onConfirm,
+          ),
+        );
+      },
+      child: new Container(
+        width: double.infinity,
+        height: 65.toHeight,
+        decoration: new BoxDecoration(
+          color: AppColors.icColors,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(width: 15.toWidth),
+            Spacer(),
+            new Text(
+              statusString,
+              style: TextStyle(
+                fontFamily: 'Avenir',
+                color: Color(0xffffffff),
+                fontSize: 18,
+                fontWeight: FontWeight.w400,
+                fontStyle: FontStyle.normal,
+              ),
+            ),
+            Spacer(),
+            Icon(
+              Icons.arrow_forward_ios,
+              color: Colors.white,
+            ),
+            SizedBox(width: 15.toWidth)
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 class OrderItemsBuilder extends StatelessWidget {
@@ -544,7 +673,6 @@ _launchMaps(String lat, String lon) async {
       "," +
       lon +
       "&travelmode=driving&dir_action=navigate";
-  String googleUrl = 'comgooglemaps://?center=$lat,$lon';
   String appleUrl = 'https://maps.apple.com/?sll=$lat,$lon';
   if (await canLaunch("comgooglemaps://")) {
     print('launching com googleUrl');
@@ -566,20 +694,26 @@ _makePhoneCall({String mobile}) async {
 }
 
 class _ViewModel extends BaseModel<AppState> {
-  // Function(File, bool) uploadImage;
+  Function(File) uploadImage;
   TransitDetails selectedOrder;
   Function() acceptOrder;
   Function() pickOrder;
   Function() dropOrder;
+  Function() rejectOrder;
   LoadingStatus loadingStatus;
+  List<ImageResponse> pickupImages;
+  List<ImageResponse> dropImages;
   _ViewModel();
   _ViewModel.build({
     this.acceptOrder,
     this.pickOrder,
     this.dropOrder,
+    this.rejectOrder,
+    this.pickupImages,
+    this.dropImages,
     this.loadingStatus,
     this.selectedOrder,
-    // this.uploadImage,
+    this.uploadImage,
   }) : super(equals: [selectedOrder, loadingStatus]);
   @override
   BaseModel fromStore() {
@@ -593,141 +727,16 @@ class _ViewModel extends BaseModel<AppState> {
       dropOrder: () {
         dispatch(DropOrderAction());
       },
+      rejectOrder: () {
+        dispatch(RejectOrderAction());
+      },
+      pickupImages: state.homePageState.selectedOrder.pickupImages,
+      dropImages: state.homePageState.selectedOrder.dropImages,
       loadingStatus: state.authState.loadingStatus,
       selectedOrder: state.homePageState.selectedOrder,
-
-//       uploadImage: (file, isPickup) {
-//         dispatch(UploadImageAction(imageFile: file, isPickUp: isPickup));
-// //          dispatch(AcceptOrderAction());
-//       },
-    );
-  }
-}
-
-class ImageUploadWidget extends StatelessWidget {
-  final TransitDetails transitDetails;
-  const ImageUploadWidget(this.transitDetails, {Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 30),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (transitDetails.pickupImages != null &&
-              transitDetails.pickupImages.isNotEmpty) ...[
-            Wrap(
-              spacing: 10,
-              runSpacing: 10,
-              children: List.generate(
-                transitDetails.pickupImages.length,
-                (index) => InkWell(
-                  onTap: () => showGeneralDialog(
-                    barrierDismissible: false,
-                    context: context,
-                    pageBuilder: (context, _, __) => ImageDisplay(
-                      imageUrl: transitDetails.pickupImages[index].photoUrl,
-                    ),
-                  ),
-                  child: Container(
-                    width: 100,
-                    height: 100,
-                    color: Colors.grey[300],
-                    child: CachedNetworkImage(
-                      height: double.infinity,
-                      width: double.infinity,
-                      imageUrl: transitDetails.pickupImages[index].photoUrl,
-                      fit: BoxFit.contain,
-                      placeholder: (context, url) => Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                      errorWidget: (context, url, _) => Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-          if (transitDetails.status == OrderStatusStrings.picked) ...[
-            InkWell(
-              onTap: () {},
-              child: Container(
-                color: Colors.grey[400],
-                width: 100,
-                height: 100,
-                padding: EdgeInsets.all(10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.add_circle_outline),
-                    Text(tr('screen_support.Upload_Pick_Up_Images')),
-                  ],
-                ),
-              ),
-            ),
-          ],
-          SizedBox(height: 20),
-          if (transitDetails.dropImages != null &&
-              transitDetails.dropImages.isNotEmpty) ...[
-            Wrap(
-              spacing: 10,
-              runSpacing: 10,
-              children: List.generate(
-                transitDetails.pickupImages.length,
-                (index) => InkWell(
-                  onTap: () => showGeneralDialog(
-                    barrierDismissible: false,
-                    context: context,
-                    pageBuilder: (context, _, __) => ImageDisplay(
-                      imageUrl: transitDetails.pickupImages[index].photoUrl,
-                    ),
-                  ),
-                  child: Container(
-                    width: 100,
-                    height: 100,
-                    color: Colors.grey[300],
-                    child: CachedNetworkImage(
-                      height: double.infinity,
-                      width: double.infinity,
-                      imageUrl: transitDetails.pickupImages[index].photoUrl,
-                      fit: BoxFit.contain,
-                      placeholder: (context, url) => Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                      errorWidget: (context, url, _) => Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-          if (transitDetails.status == OrderStatusStrings.dropped) ...[
-            InkWell(
-              onTap: () {},
-              child: Container(
-                color: Colors.grey[400],
-                width: 100,
-                height: 100,
-                padding: EdgeInsets.all(10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.add_circle_outline),
-                    Text(tr('screen_support.Upload_Drop_Images')),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ],
-      ),
+      uploadImage: (file) {
+        dispatch(UploadImageAction(file));
+      },
     );
   }
 }

@@ -1,10 +1,11 @@
 {
-  "common": {
-    "closed": "Closed",
-    "view_store": "View Store"
-  },
   "screen_language": {
     "title": "Choose your Preferred Language"
+  },
+  "error_messages": {
+    "load_failed": "Load Failed!Click retry!",
+    "release_to_load_more": "release to load more",
+    "no_more_data": "No more Data"
   },
   "screen_phone": {
     "get_otp": "Get OTP",
@@ -49,12 +50,11 @@
   },
   "screen_home": {
     "tab_bar": {
-      "all_order": "NEW ORDERS",
-      "in_progress": "IN PROGRESS",
+      "new_order": "NEW\nORDERS",
+      "in_progress": "IN\nPROGRESS",
       "completed": "COMPLETED",
-      "account": "ACCOUNT"
+      "accepted": "ACCEPTED"
     },
-    "store_near_you": "Stores near you",
     "Agent_Name": "Agent Name",
     "Order_ID": "Order ID",
     "Amount": "Amount",
@@ -64,39 +64,12 @@
     "In_progress": "In progress",
     "Not_Started": "Not Started",
     "Ordered_Products": "Ordered Products",
-    "Start": "Start",
-    "End": "End",
     "Total_Cost": "Total Cost",
-    "New": "New"
-  },
-  "screen_search": {
-    "search": "Search"
-  },
-  "shop": {
-    "delivery_ok": "Delivery Available",
-    "delivery_no": "Delivery Not Available",
-    "item_category": "Item Categories",
-    "pickup_order": "Pickup Order"
-  },
-  "product_list": {
-    "search_placeholder": "Search for item"
-  },
-  "cart": {
-    "title": "Cart",
-    "view_cart": "VIEW ITEMS",
-    "total": "TOTAL",
-    "payment_details": "Payment Details",
-    "total_amount": "Total amount",
-    "delivery": "Delivery",
-    "pickup": "Pickup",
-    "note": "Note",
-    "store_address": "Store address",
-    "confirm_order_detail": "Confirm your order and wait for notification from merchant on order screen",
-    "confirm_order": "CONFIRM ORDER",
-    "add_more": "Add more",
-    "empty_cart": "Empty Cart",
-    "empty_hint": "Look like you haven't added anything to your cart yet",
-    "please_collect": "Please collect order from the store when its ready"
+    "New": "New",
+    "accept": "Accept",
+    "pickup": "Pick Up",
+    "drop": "Drop",
+    "reject": "Reject"
   },
   "screen_account": {
     "title": "Account",
@@ -107,7 +80,6 @@
     "logout": "Logout",
     "alert_data": "Are you sure ! do you want to logout?",
     "cancel": "Cancel",
-    "Sign_Out": "Sign Out",
     "Edit": "Edit"
   },
   "screen_recommended": {
@@ -117,46 +89,7 @@
     "phone": "Shop phone number",
     "recommend": "Recommend"
   },
-  "screen_order": {
-    "title": "Orders",
-    "payment_details": "Payment Details",
-    "item_total": "Item Total",
-    "total": "Total amount",
-    "pending": "Pending",
-    "not_found": "No Order Found",
-    "empty_content": "Look like you haven’t order anything yet Lets start !",
-    "cancelled": "Cancelled",
-    "completed": "Completed",
-    "confirmed": "Confirmed",
-    "not_available": "Items Not Available",
-    "cancel_order": "Cancel order",
-    "re_order": "Re-Order",
-    "payment": "Payment",
-    "update_order": "Update Order",
-    "missing": "Missing Items",
-    "please_pay": "Please pay your bill amount to the merchant directly using Cash, Card or UPI",
-    "rate": "Rate us",
-    "rate_ok": "Rating submitted successfully",
-    "rate_our": "Rate our service",
-    "feedback": "Please enter a feedback",
-    "write_feedback": "Write your feedback",
-    "ok": "Ok",
-    "submit": "Submit"
-  },
   "screen_support": {
-    "title": "Support",
-    "issue": "select issues",
-    "the_order": "Merchant is not confirming the order",
-    "my_order": "Cancel my order",
-    "delayed?": "Why is my order delayed?",
-    "Leakage": "Leakage in the order",
-    "Items_are": "Items are missing in the order",
-    "Wrong_order": "Wrong order delivered",
-    "spoilt": "Items are stale or spoilt",
-    "not_received": "Order not received",
-    "submit": "Submit",
-    "type_hint": "Type in your text",
-    "select_issue_error": "Please select an issue.",
     "No_contact_details_found": "No contact details found.",
     "Upload_Pick_Up_Images": "Upload Pick Up Images",
     "Upload_Drop_Images": "Upload Drop Images"
