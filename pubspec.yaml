@@ -42,6 +42,10 @@ dependencies:
   image_picker:
   url_launcher: ^5.4.11
   pull_to_refresh: ^1.6.0
+  firebase_crashlytics: ^0.2.2
+  firebase_core: ^0.5.0+1
+
+#  map_launcher: ^0.6.0
 
 dev_dependencies:
   flutter_test:
