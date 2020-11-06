@@ -50,7 +50,6 @@ class MyHomeView extends StatelessWidget {
             ),
             appBar: CustomAppbar(
               name: snapshot.user?.firstName ?? "",
-              onEdit: () => snapshot.navigateToProfile(),
             ),
             bottomNavigationBar: BottomAppBar(
               child: Container(
@@ -143,7 +142,6 @@ class _ViewModel extends BaseModel<AppState> {
     this.updateCurrentIndex,
     this.user,
     this.currentIndex,
-    this.navigateToProfile,
   }) : super(equals: [currentIndex, orders]);
 
   @override
@@ -157,9 +155,6 @@ class _ViewModel extends BaseModel<AppState> {
         dispatch(GetAgentOrderList(filter: filter));
       },
       user: state.authState.user,
-      navigateToProfile: () {
-        dispatch(NavigateAction.pushNamed("/profile"));
-      },
       updateCurrentIndex: (index) {
         dispatch(UpdateSelectedTabAction(index));
       },

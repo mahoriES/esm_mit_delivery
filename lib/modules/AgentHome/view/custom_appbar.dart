@@ -1,48 +1,16 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:esamudaayapp/utilities/colors.dart';
 import 'package:esamudaayapp/utilities/sizeconfig.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppbar extends StatelessWidget with PreferredSizeWidget {
   final String name;
-  final Function onEdit;
   CustomAppbar({
     this.name,
-    this.onEdit,
   });
   @override
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: AppColors.appBarColor,
-      actions: [
-        Padding(
-          padding: EdgeInsets.only(right: 20.toWidth),
-          child: InkWell(
-            onTap: onEdit,
-            child: Row(
-              children: <Widget>[
-                Icon(
-                  Icons.edit_outlined,
-                  color: Colors.white,
-                  size: 18.toFont,
-                ),
-                SizedBox(width: 5.toWidth),
-                Text(
-                  tr("screen_account.Edit"),
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w400,
-                    fontFamily: "CircularStd-Book",
-                    fontStyle: FontStyle.normal,
-                    fontSize: 15.toFont,
-                  ),
-                  textAlign: TextAlign.left,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
       bottom: PreferredSize(
         preferredSize: Size(
           double.infinity,

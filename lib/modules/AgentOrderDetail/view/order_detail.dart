@@ -198,21 +198,40 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Flexible(
-                              child: Text(
-                                snapshot.selectedOrder.order.customerName,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16.toFont,
-                                  fontFamily: 'Avenir',
+                              child: RichText(
+                                text: TextSpan(
+                                  text: snapshot
+                                          .selectedOrder.order.customerName +
+                                      "\n",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16.toFont,
+                                    fontFamily: 'Avenir',
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                      text: snapshot.selectedOrder.order
+                                          .customerPhones.first,
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 14.toFont,
+                                        fontFamily: 'Avenir',
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                             FloatingActionButton(
                               onPressed: () {
-                                // Add your onPressed code here!
+                                _makePhoneCall(
+                                    mobile:
+                                        "tel:${snapshot.selectedOrder.order.customerPhones.first}");
                               },
-                              child: Image.asset('assets/images/person.png'),
-                              backgroundColor: const Color(0xffb9b8b8),
+                              child: Image.asset('assets/images/phone.png'),
+                              backgroundColor: AppColors.icColors,
                             )
                           ],
                         ),
@@ -305,34 +324,6 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                           ],
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.all(20.toFont),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Flexible(
-                              child: Text(
-                                snapshot
-                                    .selectedOrder.order.customerPhones.first,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16.toFont,
-                                  fontFamily: 'Avenir',
-                                ),
-                              ),
-                            ),
-                            FloatingActionButton(
-                              onPressed: () {
-                                _makePhoneCall(
-                                    mobile:
-                                        "tel:${snapshot.selectedOrder.order.customerPhones.first}");
-                              },
-                              child: Image.asset('assets/images/phone.png'),
-                              backgroundColor: AppColors.icColors,
-                            )
-                          ],
-                        ),
-                      ),
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 20.toWidth),
                         width: double.infinity,
@@ -417,7 +408,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                       () => snapshot.rejectOrder(),
                                     ),
                                   ),
-                                  SizedBox(width: 2.toWidth),
+                                  SizedBox(width: 1),
                                   Expanded(
                                     child: _BottomActionButton(
                                       tr("screen_home.accept"),

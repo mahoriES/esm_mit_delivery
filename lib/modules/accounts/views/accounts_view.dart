@@ -38,6 +38,22 @@ class _AccountsViewState extends State<AccountsView> {
             children: <Widget>[
               ListTile(
                 onTap: () {
+                  snapshot.navigateToProfile();
+                },
+                leading: Image.asset("assets/images/AI_user.png"),
+                title: Text('screen_account.profile',
+                        style: const TextStyle(
+                            color: const Color(0xff3c3c3c),
+                            fontWeight: FontWeight.w400,
+                            fontFamily: "Avenir",
+                            fontStyle: FontStyle.normal,
+                            fontSize: 16.0),
+                        textAlign: TextAlign.left)
+                    .tr(),
+                trailing: Icon(Icons.keyboard_arrow_right),
+              ),
+              ListTile(
+                onTap: () {
                   snapshot.navigateLanguage();
                 },
                 leading: Image.asset("assets/images/Group_240.png"),
@@ -114,12 +130,14 @@ class _ViewModel extends BaseModel<AppState> {
   _ViewModel();
   LoadingStatus loadingStatus;
   Function navigateLanguage;
+  Function navigateToProfile;
   Function logout;
 
   _ViewModel.build({
     this.loadingStatus,
     this.logout,
     this.navigateLanguage,
+    this.navigateToProfile,
   }) : super(equals: [loadingStatus]);
 
   @override
@@ -134,6 +152,9 @@ class _ViewModel extends BaseModel<AppState> {
           "/language",
           arguments: {"fromAccount": true},
         ));
+      },
+      navigateToProfile: () {
+        dispatch(NavigateAction.pushNamed("/profile"));
       },
     );
   }
