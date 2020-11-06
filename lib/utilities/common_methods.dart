@@ -1,4 +1,4 @@
-import 'package:date_format/date_format.dart';
+import 'package:intl/intl.dart';
 
 class CommonMethods {
   static String getDistanceinFormat(int distanceInMeters) {
@@ -16,7 +16,6 @@ class CommonMethods {
   static String convertDateFromString(String strDate) {
     DateTime todayDate = DateTime.parse(strDate);
 
-    return formatDate(
-        todayDate, [dd, ' ', M, ' ', yyyy, ' , ', hh, ':', nn, ' ', am]);
+    return DateFormat('dd MMM yyyy , hh:mm a').format(todayDate);
   }
 }

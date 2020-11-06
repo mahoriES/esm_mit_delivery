@@ -11,46 +11,6 @@ import 'package:flutter/cupertino.dart';
 class APIManager {
   static var shared = APIManager();
   static beginRequest() {}
-//  DioComputeParams data;
-
-  static Future<ResponseModel> postRequest(List params) async {
-    Dio dio = new Dio(new BaseOptions(
-      baseUrl: ApiURL.baseURL,
-      connectTimeout: 50000,
-      receiveTimeout: 100000,
-      followRedirects: false,
-      validateStatus: (status) {
-        return status < 500;
-      },
-      responseType: ResponseType.json,
-    ));
-//    dio.head(params[1]);
-//    dio.interceptors.add(CookieManager(params.last));
-    dio.interceptors.add(LogInterceptor(
-      responseBody: true,
-      request: true,
-      requestBody: true,
-    ));
-    return await dio
-        .post(
-      params[1],
-      data: params.first,
-    )
-        .then((res) {
-      if (res.statusCode == 400) {
-        return ResponseModel(res.data, ResponseStatus.error404);
-      } else if (res.statusCode >= 500) {
-        return ResponseModel(res.data, ResponseStatus.error500);
-      } else if (res.statusCode == 401) {
-        return ResponseModel(res.data, ResponseStatus.error401);
-      } else {
-        return ResponseModel(res.data, ResponseStatus.success200);
-      }
-    }).catchError((error) {
-      print(error);
-      return ResponseModel(null, ResponseStatus.error500);
-    });
-  }
 
   Future<ResponseModel> request(
       {params: dynamic,
@@ -71,11 +31,6 @@ class APIManager {
       responseType: ResponseType.json,
 //      contentType: ContentType.json,
     ));
-//    Directory appDocDir = await getApplicationDocumentsDirectory();
-//    String appDocPath = appDocDir.path;
-//    var cookieJar = PersistCookieJar(dir: appDocPath + "/.cookies/");
-//    cookieJar.loadForRequest(Uri.parse(ApiURL.baseURL + url));
-//    dio.interceptors.add(CookieManager(cookieJar));
     if (token != null && token != "") {
       dio.options.headers = {
         "Authorization": "JWT $token",
