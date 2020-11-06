@@ -408,45 +408,6 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                         ),
                       ),
                       SizedBox(height: 20.toHeight),
-                      Padding(
-                        padding: EdgeInsets.all(8.toFont),
-                        child: Row(
-                          children: <Widget>[
-                            Padding(
-                              padding:
-                                  EdgeInsets.symmetric(horizontal: 10.toWidth),
-                              child: Image.asset(
-                                'assets/images/path.png',
-                                color: AppColors.icColors,
-                              ),
-                            ),
-                            Flexible(
-                              child: Text(
-                                tr("screen_home.Ordered_Products"),
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18.toFont,
-                                  fontFamily: 'Avenir',
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 20.toHeight),
-                        child: OrderItemsBuilder(snapshot),
-                        decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                                color: const Color(0x29000000),
-                                offset: Offset(0, 3),
-                                blurRadius: 6,
-                                spreadRadius: 0)
-                          ],
-                          color: const Color(0xffffffff),
-                        ),
-                      ),
                       if (status != OrderStatusStrings.dropped &&
                           status != OrderStatusStrings.rejected) ...[
                         status == OrderStatusStrings.pending
@@ -460,7 +421,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                       () => snapshot.rejectOrder(),
                                     ),
                                   ),
-                                  SizedBox(width: 5.toWidth),
+                                  SizedBox(width: 2.toWidth),
                                   Expanded(
                                     child: _BottomActionButton(
                                       tr("screen_home.accept"),
@@ -639,28 +600,18 @@ class _BottomActionButton extends StatelessWidget {
         decoration: new BoxDecoration(
           color: AppColors.icColors,
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(width: 15.toWidth),
-            Spacer(),
-            new Text(
-              statusString,
-              style: TextStyle(
-                fontFamily: 'Avenir',
-                color: Color(0xffffffff),
-                fontSize: 18,
-                fontWeight: FontWeight.w400,
-                fontStyle: FontStyle.normal,
-              ),
+        child: Center(
+          child: Text(
+            statusString,
+            style: TextStyle(
+              fontFamily: 'Avenir',
+              color: Color(0xffffffff),
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              fontStyle: FontStyle.normal,
+              letterSpacing: 1.4,
             ),
-            Spacer(),
-            Icon(
-              Icons.arrow_forward_ios,
-              color: Colors.white,
-            ),
-            SizedBox(width: 15.toWidth)
-          ],
+          ),
         ),
       ),
     );
