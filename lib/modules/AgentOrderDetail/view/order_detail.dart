@@ -14,6 +14,7 @@ import 'package:esamudaayapp/presentations/loading_widget.dart';
 import 'package:esamudaayapp/presentations/status_icon.dart';
 import 'package:esamudaayapp/redux/states/app_state.dart';
 import 'package:esamudaayapp/utilities/colors.dart';
+import 'package:esamudaayapp/utilities/common_methods.dart';
 import 'package:esamudaayapp/utilities/sizeconfig.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -151,8 +152,8 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                           ),
                                         ),
                                         TextSpan(
-                                          // TODO : dynamic distace
-                                          text: ': 2 km',
+                                          text:
+                                              ': ${CommonMethods.getDistanceinFormat(snapshot.selectedOrder.distanceInMeters)}',
                                           style: TextStyle(
                                             color: Color(0xff959595),
                                             fontSize: 12,
@@ -226,29 +227,78 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Flexible(
-                              child: Text(
-                                status == OrderStatusStrings.pending ||
-                                        status == OrderStatusStrings.accepted
-                                    ? snapshot.selectedOrder.order.pickupAddress
-                                        .prettyAddress
-                                    : snapshot.selectedOrder.order
-                                        .deliveryAddress.prettyAddress,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16.toFont,
-                                  fontFamily: 'Avenir',
+                              child: RichText(
+                                text: TextSpan(
+                                  text: "Pickup :\n",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16.toFont,
+                                    fontFamily: 'Avenir',
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                      text: snapshot.selectedOrder.order
+                                          .pickupAddress.prettyAddress,
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 14.toFont,
+                                        fontFamily: 'Avenir',
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                             FloatingActionButton(
                               onPressed: () {
-                                LocationPoint location = (status ==
-                                            OrderStatusStrings.pending ||
-                                        status == OrderStatusStrings.accepted)
-                                    ? snapshot.selectedOrder.order.pickupAddress
-                                        .locationPoint
-                                    : snapshot.selectedOrder.order
-                                        .deliveryAddress.locationPoint;
+                                LocationPoint location = snapshot.selectedOrder
+                                    .order.pickupAddress.locationPoint;
+                                _launchMaps(location.lat.toString(),
+                                    location.lon.toString());
+                              },
+                              child:
+                                  Image.asset('assets/images/naviagtion.png'),
+                              backgroundColor: AppColors.icColors,
+                            )
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(20.toFont),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Flexible(
+                              child: RichText(
+                                text: TextSpan(
+                                  text: "Drop :\n",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16.toFont,
+                                    fontFamily: 'Avenir',
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                      text: snapshot.selectedOrder.order
+                                          .deliveryAddress.prettyAddress,
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 14.toFont,
+                                        fontFamily: 'Avenir',
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            FloatingActionButton(
+                              onPressed: () {
+                                LocationPoint location = snapshot.selectedOrder
+                                    .order.deliveryAddress.locationPoint;
                                 _launchMaps(location.lat.toString(),
                                     location.lon.toString());
                               },

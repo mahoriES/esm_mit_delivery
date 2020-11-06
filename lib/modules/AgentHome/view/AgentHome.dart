@@ -9,6 +9,7 @@ import 'package:esamudaayapp/presentations/loading_widget.dart';
 import 'package:esamudaayapp/presentations/status_icon.dart';
 import 'package:esamudaayapp/redux/states/app_state.dart';
 import 'package:esamudaayapp/utilities/colors.dart';
+import 'package:esamudaayapp/utilities/common_methods.dart';
 import 'package:esamudaayapp/utilities/sizeconfig.dart';
 import 'package:esamudaayapp/utilities/user_manager.dart';
 import 'package:flutter/cupertino.dart';
@@ -116,13 +117,8 @@ class _AgentHomeState extends State<AgentHome> {
                             date: UserManager()
                                 .convertDateFromString(_details.order.created),
                             amount: _details.order.orderTotal.toString(),
-                            address: _details.status ==
-                                        OrderStatusStrings.pending ||
-                                    _details.status ==
-                                        OrderStatusStrings.accepted
-                                ? _details.order.pickupAddress.prettyAddress
-                                : _details.order.deliveryAddress.prettyAddress,
-                            distance: "Distance",
+                            distance: CommonMethods.getDistanceinFormat(
+                                _details.distanceInMeters),
                             orderStatus: _details.order.orderStatus,
                             agentStatus: _details.status,
                           ),
@@ -149,7 +145,6 @@ class _OrdersListView extends StatelessWidget {
   final String orderId;
   final String date;
   final String amount;
-  final String address;
   final String orderStatus;
   final String agentStatus;
   final String distance;
@@ -159,7 +154,6 @@ class _OrdersListView extends StatelessWidget {
     this.orderId,
     this.date,
     this.amount,
-    this.address,
     this.orderStatus,
     this.distance,
     this.agentStatus,
@@ -167,7 +161,7 @@ class _OrdersListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 130.toHeight,
+      height: 100.toHeight,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -206,14 +200,6 @@ class _OrdersListView extends StatelessWidget {
                   ),
                   Text(
                     '${tr('screen_home.Amount')} : Rs.$amount',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 12.toFont,
-                      fontFamily: 'Avenir',
-                    ),
-                  ),
-                  Text(
-                    '$address',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 12.toFont,
