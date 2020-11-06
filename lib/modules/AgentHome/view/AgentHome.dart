@@ -114,9 +114,11 @@ class _AgentHomeState extends State<AgentHome> {
                           },
                           child: _OrdersListView(
                             orderId: _details.order.orderShortNumber,
-                            date: UserManager()
-                                .convertDateFromString(_details.order.created),
-                            amount: _details.order.orderTotal.toString(),
+                            date: CommonMethods.convertDateFromString(
+                                _details.order.created),
+                            // convert amount in rupees by dividing with 100
+                            amount: (_details.order.orderTotal / 100)
+                                .toStringAsFixed(2),
                             distance: CommonMethods.getDistanceinFormat(
                                 _details.distanceInMeters),
                             orderStatus: _details.order.orderStatus,

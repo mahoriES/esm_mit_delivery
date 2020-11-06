@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:async_redux/async_redux.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:date_format/date_format.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:esamudaayapp/models/loading_status.dart';
 import 'package:esamudaayapp/modules/AgentHome/model/order_response.dart';
@@ -28,13 +27,6 @@ class OrderDetailScreen extends StatefulWidget {
 }
 
 class _OrderDetailScreenState extends State<OrderDetailScreen> {
-  String convertDateFromString(String strDate) {
-    DateTime todayDate = DateTime.parse(strDate);
-
-    return formatDate(
-        todayDate, [dd, ' ', M, ' ', yyyy, ' ', hh, ':', nn, ' ', am]);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,7 +92,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                     ),
                                   ),
                                   Text(
-                                    convertDateFromString(
+                                    CommonMethods.convertDateFromString(
                                         snapshot.selectedOrder.order.created),
                                     style: TextStyle(
                                       color: Colors.black,
@@ -126,8 +118,11 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                             ),
                                           ),
                                           TextSpan(
-                                            text: convertDateFromString(snapshot
-                                                .selectedOrder.order.created),
+                                            text: CommonMethods
+                                                .convertDateFromString(snapshot
+                                                    .selectedOrder
+                                                    .order
+                                                    .created),
                                             style: TextStyle(
                                               color: Color(0xff959595),
                                               fontSize: 12,
@@ -170,7 +165,8 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                             Column(
                               children: <Widget>[
                                 Text(
-                                  'Rs.${snapshot.selectedOrder.order.orderTotal}',
+                                  // convert amount in rupees by dividing with 100
+                                  'Rs.${(snapshot.selectedOrder.order.orderTotal / 100).toStringAsFixed(2)}',
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 12,
@@ -615,97 +611,6 @@ class _BottomActionButton extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class OrderItemsBuilder extends StatelessWidget {
-  final _ViewModel snapshot;
-  const OrderItemsBuilder(this.snapshot, {Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    List<Widget> builder = List.generate(
-      snapshot.selectedOrder.order.orderItems != null
-          ? snapshot.selectedOrder.order.orderItems.length
-          : 0,
-      (index) => Padding(
-        padding: EdgeInsets.all(15.toFont),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            if ((snapshot.selectedOrder.order.orderItems[index].images !=
-                    null &&
-                snapshot.selectedOrder.order.orderItems[index].images
-                    .isNotEmpty)) ...[
-              Container(
-                height: 50.toHeight,
-                width: 50.toWidth,
-                child: CachedNetworkImage(
-                  imageUrl: snapshot.selectedOrder.order.orderItems[index]
-                      .images.first.photoUrl,
-                ),
-              ),
-            ],
-            Flexible(
-              child: Text(
-                  snapshot.selectedOrder.order.orderItems[index].productName,
-                  style: const TextStyle(
-                      color: const Color(0xff515c6f),
-                      fontWeight: FontWeight.w500,
-                      fontFamily: "Avenir",
-                      fontStyle: FontStyle.normal,
-                      fontSize: 15.0),
-                  textAlign: TextAlign.left),
-            ),
-            Text(
-                snapshot.selectedOrder.order.orderItems[index].variationOption
-                            .size !=
-                        null
-                    ? snapshot.selectedOrder.order.orderItems[index]
-                        .variationOption.size
-                    : "" +
-                        " x " +
-                        snapshot.selectedOrder.order.orderItems[index].quantity
-                            .toString(),
-                style: TextStyle(
-                  fontFamily: 'Avenir',
-                  color: Color(0xff626262),
-                  fontSize: 15,
-                  fontWeight: FontWeight.w400,
-                  fontStyle: FontStyle.normal,
-                )),
-          ],
-        ),
-      ),
-    );
-    builder.add(
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Spacer(),
-          Text(tr("screen_home.Total_Cost"),
-              style: TextStyle(
-                fontFamily: 'Avenir',
-                color: Color(0xff000000),
-                fontSize: 18,
-                fontWeight: FontWeight.w400,
-                fontStyle: FontStyle.normal,
-              )),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Text('₹ ${snapshot.selectedOrder.order.orderTotal}',
-                style: TextStyle(
-                  fontFamily: 'Avenir',
-                  color: Color(0xff000000),
-                  fontSize: 18,
-                  fontWeight: FontWeight.w400,
-                  fontStyle: FontStyle.normal,
-                )),
-          )
-        ],
-      ),
-    );
-    return Column(children: builder);
   }
 }
 

@@ -137,14 +137,6 @@ class UserManager {
       "User",
     );
   }
-
-  String convertDateFromString(String strDate) {
-    if (strDate == null) return "";
-    DateTime todayDate = DateTime.parse(strDate);
-
-    return formatDate(
-        todayDate, [dd, ' ', M, ' ', yyyy, ' ', hh, ':', nn, ' ', am]);
-  }
 }
 
 var userManager = UserManager();
