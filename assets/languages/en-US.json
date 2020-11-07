@@ -69,18 +69,22 @@
     "accept": "Accept",
     "pickup": "Pick Up",
     "drop": "Drop",
-    "reject": "Reject"
+    "reject": "Reject",
+    "item": "item",
+    "pickup_images": "Pickup Images",
+    "drop_images": "Drop Images",
+    "confirm_action_mesage": "Are you sure you want to {actionName} order {orderNumber} ?"
   },
   "screen_account": {
     "title": "Account",
     "profile": "Profile",
-    "recommend": "Recommend A Store",
     "about": "About",
     "language": "Language",
     "logout": "Logout",
     "alert_data": "Are you sure ! do you want to logout?",
     "cancel": "Cancel",
-    "Edit": "Edit"
+    "Edit": "Edit",
+    "version": "Version"
   },
   "screen_recommended": {
     "title": "Recommend A Store",

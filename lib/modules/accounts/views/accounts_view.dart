@@ -4,6 +4,7 @@ import 'package:esamudaayapp/modules/accounts/action/account_action.dart';
 import 'package:esamudaayapp/redux/states/app_state.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:package_info/package_info.dart';
 
 class AccountsView extends StatefulWidget {
   @override
@@ -11,8 +12,18 @@ class AccountsView extends StatefulWidget {
 }
 
 class _AccountsViewState extends State<AccountsView> {
+  String _versionName = "";
+  getVersionName() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    var versionName = packageInfo.version;
+    setState(() {
+      _versionName = versionName;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    getVersionName();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -108,7 +119,7 @@ class _AccountsViewState extends State<AccountsView> {
               Container(
                 height: 100,
                 child: Center(
-                  child: Text("Version 1.0 Build 1",
+                  child: Text("${tr('screen_account.version')} $_versionName",
                       style: const TextStyle(
                           color: const Color(0xff848282),
                           fontWeight: FontWeight.w400,

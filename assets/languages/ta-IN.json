@@ -1,15 +1,11 @@
 {
-
   "common": {
     "closed": "Closed",
     "view_store": "View Store"
   },
-
   "screen_language": {
     "title": "உங்களுக்கு விருப்பமான மொழியைத் தேர்வுசெய்க"
-
   },
-
   "screen_phone": {
     "get_otp": "OTP ஐப் பெறுக",
     "hint_text": " உங்களுடைய கைபேசி எண்ணை உள்ளிடவும்",
@@ -21,7 +17,6 @@
     "sign_up": "பதிவுபெறுக",
     "login": "உள்நுழைய"
   },
-
   "screen_otp": {
     "get_otp": "Get OTP",
     "resend_otp": "OTP ஐ மீண்டும் அனுப்பு",
@@ -33,7 +28,6 @@
       "plz_verify_otp": "Please enter OTP"
     }
   },
-
   "screen_register": {
     "title": "Complete your registration",
     "address": {
@@ -53,33 +47,27 @@
       "empty_error": "Please enter your full name."
     }
   },
-
   "screen_home": {
     "tab_bar": {
       "all_order": "புதிய ஆர்டர்கள்",
-      "in_progress": "செயலில் உள்ளது",
+      "inprogress": "செயலில் உள்ளது",
       "completed": "நிறைவு",
       "account": "கணக்கு"
     },
     "store_near_you": "உங்களுக்கு அருகிலுள்ள கடைகள்"
-
   },
-
   "screen_search": {
     "search": "Search"
   },
-
   "shop": {
-    "delivery_ok" : "டெலிவரி கிடைக்கிறது",
-    "delivery_no" : "Delivery Not Available",
+    "delivery_ok": "டெலிவரி கிடைக்கிறது",
+    "delivery_no": "Delivery Not Available",
     "item_category": "Item Categories",
     "pickup_order": "Pickup Order"
   },
-
   "product_list": {
-    "search_placeholder" : "Search for item"
+    "search_placeholder": "Search for item"
   },
-
   "cart": {
     "title": "கூடை",
     "view_cart": "VIEW ITEMS",
@@ -97,8 +85,7 @@
     "empty_hint": "Look like you haven't added anything to your cart yet",
     "please_collect": "Please collect order from the store when its ready"
   },
-
-  "screen_account":{
+  "screen_account": {
     "title": "கணக்கு",
     "profile": "சுயவிவரம்",
     "recommend": "Recommend A Store",
@@ -108,15 +95,13 @@
     "alert_data": "Are you sure ! do you want to logout?",
     "cancel": "Cancel"
   },
-
   "screen_recommended": {
-      "title": "Recommend A Store",
+    "title": "Recommend A Store",
     "name": "Shop Name",
     "address": "Shop Address",
     "phone": "Shop phone number",
     "recommend": "Recommend"
   },
-
   "screen_order": {
     "title": "Orders",
     "payment_details": "Payment Details",
@@ -143,22 +128,19 @@
     "ok": "Ok",
     "submit": "Submit"
   },
-
   "screen_support": {
     "title": "Support",
-    "issue":"select issues",
-    "the_order":"Merchant is not confirming the order",
-    "my_order":"Cancel my order",
-    "delayed?":"Why is my order delayed?",
-    "Leakage":"Leakage in the order",
-    "Items_are":"Items are missing in the order",
-    "Wrong_order":"Wrong order delivered",
-    "spoilt":"Items are stale or spoilt",
-    "not_received":"Order not received",
+    "issue": "select issues",
+    "the_order": "Merchant is not confirming the order",
+    "my_order": "Cancel my order",
+    "delayed?": "Why is my order delayed?",
+    "Leakage": "Leakage in the order",
+    "Items_are": "Items are missing in the order",
+    "Wrong_order": "Wrong order delivered",
+    "spoilt": "Items are stale or spoilt",
+    "not_received": "Order not received",
     "submit": "Submit",
     "type_hint": "Type in your text",
     "select_issue_error": "Please select an issue."
   }
-
-
 }

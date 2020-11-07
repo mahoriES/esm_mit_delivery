@@ -159,17 +159,10 @@ class MyAppBase extends StatelessWidget {
           "/mobileNumber": (BuildContext context) => new LoginView(),
           "/registration": (BuildContext context) => new Registration(),
           "/myHomeView": (BuildContext context) => new MyHomeView(),
-
           "/AccountsView": (BuildContext context) => AccountsView(),
           "/orderDetail": (BuildContext context) => OrderDetailScreen(),
-
-//          "/ManageAddresses": (BuildContext context) => ManageAddresses(),
-
           "/SMAlertView": (BuildContext context) => SMAlertView(),
-
           "/profile": (BuildContext context) => ProfileView(),
-
-//          "/SelectAddressView": (BuildContext context) => SelectAddressView()
         },
       ),
     );
