@@ -1,0 +1,101 @@
+{
+    "screen_language": {
+        "title": "अपनी पसंदीदा भाषा चुनें"
+    },
+    "error_messages": {
+        "load_failed": "Load Failed!Click retry!",
+        "release_to_load_more": "release to load more",
+        "no_more_data": "और डेटा नहीं है"
+    },
+    "screen_phone": {
+        "get_otp": "ओटीपी प्राप्त करें",
+        "hint_text": "अपना मोबाइल नंबर टाइप करेंr",
+        "valid_phone_error_message": "कृपया  वैध नंबर डालें",
+        "new_user": "क्या आपका अकाउंट नहीं है? ",
+        "register_now": "अभी रजिस्टर करें",
+        "login_here": "यहां लॉगिन करें",
+        "already_customer": "पहले से ही  अकाउंट है? ",
+        "sign_up": "साइन अप करें",
+        "login": "लॉग इन करें"
+    },
+    "screen_otp": {
+        "get_otp": "OTP प्राप्त करें",
+        "resend_otp": "OTP पुनः भेजें",
+        "hint_text": "कृपया <ph> पर भेजे गए ओटीपी को दर्ज करें",
+        "resend_text": "सेकंड में फिर से भेजें",
+        "sec": "सेकंड",
+        "verify": "सत्यापित करें",
+        "error": {
+            "plz_verify_otp": "कृपया OTP दर्ज करें"
+        }
+    },
+    "screen_register": {
+        "title": "अपना पंजीकरण पूरा करें",
+        "address": {
+            "title": "पता",
+            "empty_error": "कृपया अपना पता दर्ज करें"
+        },
+        "pin_code": {
+            "title": "सर्कल",
+            "validation_error": "कृपया मान्य सर्कल दर्ज करें",
+            "empty_error": "कृपया अपना सर्कल दर्ज करें"
+        },
+        "register": "रजिस्टर करें",
+        "update": "अपडेट करें",
+        "name": {
+            "title": "पूरा नाम",
+            "validation_error": "कृपया मान्य नाम दर्ज करें",
+            "empty_error": "कृपया आपका पूरा नाम दर्ज  कीजिए।."
+        }
+    },
+    "screen_home": {
+        "tab_bar": {
+            "new_order": "नए ऑर्डर",
+            "in_progress": "रास्ते में",
+            "completed": "पूरित ऑर्डर",
+            "accepted": "स्वीकार कर लिया है"
+        },
+        "Agent_Name": "एजेंट का नाम",
+        "Order_ID": "ऑर्डर ID",
+        "Amount": "राशि",
+        "Completed": "पूरा हो गया है",
+        "Distance": "दूरी",
+        "Rejected": "अस्वीकृत",
+        "In_progress": "भेज दिया गया है",
+        "Not_Started": "शुरू नही हुआ",
+        "Ordered_Products": "ऑर्डर किए गए आइटम",
+        "Total_Cost": "कुल राशि",
+        "New": "नया",
+        "accept": "स्वीकार करें",
+        "pickup": "पिकअप",
+        "drop": "ड्रॉप",
+        "reject": "अस्वीकार",
+        "item": "item",
+        "pickup_images": "Pickup Images",
+        "drop_images": "Drop Images",
+        "confirm_action_mesage": "क्या आप वाकई ऑर्डर {orderNumber} {actionName} करना चाहते हैं?"
+    },
+    "screen_account": {
+        "title": "अकाउंट",
+        "profile": "प्रोफ़ाइल",
+        "about": "अबाउट",
+        "language": "भाषा",
+        "logout": "लॉग आउट",
+        "alert_data": "क्या आपको यकीन है ! आप लॉग आउट करना चाहते हैं?",
+        "cancel": "रद्द करें",
+        "Edit": "परिवर्तन करें",
+        "version": "Version"
+    },
+    "screen_recommended": {
+        "title": "स्टोर का सुझाव दें",
+        "name": "दुकान का नाम",
+        "address": "दुकान का पता",
+        "phone": "दुकान का फोन नंबरr",
+        "recommend": "रिकमेन्ड"
+    },
+    "screen_support": {
+        "No_contact_details_found": "कोई संपर्क विवरण नहीं मिला",
+        "Upload_Pick_Up_Images": "पिक अप इमेज अपलोड करें",
+        "Upload_Drop_Images": "ड्रॉप इमेज अपलोड करें"
+    }
+}

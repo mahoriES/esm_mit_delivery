@@ -1,0 +1,101 @@
+{
+  "screen_language": {
+    "title": "మీ ఇష్టపడే భాషను ఎంచుకోండి"
+  },
+  "error_messages": {
+    "load_failed": "లోడ్ విఫలమైంది! మళ్ళి క్లిక్ చేయడానికి ప్రయత్ నించండి",
+    "release_to_load_more": "రిలీజ్ తో లోడ్ మరి",
+    "no_more_data": "ఎక్కువ డేటా లేదు"
+  },
+  "screen_phone": {
+    "get_otp": "OTP పొందండి",
+    "hint_text": "మీ మొబైల్ నంబర్‌ను టైప్ చేయండి",
+    "valid_phone_error_message": "దయచేసి చెల్లుబాటు అయ్యే ఫోన్ నంబర్‌ను నమోదు చేయండి",
+    "new_user": "ఖాతా లేదా? ",
+    "register_now": "ఇప్పుడు నమోదు చేసుకోండి",
+    "login_here": "ఇక్కడ లాగిన్ అవ్వండి",
+    "already_customer": "ఆల్రెడీ హవె అం అకౌంట్?",
+    "sign_up": "సైన్ అప్",
+    "login": "ప్రవేశించండి"
+  },
+  "screen_otp": {
+    "get_otp": "OTP పొందండి",
+    "resend_otp": "OTP ను మళ్ళీ పంపు",
+    "hint_text": "పంపిన OTP ని నమోదు చేయండి",
+    "resend_text": "తిరిగి పంపండి",
+    "sec": "సెకండ్స్",
+    "verify": "ధృవీకరించండి",
+    "error": {
+      "plz_verify_otp": "దయచేసి OTP ని నమోదు చేయండి"
+    }
+  },
+  "screen_register": {
+    "title": "మీ నమోదును పూర్తి చేయండి",
+    "address": {
+      "title": "చిరునామా",
+      "empty_error": "దయచేసి మీ చిరునామాను నమోదు చేయండి."
+    },
+    "pin_code": {
+      "title": "వృత్తం",
+      "validation_error": "దయచేసి చెల్లుబాటు అయ్యే సర్కిల్‌ని నమోదు చేయండి",
+      "empty_error": "దయచేసి మీ సర్కిల్‌ని నమోదు చేయండి.."
+    },
+    "register": "నమోదు చేయండి",
+    "update": "అప్డేట్",
+    "name": {
+      "title": "పూర్తి పేరు",
+      "validation_error": "దయచేసి చెల్లుబాటు అయ్యే పేరును నమోదు చేయండి",
+      "empty_error": "మీ పూర్తి పేరు నమోదు చేయండి.."
+    }
+  },
+  "screen_home": {
+    "tab_bar": {
+      "new_order": "క్రొత్త ఆర్డర్లు",
+      "in_progress": "ప్రోగ్రెస్‌లో",
+      "completed": "పూర్తయింది",
+      "accepted": "అంగీకరించబడింది"
+    },
+    "Agent_Name": "ఏజెంట్ పేరు",
+    "Order_ID": "ఆర్డర్ గుర్తింపు సంఖ్యా",
+    "Amount": "మొత్తం",
+    "Completed": "పూర్తయింది",
+    "Distance": "దూరం",
+    "Rejected": "తిరస్కరించబడింది",
+    "In_progress": "పురోగతిలో ఉంది",
+    "Not_Started": "మొదలవలేదు",
+    "Ordered_Products": "ఉత్పత్తులు ఆర్డర్",
+    "Total_Cost": "మొత్తం ఖర్చు",
+    "New": "కొత్త",
+    "accept": "అంగీకరించు",
+    "pickup": "తీసుకోవడం",
+    "drop": "డ్రాప్",
+    "reject": "reject",
+    "item": "item",
+    "pickup_images": "Pickup Images",
+    "drop_images": "Drop Images",
+    "confirm_action_mesage": "Are you sure you want to {actionName} order {orderNumber} ?"
+  },
+  "screen_account": {
+    "title": "ఖాతా",
+    "profile": "ప్రొఫైల్",
+    "about": "అబౌట్",
+    "language": "భాష",
+    "logout": "లాగ్ అవుట్",
+    "alert_data": "మీరు చెప్పేది నిజమా ! మీరు లాగ్ అవుట్ చేయాలనుకుంటున్నారా?",
+    "cancel": "రద్దు చేయండి",
+    "Edit": "ఎడిట్",
+    "version": "Version"
+  },
+  "screen_recommended": {
+    "title": "దుకాణాన్ని సిఫార్సు చేయండి",
+    "name": "షాప్ పేరు",
+    "address": "షాప్ చిరునామా",
+    "phone": "షాప్ ఫోన్ నంబర్",
+    "recommend": "సిఫార్సు చేయబడింది"
+  },
+  "screen_support": {
+    "No_contact_details_found": "సంప్రదింపు వివరాలు కనుగొనబడలేదు.",
+    "Upload_Pick_Up_Images": "పిక్ అప్ చిత్రాలను అప్‌లోడ్ చేయండి",
+    "Upload_Drop_Images": "డ్రాప్ చిత్రాలను అప్‌లోడ్ చేయండి"
+  }
+}

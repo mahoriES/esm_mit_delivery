@@ -34,8 +34,9 @@ void main() {
         child: MyAppBase(),
         supportedLocales: [
           Locale('en', 'US'),
+          Locale('hi', 'IN'),
           Locale('ka', 'IN'),
-          Locale('ml', 'IN'),
+          Locale('te', 'IN'),
           Locale('ta', 'IN')
         ],
         path: 'assets/languages',

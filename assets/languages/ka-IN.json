@@ -1,28 +1,29 @@
 {
-  "common": {
-    "closed": "ಮುಚ್ಚಲಾಗಿದೆ",
-    "view_store": "ಅಂಗಡಿ ನೋಡಿ"
-  },
   "screen_language": {
     "title": "ನಿಮ್ಮ ಆದ್ಯತೆಯ ಭಾಷೆಯನ್ನು ಆರಿಸಿ"
+  },
+  "error_messages": {
+    "load_failed": "ಲೋಡ್ ವಿಫಲವಾಗಿದೆ! ಮರುಪ್ರಯತ್ನ ಕ್ಲಿಕ್ ಮಾಡಿ!",
+    "release_to_load_more": "ಹೆಚ್ಚು ಲೋಡ್ ಮಾಡಲು ಬಿಡುಗಡೆ ಮಾಡಿ",
+    "no_more_data": "ಹೆಚ್ಚಿನ ಡೇಟಾ ಇಲ್ಲ"
   },
   "screen_phone": {
     "get_otp": "ಒಟಿಪಿ ಪಡೆಯಿರಿ",
     "hint_text": "ನಿಮ್ಮ ಮೊಬೈಲ್ ಸಂಖ್ಯೆಯನ್ನು ಟೈಪ್ ಮಾಡಿ",
     "valid_phone_error_message": "ದಯವಿಟ್ಟು ಮಾನ್ಯವಾದ ಫೋನ್ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ",
-    "new_user": "ಖಾತೆಯನ್ನು ಹೊಂದಿಲ್ಲ ? ",
-    "register_now": "ಈಗ ನೋಂದಣಿ ಮಾಡಿ",
+    "new_user": "ಖಾತೆಯನ್ನು ಹೊಂದಿಲ್ಲ? ",
+    "register_now": "ಈಗ ನೋಂದಣಿ ಮಾಡಿ",
     "login_here": "ಇಲ್ಲಿ ಲಾಗಿನ್ ಮಾಡಿ",
-    "already_customer": "ಈಗಾಗಲೇ ಖಾತೆ ಹೊಂದಿದ್ದೀರ ? ",
+    "already_customer": "ಈಗಾಗಲೇ ಖಾತೆ ಹೊಂದಿದ್ದೀರ? ",
     "sign_up": "ಸೈನ್ ಅಪ್ ಮಾಡಿ",
-    "login": "ಲಾಗಿನ್ ಮಾಡಿ"
+    "login": "ಲಾಗಿನ್"
   },
   "screen_otp": {
     "get_otp": "ಒಟಿಪಿ ಪಡೆಯಿರಿ",
-    "resend_otp": "ಮತೊಮ್ಮೆ ಒಟಿಪಿ ಕಳುಹಿಸಿ",
-    "hint_text": "ದಯವಿಟ್ಟು ಕಳುಹಿಸಿದ ಒಟಿಪಿಯನ್ನು ನಮೂದಿಸಿ",
-    "resend_text": "ಮತೊಮ್ಮೆ ಕಳುಹಿಸಿ",
-    "sec": "ಸೆಕೆಂಡು",
+    "resend_otp": "ಒಟಿಪಿಯನ್ನು ಮತ್ತೆ ಕಳುಹಿಸಿ",
+    "hint_text": "ದಯವಿಟ್ಟು <ph> ಕಳುಹಿಸಿದ ಒಟಿಪಿಯನ್ನು ನಮೂದಿಸಿ",
+    "resend_text": "ಮತ್ತೆ ಕಳುಹಿಸಿ",
+    "sec": "ಸೆಕ್",
     "verify": "ಪರಿಶೀಲಿಸಿ",
     "error": {
       "plz_verify_otp": "ದಯವಿಟ್ಟು ಒಟಿಪಿ ನಮೂದಿಸಿ"
@@ -35,65 +36,55 @@
       "empty_error": "ದಯವಿಟ್ಟು ನಿಮ್ಮ ವಿಳಾಸವನ್ನು ನಮೂದಿಸಿ."
     },
     "pin_code": {
-      "title": "ಪಿನ್ ಕೋಡ್",
-      "validation_error": "ದಯವಿಟ್ಟು ಮಾನ್ಯ ಪಿನ್ ಕೋಡ್ ನಮೂದಿಸಿ",
-      "empty_error": "ದಯವಿಟ್ಟು ನಿಮ್ಮ ಪಿನ್ ಕೋಡ್ ನಮೂದಿಸಿ."
+      "title": "ಸರ್ಕಲ್",
+      "validation_error": "ದಯವಿಟ್ಟು ಮಾನ್ಯವಾದ ಸರ್ಕಲ್ ಅನ್ನು ನಮೂದಿಸಿ",
+      "empty_error": "ದಯವಿಟ್ಟು ನಿಮ್ಮ ಸರ್ಕಲ್ ಅನ್ನು ನಮೂದಿಸಿ"
     },
-    "register": "ನೋಂದಣಿ",
+    "register": "ದಾಖಲು ಮಾಡಿ",
     "update": "ನವೀಕರಿಸಿ",
     "name": {
       "title": "ಪೂರ್ಣ ಹೆಸರು",
       "validation_error": "ದಯವಿಟ್ಟು ಮಾನ್ಯವಾದ ಹೆಸರನ್ನು ನಮೂದಿಸಿ",
-      "empty_error": "ದಯವಿಟ್ಟು ನಿಮ್ಮ ಪೂರ್ಣ ಹೆಸರನ್ನು ನಮೂದಿಸಿ."
+      "empty_error": "ದಯವಿಟ್ಟು ನಿಮ್ಮ ಪೂರ್ಣ ಹೆಸರನ್ನು ನಮೂದಿಸಿ"
     }
   },
   "screen_home": {
     "tab_bar": {
-      "all_order": "ALL ORDERS",
-      "inprogress": "IN PROGRESS",
-      "orders": "ಆದೇಶಗಳು",
-      "account": "ಖಾತೆ"
+      "new_order": "ಹೊಸ ಆದೇಶಗಳು",
+      "in_progress": "ಪ್ರಗತಿಯಲ್ಲಿದೆ",
+      "completed": "ಪೂರ್ಣಗೊಂಡಿದೆ",
+      "accepted": "ಸ್ವೀಕರಿಸಲಾಗಿದೆ"
     },
-    "store_near_you": "ನಿಮ್ಮ ಹತ್ತಿರ ಮಳಿಗೆಗಳು"
-  },
-  "screen_search": {
-    "search": "ಹುಡುಕಿ"
-  },
-  "shop": {
-    "delivery_ok": "ವಿತರಣೆ ಲಭ್ಯವಿದೆ",
-    "delivery_no": "ವಿತರಣೆ ಲಭ್ಯವಿಲ್ಲ",
-    "item_category": "ಐಟಂ ವಿಭಾಗಗಳು",
-    "pickup_order": "ಪಿಕಪ್ ಆದೇಶr"
-  },
-  "product_list": {
-    "search_placeholder": "ಐಟಂಗಾಗಿ ಹುಡುಕಿ"
-  },
-  "cart": {
-    "title": "ಕಾರ್ಟ್",
-    "view_cart": "ವಸ್ತುಗಳನ್ನು ವೀಕ್ಷಿಸಿ",
-    "total": "ಒಟ್ಟು",
-    "payment_details": "ಪಾವತಿ ವಿವರಗಳು",
-    "total_amount": "ಒಟ್ಟು ಮೊತ್ತ",
-    "delivery": "ವಿತರಣೆ",
-    "pickup": "ಎತ್ತಿಕೊಳ್ಳುವಿಕೆ",
-    "note": "ಸೂಚನೆ",
-    "store_address": "ಅಂಗಡಿ ವಿಳಾಸ",
-    "confirm_order_detail": "ನಿಮ್ಮ ಆದೇಶವನ್ನು ಇರಿಸಿ ಮತ್ತು ವ್ಯಾಪಾರಿಯಿಂದ ಅನುಮೋದನೆಗಾಗಿ ಕಾಯಿರಿ.",
-    "confirm_order": "ಆದೇಶ ಖಚಿತಪಡಿಸಿ",
-    "add_more": "ಇನ್ನಷ್ಟು ಸೇರಿಸಿ",
-    "empty_cart": "ಖಾಲಿ ಬಂಡಿ",
-    "empty_hint": "ನಿಮ್ಮ ಕಾರ್ಟ್ಗೆ ನೀವು ಇನ್ನೂ ಏನನ್ನೂ ಸೇರಿಸಿಲ್ಲ ಎಂದು ತೋರುತ್ತಿದೆ",
-    "please_collect": "ಅಂಗಡಿಯು ಸಿದ್ಧವಾದಾಗ ದಯವಿಟ್ಟು ಆದೇಶವನ್ನು ಸಂಗ್ರಹಿಸಿ"
+    "Agent_Name": "ಏಜೆಂಟ್ ಹೆಸರು",
+    "Order_ID": "ಆರ್ಡರ್ ಐಡಿ",
+    "Amount": "ಮೊತ್ತ",
+    "Completed": "ಪೂರ್ಣಗೊಂಡಿದೆ",
+    "Distance": "ದೂರ",
+    "Rejected": "ತಿರಸ್ಕರಿಸಿದ",
+    "In_progress": "ಪ್ರಗತಿಯಲ್ಲಿದೆ",
+    "Not_Started": "ಪ್ರಾರಂಭಿಸಿಲ್ಲ",
+    "Ordered_Products": "ಆದೇಶಿಸಿದ ಉತ್ಪನ್ನಗಳು",
+    "Total_Cost": "ಒಟ್ಟು ವೆಚ್ಚ",
+    "New": "ಹೊಸದು",
+    "accept": "ಒಪ್ಪಿಕೊಳ್ಳಿ",
+    "pickup": "ಎತ್ತಿಕೊಳ್ಳಿ",
+    "drop": "ಬಿಡಿ",
+    "reject": "reject",
+    "item": "item",
+    "pickup_images": "Pickup Images",
+    "drop_images": "Drop Images",
+    "confirm_action_mesage": "Are you sure you want to {actionName} order {orderNumber} ?"
   },
   "screen_account": {
     "title": "ಖಾತೆ",
     "profile": "ಪ್ರೊಫೈಲ್",
-    "recommend": "ಅಂಗಡಿಯನ್ನು ಶಿಫಾರಸು ಮಾಡಿ",
-    "about": "ಸುಮಾರು",
+    "about": "ಬಗ್ಗೆ",
     "language": "ಭಾಷೆ",
-    "logout": "ಲಾಗ್ಔಟ್",
-    "alert_data": "ನೀವು ಲಾಗ್ಔಟ್ ಮಾಡಲು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ",
-    "cancel": "ರದ್ದುಮಾಡಿ"
+    "logout": "ಲಾಗ್ ಔಟ್",
+    "alert_data": "ನೀವು ಲಾಗ್ ಔಟ್ ಮಾಡಲು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?",
+    "cancel": "ರದ್ದುಮಾಡಿ",
+    "Edit": "ತಿದ್ದು",
+    "version": "Version"
   },
   "screen_recommended": {
     "title": "ಅಂಗಡಿಯನ್ನು ಶಿಫಾರಸು ಮಾಡಿ",
@@ -102,45 +93,9 @@
     "phone": "ಅಂಗಡಿ ಫೋನ್ ಸಂಖ್ಯೆ",
     "recommend": "ಶಿಫಾರಸು ಮಾಡಿ"
   },
-  "screen_order": {
-    "title": "ಆದೇಶಗಳು",
-    "payment_details": "ಪಾವತಿ ವಿವರಗಳು",
-    "item_total": "ಐಟಂ ಒಟ್ಟು",
-    "total": "ಒಟ್ಟು ಮೊತ್ತ",
-    "pending": "ಬಾಕಿ ಉಳಿದಿದೆ",
-    "not_found": "ಯಾವುದೇ ಆದೇಶ ಕಂಡುಬಂದಿಲ್ಲ",
-    "empty_content": "ಆದೇಶವನ್ನು ಪ್ರಾರಂಭಿಸೋಣ!",
-    "cancelled": "ರದ್ದುಗೊಳಿಸಲಾಗಿದೆ",
-    "completed": "ಪೂರ್ಣಗೊಂಡಿದೆ",
-    "confirmed": "ಖಚಿತಪಡಿಸಿ",
-    "not_available": "ಐಟಂಗಳು ಲಭ್ಯವಿಲ್ಲ",
-    "cancel_order": "ಆದೇಶವನ್ನು ರದ್ದುಗೊಳಿಸಿ",
-    "re_order": "ಮತ್ತೆ-ಆದೇಶಿಸಿ",
-    "payment": "ಪಾವತಿ",
-    "update_order": "ಆದೇಶ ನವೀಕರಣ",
-    "missing": "ಕಾಣೆಯಾದ ಐಟಂ",
-    "please_pay": "ದಯವಿಟ್ಟು ನಿಮ್ಮ ಬಿಲ್ ಮೊತ್ತವನ್ನು ನೇರವಾಗಿ ನಗದು, ಕಾರ್ಡ್ ಅಥವಾ ಯುಪಿಐ ಬಳಸಿ ವ್ಯಾಪಾರಿಗಳಿಗೆ ಪಾವತಿಸಿ",
-    "rate": "ನಮ್ಮನ್ನು ರೇಟ್ ಮಾಡಿ",
-    "rate_ok": "ರೇಟಿಂಗ್ ಯಶಸ್ವಿಯಾಗಿ ಸಲ್ಲಿಸಲಾಗಿದೆ",
-    "rate_our": "ನಮ್ಮ ಸೇವೆಯನ್ನು ರೇಟ್ ಮಾಡಿ",
-    "feedback": "ದಯವಿಟ್ಟು ಪ್ರತಿಕ್ರಿಯೆಯನ್ನು ನಮೂದಿಸಿ",
-    "write_feedback": "ನಿಮ್ಮ ಪ್ರತಿಕ್ರಿಯೆಯನ್ನು ಬರೆಯಿರಿ",
-    "ok": "ಸರಿ",
-    "submit": "ಸಲ್ಲಿಸು"
-  },
   "screen_support": {
-    "title": "ಬೆಂಬಲ",
-    "issue": "ಸಮಸ್ಯೆಗಳನ್ನು ಆಯ್ಕೆಮಾಡಿ",
-    "the_order": "ವ್ಯಾಪಾರಿ ಆದೇಶವನ್ನು ಖಚಿತಪಡಿಸುವುದಿಲ್ಲ",
-    "my_order": "ನನ್ನ ಆದೇಶವನ್ನು ರದ್ದುಗೊಳಿಸಿ",
-    "delayed?": "ನನ್ನ ಆದೇಶ ಏಕೆ ವಿಳಂಬವಾಗಿದೆ?",
-    "Leakage": "ಕ್ರಮದಲ್ಲಿ ಸೋರಿಕೆ",
-    "Items_are": "ಕ್ರಮದಲ್ಲಿ ಐಟಂಗಳು ಕಾಣೆಯಾಗಿವೆ",
-    "Wrong_order": "ತಪ್ಪಾದ ಆದೇಶವನ್ನು ತಲುಪಿಸಲಾಗಿದೆ",
-    "spoilt": "ವಸ್ತುಗಳು ಹಳೆಯ ಅಥವಾ ಹಾಳಾಗಿವೆ",
-    "not_received": "ಆದೇಶವನ್ನು ಸ್ವೀಕರಿಸಲಾಗಿಲ್ಲ",
-    "submit": "ಸಲ್ಲಿಸು",
-    "type_hint": "ನಿಮ್ಮ ಪಠ್ಯವನ್ನು ಟೈಪ್ ಮಾಡಿ",
-    "select_issue_error": "ದಯವಿಟ್ಟು ಸಮಸ್ಯೆಯನ್ನು ಆರಿಸಿ"
+    "No_contact_details_found": "ಯಾವುದೇ ಸಂಪರ್ಕ ವಿವರಗಳು ಕಂಡುಬಂದಿಲ್ಲ.",
+    "Upload_Pick_Up_Images": "ಪಿಕ್-ಅಪ್ ಚಿತ್ರಗಳನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ",
+    "Upload_Drop_Images": "ಡ್ರಾಪ್ ಚಿತ್ರಗಳನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ"
   }
 }
