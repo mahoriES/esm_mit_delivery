@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:esamudaayapp/utilities/colors.dart';
 import 'package:esamudaayapp/utilities/sizeconfig.dart';
 import 'package:flutter/material.dart';
@@ -51,7 +52,7 @@ class ConfirmActionDialogue extends StatelessWidget {
                   },
                   color: Theme.of(context).errorColor,
                   child: Text(
-                    'Cancel',
+                    tr("screen_account.cancel"),
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.white,
@@ -67,7 +68,7 @@ class ConfirmActionDialogue extends StatelessWidget {
                   },
                   color: AppColors.icColors,
                   child: Text(
-                    'Confirm',
+                    tr("screen_home.confirm"),
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.white,

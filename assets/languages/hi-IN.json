@@ -70,10 +70,11 @@
         "pickup": "पिकअप",
         "drop": "ड्रॉप",
         "reject": "अस्वीकार",
-        "item": "item",
-        "pickup_images": "Pickup Images",
-        "drop_images": "Drop Images",
-        "confirm_action_mesage": "क्या आप वाकई ऑर्डर {orderNumber} {actionName} करना चाहते हैं?"
+        "item": "आइटम",
+        "pickup_images": "पिकअप छवियाँ",
+        "drop_images": "ड्रॉप छवियाँ",
+        "confirm_action_mesage": "क्या आप वाकई ऑर्डर {orderNumber} {actionName} करना चाहते हैं?",
+        "confirm": "पुष्टि करें"
     },
     "screen_account": {
         "title": "अकाउंट",
@@ -84,7 +85,7 @@
         "alert_data": "क्या आपको यकीन है ! आप लॉग आउट करना चाहते हैं?",
         "cancel": "रद्द करें",
         "Edit": "परिवर्तन करें",
-        "version": "Version"
+        "version": "संस्करण"
     },
     "screen_recommended": {
         "title": "स्टोर का सुझाव दें",
