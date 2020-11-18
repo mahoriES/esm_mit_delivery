@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:async_redux/async_redux.dart';
 import 'package:esamudaayapp/models/loading_status.dart';
 import 'package:esamudaayapp/modules/AgentHome/model/order_response.dart';
@@ -8,10 +7,6 @@ import 'package:esamudaayapp/redux/actions/general_actions.dart';
 import 'package:esamudaayapp/redux/states/app_state.dart';
 import 'package:esamudaayapp/utilities/URLs.dart';
 import 'package:esamudaayapp/utilities/api_manager.dart';
-import 'package:esamudaayapp/utilities/location.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:location/location.dart';
 
 class UpdateSelectedOrder extends ReduxAction<AppState> {
   final TransitDetails selectedOrder;
@@ -19,10 +14,20 @@ class UpdateSelectedOrder extends ReduxAction<AppState> {
   UpdateSelectedOrder({this.selectedOrder});
   @override
   FutureOr<AppState> reduce() {
-    // TODO: implement reduce
     return state.copyWith(
         homePageState:
             state.homePageState.copyWith(selectedOrder: selectedOrder));
+  }
+}
+
+class UpdateSelectedTabAction extends ReduxAction<AppState> {
+  final index;
+  UpdateSelectedTabAction(this.index);
+
+  @override
+  FutureOr<AppState> reduce() {
+    return state.copyWith(
+        homePageState: state.homePageState.copyWith(currentIndex: index));
   }
 }
 
@@ -34,9 +39,10 @@ class GetAgentOrderList extends ReduxAction<AppState> {
   @override
   FutureOr<AppState> reduce() async {
     var response = await APIManager.shared.request(
-        url: ApiURL.getAgentOrderListURL,
-        params: {"filter": filter},
-        requestType: RequestType.get);
+      url: ApiURL.getAgentOrderListURL,
+      params: {"filter": filter},
+      requestType: RequestType.get,
+    );
     if (response.status == ResponseStatus.error404)
       throw UserException(response.data['message']);
     else if (response.status == ResponseStatus.error500)
@@ -44,13 +50,27 @@ class GetAgentOrderList extends ReduxAction<AppState> {
     else {
       var responseModel = OrderResponse.fromJson(response.data);
       if (url != null) {
-        var pastOrders = state.homePageState.orders;
+        var pastOrders = state.homePageState.ordersList[filter].results;
         var currentOrders = responseModel.results;
         responseModel.results = pastOrders + currentOrders;
       }
       return state.copyWith(
-          homePageState:
-              state.homePageState.copyWith(orders: responseModel.results));
+          homePageState: state.homePageState.copyWith(
+        orderList: {
+          OrderStatusStrings.pending: filter == OrderStatusStrings.pending
+              ? responseModel
+              : state.homePageState.ordersList[OrderStatusStrings.pending],
+          OrderStatusStrings.accepted: filter == OrderStatusStrings.accepted
+              ? responseModel
+              : state.homePageState.ordersList[OrderStatusStrings.accepted],
+          OrderStatusStrings.picked: filter == OrderStatusStrings.picked
+              ? responseModel
+              : state.homePageState.ordersList[OrderStatusStrings.picked],
+          OrderStatusStrings.dropped: filter == OrderStatusStrings.dropped
+              ? responseModel
+              : state.homePageState.ordersList[OrderStatusStrings.dropped],
+        },
+      ));
     }
   }
 
@@ -76,26 +96,39 @@ class GetAgentTransitOrderList extends ReduxAction<AppState> {
   @override
   FutureOr<AppState> reduce() async {
     var response = await APIManager.shared.request(
-        url: url != null ? url : ApiURL.getTransitIdURL,
-        params: {"filter": filter},
-        requestType: RequestType.get);
+      url: url != null ? url : ApiURL.getTransitIdURL,
+      params: {"filter": filter},
+      requestType: RequestType.get,
+    );
     if (response.status == ResponseStatus.error404)
-      //throw UserException(response.data['message']);
-      return null;
+      throw UserException(response.data['message']);
     else if (response.status == ResponseStatus.error500)
-      return null;
-//      throw UserException('Something went wrong');
+      throw UserException('Something went wrong');
     else {
       var responseModel = OrderResponse.fromJson(response.data);
       if (url != null) {
-        var pastOrders = state.homePageState.orders;
+        var pastOrders = state.homePageState.ordersList[filter].results;
         var currentOrders = responseModel.results;
         responseModel.results = pastOrders + currentOrders;
       }
 
       return state.copyWith(
-          homePageState:
-              state.homePageState.copyWith(orders: responseModel.results));
+          homePageState: state.homePageState.copyWith(
+        orderList: {
+          OrderStatusStrings.pending: filter == OrderStatusStrings.pending
+              ? responseModel
+              : state.homePageState.ordersList[OrderStatusStrings.pending],
+          OrderStatusStrings.accepted: filter == OrderStatusStrings.accepted
+              ? responseModel
+              : state.homePageState.ordersList[OrderStatusStrings.accepted],
+          OrderStatusStrings.picked: filter == OrderStatusStrings.picked
+              ? responseModel
+              : state.homePageState.ordersList[OrderStatusStrings.picked],
+          OrderStatusStrings.dropped: filter == OrderStatusStrings.dropped
+              ? responseModel
+              : state.homePageState.ordersList[OrderStatusStrings.dropped],
+        },
+      ));
     }
   }
 
@@ -109,57 +142,5 @@ class GetAgentTransitOrderList extends ReduxAction<AppState> {
   void after() {
     dispatch(ChangeLoadingStatusAction(LoadingStatus.success));
     super.after();
-  }
-}
-
-class GetLocationAction extends ReduxAction<AppState> {
-  @override
-  FutureOr<AppState> reduce() async {
-    LocationData currentLocation;
-
-    var location = new Location();
-
-    var _serviceEnabled = await location.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
-      if (!_serviceEnabled) {
-        return null;
-      }
-    }
-
-    if (await location.hasPermission() == PermissionStatus.granted) {
-      currentLocation = await location.getLocation();
-      if (currentLocation != null) {
-        List<Placemark> placeMark = await Geolocator().placemarkFromCoordinates(
-            currentLocation.latitude, currentLocation.longitude);
-        return state.copyWith(
-            homePageState:
-                state.homePageState.copyWith(currentLocation: placeMark.first));
-      }
-    } else {
-      var status = await location.requestPermission();
-
-      if (status == PermissionStatus.granted) {
-        currentLocation = await location.getLocation();
-        if (currentLocation != null) {
-          List<Placemark> placeMark = await Geolocator()
-              .placemarkFromCoordinates(
-                  currentLocation.latitude, currentLocation.longitude);
-          return state.copyWith(
-              homePageState: state.homePageState
-                  .copyWith(currentLocation: placeMark.first));
-        } else {
-          return null;
-        }
-      } else {
-        Fluttertoast.showToast(
-                msg: "Please enable location permission from phone settings")
-            .whenComplete(() async {
-          Future.delayed(Duration(seconds: 2)).then((value) => goToSettings());
-        });
-        return null;
-      }
-    }
-    return null;
   }
 }

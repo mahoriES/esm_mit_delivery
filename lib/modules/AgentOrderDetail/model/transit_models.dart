@@ -1,5 +1,4 @@
 import 'package:esamudaayapp/modules/AgentHome/model/order_response.dart';
-import 'package:esamudaayapp/modules/AgentOrderDetail/model/drop_image.dart';
 import 'package:esamudaayapp/modules/AgentOrderDetail/model/pick_image.dart';
 
 class TransitDetails {
@@ -12,7 +11,7 @@ class TransitDetails {
   PickupAddress dropAddress;
   String created;
   String completed;
-  int distance;
+  int distanceInMeters;
   List<ImageResponse> pickupImages;
   List<ImageResponse> dropImages;
   Order order;
@@ -26,7 +25,7 @@ class TransitDetails {
       this.dropAddress,
       this.created,
       this.completed,
-      this.distance,
+      this.distanceInMeters,
       this.pickupImages,
       this.dropImages,
       this.order});
@@ -49,7 +48,7 @@ class TransitDetails {
         : null;
     created = json['created'];
     completed = json['completed'];
-    distance = json['distance'];
+    distanceInMeters = json['distance'];
     if (json['pickup_images'] != null) {
       pickupImages = new List<ImageResponse>();
       json['pickup_images'].forEach((v) {
@@ -84,7 +83,7 @@ class TransitDetails {
     }
     data['created'] = this.created;
     data['completed'] = this.completed;
-    data['distance'] = this.distance;
+    data['distance'] = this.distanceInMeters;
     if (this.pickupImages != null) {
       data['pickup_images'] = this.pickupImages.map((v) => v.toJson()).toList();
     }

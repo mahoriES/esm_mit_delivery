@@ -1,10 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
-
-import 'package:async/async.dart';
 import 'package:async_redux/async_redux.dart';
+import 'package:dio/dio.dart';
 import 'package:esamudaayapp/models/loading_status.dart';
+import 'package:esamudaayapp/modules/AgentHome/action/AgentAction.dart';
+import 'package:esamudaayapp/modules/AgentHome/model/order_response.dart';
 import 'package:esamudaayapp/modules/AgentOrderDetail/model/drop_image.dart';
 import 'package:esamudaayapp/modules/AgentOrderDetail/model/pick_image.dart';
 import 'package:esamudaayapp/modules/AgentOrderDetail/model/transit_models.dart';
@@ -13,9 +13,9 @@ import 'package:esamudaayapp/redux/states/app_state.dart';
 import 'package:esamudaayapp/utilities/URLs.dart';
 import 'package:esamudaayapp/utilities/api_manager.dart';
 import 'package:esamudaayapp/utilities/user_manager.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
+import 'package:async/async.dart';
 
 class GetOrderDetailsAction extends ReduxAction<AppState> {
   @override
@@ -86,41 +86,30 @@ class GetTransitDetailsAction extends ReduxAction<AppState> {
 }
 
 class AcceptOrderAction extends ReduxAction<AppState> {
-  final ImageResponse imageResponse;
-  AcceptOrderAction({this.imageResponse});
-
   @override
   FutureOr<AppState> reduce() async {
     var response = await APIManager.shared.request(
-        url: ApiURL.getOrderDetails +
-            '${state.homePageState.selectedOrder.requestId}',
-        params: {"": ""},
-        requestType: RequestType.post);
+      url: ApiURL.getOrderDetails +
+          '${state.homePageState.selectedOrder.requestId}',
+      params: {},
+      requestType: RequestType.post,
+    );
     if (response.status == ResponseStatus.error404)
       throw UserException(response.data['message']);
     else if (response.status == ResponseStatus.error500)
       throw UserException('Something went wrong');
     else if (response.status == ResponseStatus.success200) {
       var responseModel = TransitDetails.fromJson(response.data);
-      await UserManager.saveOrderProgressStatus(status: true);
-      await UserManager.saveCurrentOrderId(
-          orderId: responseModel.order.orderId);
-      state.homePageState.orders
-          .removeWhere((item) => item.transitId == responseModel.transitId);
-      dispatch(PickOrderAction(
-          pickImage: PickImage(
-              lat: state.homePageState.currentLocation.position.latitude,
-              lon: state.homePageState.currentLocation.position.longitude,
-              pickupImages: [
-            PickupImages(
-              photoId:
-                  imageResponse.photoId != null ? imageResponse.photoId : "",
-            )
-          ])));
+      // disptach these events to refresh the orders list
+      dispatch(GetAgentOrderList(filter: OrderStatusStrings.accepted));
+      dispatch(GetAgentOrderList(filter: OrderStatusStrings.pending));
+
       return state.copyWith(
-          homePageState:
-              state.homePageState.copyWith(selectedOrder: responseModel));
+        homePageState:
+            state.homePageState.copyWith(selectedOrder: responseModel),
+      );
     }
+    return null;
   }
 
   @override
@@ -143,19 +132,25 @@ class PickOrderAction extends ReduxAction<AppState> {
   @override
   FutureOr<AppState> reduce() async {
     var response = await APIManager.shared.request(
-        url: ApiURL.getOrderDetails +
-            '${state.homePageState.selectedOrder.requestId}/pick',
-        params: pickImage.toJson(),
-        requestType: RequestType.post);
+      url: ApiURL.getOrderDetails +
+          '${state.homePageState.selectedOrder.requestId}/pick',
+      params: {}, //pickImage?.toJson(),
+      requestType: RequestType.post,
+    );
     if (response.status == ResponseStatus.error404)
       throw UserException(response.data['message']);
     else if (response.status == ResponseStatus.error500)
       throw UserException('Something went wrong');
     else {
       var responseModel = TransitDetails.fromJson(response.data);
+      // disptach these events to refresh the orders list
+      dispatch(GetAgentOrderList(filter: OrderStatusStrings.accepted));
+      dispatch(GetAgentTransitOrderList(filter: OrderStatusStrings.picked));
+
       return state.copyWith(
-          homePageState:
-              state.homePageState.copyWith(selectedOrder: responseModel));
+        homePageState:
+            state.homePageState.copyWith(selectedOrder: responseModel),
+      );
     }
   }
 
@@ -176,22 +171,25 @@ class DropOrderAction extends ReduxAction<AppState> {
   final DropImage dropImage;
 
   DropOrderAction({this.dropImage});
+
   @override
   FutureOr<AppState> reduce() async {
     var response = await APIManager.shared.request(
-        url: ApiURL.getTransitIdURL +
-            '/${state.homePageState.selectedOrder.transitId}/drop',
-        params: dropImage.toJson(),
-        requestType: RequestType.post);
+      url: ApiURL.getTransitIdURL +
+          '/${state.homePageState.selectedOrder.transitId}/drop',
+      params: {},
+      requestType: RequestType.post,
+    );
     if (response.status == ResponseStatus.error404)
       throw UserException(response.data['message']);
     else if (response.status == ResponseStatus.error500)
       throw UserException('Something went wrong');
     else {
       var responseModel = TransitDetails.fromJson(response.data);
-      await UserManager.saveOrderProgressStatus(status: false);
-      state.homePageState.orders
-          .removeWhere((item) => item.transitId == responseModel.transitId);
+      // disptach these events to refresh the orders list
+      dispatch(GetAgentTransitOrderList(filter: OrderStatusStrings.picked));
+      dispatch(GetAgentTransitOrderList(filter: OrderStatusStrings.dropped));
+
       return state.copyWith(
           homePageState:
               state.homePageState.copyWith(selectedOrder: responseModel));
@@ -215,19 +213,23 @@ class RejectOrderAction extends ReduxAction<AppState> {
   @override
   FutureOr<AppState> reduce() async {
     var response = await APIManager.shared.request(
-        url: ApiURL.getOrderDetails +
-            '${state.homePageState.selectedOrder.requestId}',
-        params: {"": ""},
-        requestType: RequestType.get);
+      url: ApiURL.getOrderDetails +
+          '${state.homePageState.selectedOrder.requestId}',
+      params: {},
+      requestType: RequestType.delete,
+    );
     if (response.status == ResponseStatus.error404)
       throw UserException(response.data['message']);
     else if (response.status == ResponseStatus.error500)
       throw UserException('Something went wrong');
     else {
       var responseModel = TransitDetails.fromJson(response.data);
+      // disptach these events to refresh the orders list
+      dispatch(GetAgentOrderList(filter: OrderStatusStrings.pending));
       return state.copyWith(
-          homePageState:
-              state.homePageState.copyWith(selectedOrder: responseModel));
+        homePageState:
+            state.homePageState.copyWith(selectedOrder: responseModel),
+      );
     }
   }
 
@@ -246,63 +248,88 @@ class RejectOrderAction extends ReduxAction<AppState> {
 
 class UploadImageAction extends ReduxAction<AppState> {
   final File imageFile;
-  final bool isPickUp;
+  final List<ImageResponse> existingImages;
 
-  UploadImageAction({this.imageFile, this.isPickUp});
+  UploadImageAction(this.imageFile, this.existingImages);
+
   @override
   FutureOr<AppState> reduce() async {
     String token = await UserManager.getToken();
+    if (token != null) {
+      var stream =
+          new http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
+      var length = await imageFile.length();
 
-    var stream =
-        new http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
-    var length = await imageFile.length();
+      FormData formData = new FormData.fromMap(
+        {
+          "file": new MultipartFile(
+            stream,
+            length,
+            filename: basename(imageFile.path),
+          )
+        },
+      );
 
-    var uri = Uri.parse(ApiURL.imageUpload);
-    print(uri);
+      var response = await APIManager.shared.request(
+        url: ApiURL.imageUpload,
+        params: formData,
+        requestType: RequestType.post,
+      );
 
-    var request = new http.MultipartRequest("POST", uri);
-    if (token != null && token != "") {
-      Map<String, String> headers = {"Authorization": "JWT $token"};
-      request.headers.addAll(headers);
-    }
-
-    var multipartFile = new http.MultipartFile(
-      'file',
-      stream,
-      length,
-      filename: basename(imageFile.path),
-    );
-    //contentType: new MediaType('image', 'png'));
-
-    request.files.add(multipartFile);
-
-    var response = await request.send();
-    print(response.statusCode);
-
-    Fluttertoast.showToast(
-        msg: response.reasonPhrase != null ? response.reasonPhrase : "");
-    response.stream.transform(utf8.decoder).listen((value) {
-      print("value");
-      print(value);
-      final body = json.decode(value);
-      print(body);
-      ImageResponse imageResponse = ImageResponse.fromJson(body);
-
-      if (isPickUp) {
-        dispatch(AcceptOrderAction(imageResponse: imageResponse));
-      } else {
-        dispatch(DropOrderAction(
-            dropImage: DropImage(
-                lat: state.homePageState.currentLocation.position.latitude,
-                lon: state.homePageState.currentLocation.position.longitude,
-                dropImages: [
-              DropImages(
-                  photoId: imageResponse.photoId != null
-                      ? imageResponse.photoId
-                      : "")
-            ])));
+      if (response.status == ResponseStatus.error404)
+        throw UserException(response.data['message']);
+      else if (response.status == ResponseStatus.error500)
+        throw UserException('Something went wrong');
+      else {
+        ImageResponse _imageResponse = ImageResponse.fromJson(response.data);
+        dispatch(UpdateOrderImagesAction(existingImages..add(_imageResponse)));
       }
-    });
+    } else {
+      throw Exception('Auth Failed');
+    }
+    return null;
+  }
+
+  @override
+  FutureOr<void> before() {
+    dispatch(ChangeLoadingStatusAction(LoadingStatus.loading));
+    return super.before();
+  }
+
+  @override
+  void after() {
+    dispatch(ChangeLoadingStatusAction(LoadingStatus.success));
+    super.after();
+  }
+}
+
+class UpdateOrderImagesAction extends ReduxAction<AppState> {
+  final List<ImageResponse> imageResponse;
+  UpdateOrderImagesAction(this.imageResponse);
+
+  @override
+  FutureOr<AppState> reduce() async {
+    var response = await APIManager.shared.request(
+      url: ApiURL.putImageInOrder +
+          '${state.homePageState.selectedOrder.transitId}/images',
+      params: {
+        "images": List.generate(
+            imageResponse.length, (index) => imageResponse[index].toJson())
+      },
+      requestType: RequestType.put,
+    );
+    if (response.status == ResponseStatus.error404)
+      throw UserException(response.data['message']);
+    else if (response.status == ResponseStatus.error500)
+      throw UserException('Something went wrong');
+    else {
+      var responseModel = TransitDetails.fromJson(response.data);
+
+      return state.copyWith(
+        homePageState:
+            state.homePageState.copyWith(selectedOrder: responseModel),
+      );
+    }
   }
 
   @override

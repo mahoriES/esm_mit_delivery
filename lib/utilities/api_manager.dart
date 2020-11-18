@@ -166,6 +166,44 @@ class APIManager {
           return ResponseModel(null, ResponseStatus.error500);
         }
         break;
+
+      case RequestType.delete:
+        try {
+          return await dio.delete(url, data: params).then((response) {
+            if (response.statusCode == 400) {
+              return ResponseModel(response.data, ResponseStatus.error404);
+            } else if (response.statusCode >= 500) {
+              return ResponseModel(response.data, ResponseStatus.error500);
+            } else if (response.statusCode == 401) {
+              return ResponseModel(response.data, ResponseStatus.error401);
+            } else {
+              return ResponseModel(response.data, ResponseStatus.success200);
+            }
+          });
+        } catch (e) {
+          print(e);
+          return ResponseModel(null, ResponseStatus.error500);
+        }
+        break;
+
+      case RequestType.put:
+        try {
+          return await dio.put(url, data: params).then((response) {
+            if (response.statusCode == 400) {
+              return ResponseModel(response.data, ResponseStatus.error404);
+            } else if (response.statusCode >= 500) {
+              return ResponseModel(response.data, ResponseStatus.error500);
+            } else if (response.statusCode == 401) {
+              return ResponseModel(response.data, ResponseStatus.error401);
+            } else {
+              return ResponseModel(response.data, ResponseStatus.success200);
+            }
+          });
+        } catch (e) {
+          print(e);
+          return ResponseModel(null, ResponseStatus.error500);
+        }
+        break;
     }
     return null;
   }

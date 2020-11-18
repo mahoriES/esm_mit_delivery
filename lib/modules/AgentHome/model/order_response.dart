@@ -1,5 +1,14 @@
 import 'package:esamudaayapp/modules/AgentOrderDetail/model/transit_models.dart';
 
+class OrderStatusStrings {
+  static const String pending = "PENDING";
+  static const String accepted = "ACCEPTED";
+  static const String picked = "PICKED";
+  static const String dropped = "DROPPED";
+  static const String orderCompleted = "COMPLETED";
+  static const String rejected = "REJECTED";
+}
+
 class OrderResponse {
   int count;
   String next;

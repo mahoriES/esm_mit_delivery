@@ -6,7 +6,6 @@ import 'package:esamudaayapp/modules/AgentHome/view/my_home.dart';
 import 'package:esamudaayapp/modules/AgentOrderDetail/view/order_detail.dart';
 import 'package:esamudaayapp/modules/Profile/views/profile_view.dart';
 import 'package:esamudaayapp/modules/accounts/views/accounts_view.dart';
-import 'package:esamudaayapp/modules/accounts/views/recommended_shop.dart';
 
 import 'package:esamudaayapp/modules/login/actions/login_actions.dart';
 import 'package:esamudaayapp/modules/login/views/login_View.dart';
@@ -157,7 +156,6 @@ class MyAppBase extends StatelessWidget {
 
           "/SMAlertView": (BuildContext context) => SMAlertView(),
 
-          "/RecommendShop": (BuildContext context) => RecommendedShop(),
           "/profile": (BuildContext context) => ProfileView(),
 
 //          "/SelectAddressView": (BuildContext context) => SelectAddressView()
