@@ -76,40 +76,69 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                               snapshot.selectedOrder.order.orderStatus,
                               hasStatusName: false,
                             ),
-                            Padding(
-                              padding:
-                                  EdgeInsets.symmetric(horizontal: 8.toWidth),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    '${tr("screen_home.Order_ID")} ${snapshot.selectedOrder.order.orderShortNumber},',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16.toFont,
-                                      fontFamily: 'Avenir',
+                            Expanded(
+                              child: Padding(
+                                padding:
+                                    EdgeInsets.symmetric(horizontal: 8.toWidth),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      '${tr("screen_home.Order_ID")} ${snapshot.selectedOrder.order.orderShortNumber},',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16.toFont,
+                                        fontFamily: 'Avenir',
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    CommonMethods.convertDateFromString(
-                                        snapshot.selectedOrder.order.created),
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12.toFont,
-                                      fontFamily: 'Avenir',
+                                    Text(
+                                      CommonMethods.convertDateFromString(
+                                          snapshot.selectedOrder.order.created),
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 12.toFont,
+                                        fontFamily: 'Avenir',
+                                      ),
                                     ),
-                                  ),
-                                  if (snapshot.selectedOrder.order
-                                              .orderStatus ==
-                                          OrderStatusStrings.orderCompleted &&
-                                      status ==
-                                          OrderStatusStrings.accepted) ...[
+                                    if (snapshot.selectedOrder.order
+                                                .orderStatus ==
+                                            OrderStatusStrings.orderCompleted &&
+                                        status ==
+                                            OrderStatusStrings.accepted) ...[
+                                      RichText(
+                                        text: TextSpan(
+                                          children: [
+                                            TextSpan(
+                                              text: tr("screen_home.Completed"),
+                                              style: TextStyle(
+                                                color: Color(0xff505050),
+                                                fontSize: 12,
+                                                fontFamily: 'Avenir',
+                                                fontWeight: FontWeight.w900,
+                                              ),
+                                            ),
+                                            TextSpan(
+                                              text: CommonMethods
+                                                  .convertDateFromString(
+                                                      snapshot.selectedOrder
+                                                          .order.created),
+                                              style: TextStyle(
+                                                color: Color(0xff959595),
+                                                fontSize: 12,
+                                                fontFamily: 'CircularStd-Book',
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
                                     RichText(
                                       text: TextSpan(
                                         children: [
                                           TextSpan(
-                                            text: tr("screen_home.Completed"),
+                                            text:
+                                                '${tr('screen_home.Distance')} ',
                                             style: TextStyle(
                                               color: Color(0xff505050),
                                               fontSize: 12,
@@ -118,11 +147,8 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                             ),
                                           ),
                                           TextSpan(
-                                            text: CommonMethods
-                                                .convertDateFromString(snapshot
-                                                    .selectedOrder
-                                                    .order
-                                                    .created),
+                                            text:
+                                                ': ${CommonMethods.getDistanceinFormat(snapshot.selectedOrder.distanceInMeters)}',
                                             style: TextStyle(
                                               color: Color(0xff959595),
                                               fontSize: 12,
@@ -133,35 +159,9 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                       ),
                                     ),
                                   ],
-                                  RichText(
-                                    text: TextSpan(
-                                      children: [
-                                        TextSpan(
-                                          text:
-                                              '${tr('screen_home.Distance')} ',
-                                          style: TextStyle(
-                                            color: Color(0xff505050),
-                                            fontSize: 12,
-                                            fontFamily: 'Avenir',
-                                            fontWeight: FontWeight.w900,
-                                          ),
-                                        ),
-                                        TextSpan(
-                                          text:
-                                              ': ${CommonMethods.getDistanceinFormat(snapshot.selectedOrder.distanceInMeters)}',
-                                          style: TextStyle(
-                                            color: Color(0xff959595),
-                                            fontSize: 12,
-                                            fontFamily: 'CircularStd-Book',
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
                             ),
-                            Spacer(),
                             Column(
                               children: <Widget>[
                                 Text(
@@ -179,8 +179,8 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                       ? snapshot.selectedOrder.order.orderItems
                                               .length
                                               .toString() +
-                                          " item"
-                                      : "0" + " item",
+                                          " ${tr('screen_home.item')}"
+                                      : "0" + " ${tr('screen_home.item')}",
                                   style: TextStyle(
                                     color: Color(0xff9d9797),
                                     fontFamily: 'Avenir',
@@ -188,7 +188,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                   ),
                                 ),
                               ],
-                            ),
+                            )
                           ],
                         ),
                       ),
@@ -225,6 +225,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                               ),
                             ),
                             FloatingActionButton(
+                              heroTag: "callButton",
                               onPressed: () {
                                 _makePhoneCall(
                                     mobile:
@@ -244,7 +245,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                             Flexible(
                               child: RichText(
                                 text: TextSpan(
-                                  text: "Pickup :\n",
+                                  text: tr("screen_home.pickup") + "\n",
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 16.toFont,
@@ -267,6 +268,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                               ),
                             ),
                             FloatingActionButton(
+                              heroTag: "pickupButton",
                               onPressed: () {
                                 LocationPoint location = snapshot.selectedOrder
                                     .order.pickupAddress.locationPoint;
@@ -288,7 +290,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                             Flexible(
                               child: RichText(
                                 text: TextSpan(
-                                  text: "Drop :\n",
+                                  text: tr("screen_home.drop") + "\n",
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 16.toFont,
@@ -311,6 +313,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                               ),
                             ),
                             FloatingActionButton(
+                              heroTag: "dropLocationButton",
                               onPressed: () {
                                 LocationPoint location = snapshot.selectedOrder
                                     .order.deliveryAddress.locationPoint;
@@ -334,7 +337,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                 snapshot
                                     .selectedOrder.pickupImages.isNotEmpty) ...[
                               Text(
-                                "Pickup Images:",
+                                tr("screen_home.pickup_images"),
                                 style: TextStyle(
                                   fontSize: 16.toFont,
                                   color: Colors.black,
@@ -365,7 +368,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                     .selectedOrder.dropImages.isNotEmpty) ...[
                               SizedBox(height: 10.toHeight),
                               Text(
-                                "Drop Images:",
+                                tr("screen_home.drop_images"),
                                 style: TextStyle(
                                   fontSize: 16.toFont,
                                   color: Colors.black,
@@ -491,12 +494,14 @@ class _ImagesView extends StatelessWidget {
                           Icon(Icons.add_circle_outline,
                               color: AppColors.icColors),
                           SizedBox(height: 10.toHeight),
-                          Text(
-                            tr(isPickUpImageUpload
-                                ? 'screen_support.Upload_Pick_Up_Images'
-                                : 'screen_support.Upload_Drop_Images'),
-                            style: TextStyle(color: AppColors.icColors),
-                            textAlign: TextAlign.center,
+                          Flexible(
+                            child: Text(
+                              tr(isPickUpImageUpload
+                                  ? 'screen_support.Upload_Pick_Up_Images'
+                                  : 'screen_support.Upload_Drop_Images'),
+                              style: TextStyle(color: AppColors.icColors),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                         ],
                       ),
@@ -575,8 +580,13 @@ class _BottomActionButton extends StatelessWidget {
         showDialog(
           context: context,
           builder: (context) => ConfirmActionDialogue(
-            message:
-                "Are you sure you want to $statusString order $orderShortNumber ?",
+            message: tr(
+              "screen_home.confirm_action_mesage",
+              namedArgs: {
+                'actionName': statusString,
+                'orderNumber': orderShortNumber,
+              },
+            ),
             onConfirm: onConfirm,
           ),
         );

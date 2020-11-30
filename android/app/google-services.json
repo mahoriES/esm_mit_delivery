@@ -8,6 +8,43 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:477395312345:android:852b6babe954d3f466e8c8",
+        "android_client_info": {
+          "package_name": "com.esamudaay.agent"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "477395312345-9tlr75m4kelqdgau4n8uuk6s3q07hiln.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCB5eWzRLndIZxpn_XmuyweL6_VPlSuKIE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "477395312345-9tlr75m4kelqdgau4n8uuk6s3q07hiln.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "477395312345-upldk7llhm7ht5e4pmlve2ltms2usukp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.esamudaay.consumer",
+                "app_store_id": "1532727652"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:477395312345:android:1a7e7f3a80d216ad66e8c8",
         "android_client_info": {
           "package_name": "com.esamudaay.customer"
@@ -32,10 +69,11 @@
               "client_type": 3
             },
             {
-              "client_id": "477395312345-ak0esb1ns2ca9jogtv2pe47868rgrahn.apps.googleusercontent.com",
+              "client_id": "477395312345-upldk7llhm7ht5e4pmlve2ltms2usukp.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.esamudaay.customer"
+                "bundle_id": "com.esamudaay.consumer",
+                "app_store_id": "1532727652"
               }
             }
           ]

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:esamudaayapp/utilities/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -30,11 +31,17 @@ class ImageDisplay extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               fit: BoxFit.contain,
             )
-          : Image.network(
-              imageUrl,
+          : CachedNetworkImage(
+              height: double.infinity,
+              width: double.infinity,
+              imageUrl: imageUrl ?? "",
               fit: BoxFit.contain,
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
+              placeholder: (context, url) => Center(
+                child: CircularProgressIndicator(),
+              ),
+              errorWidget: (context, url, _) => Center(
+                child: CircularProgressIndicator(),
+              ),
             ),
     );
   }

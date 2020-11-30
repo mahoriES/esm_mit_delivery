@@ -2,28 +2,31 @@ import 'package:async_redux/async_redux.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:esamudaayapp/redux/states/app_state.dart';
 import 'package:esamudaayapp/utilities/colors.dart';
+import 'package:esamudaayapp/utilities/sizeconfig.dart';
 import 'package:flutter/material.dart';
 
-class LanguageScreen extends StatefulWidget {
-  final bool fromAccount = false;
-  @override
-  _LanguageScreenState createState() => _LanguageScreenState();
-}
-
-class _LanguageScreenState extends State<LanguageScreen> {
+class LanguageScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Map arguments = ModalRoute.of(context).settings.arguments as Map;
 
     if (arguments != null) print("from_account ${arguments['fromAccount']}");
 
+    final Map<String, Locale> locales = {
+      "English": Locale('en', 'US'),
+      "हिंदी": Locale('hi', 'IN'),
+      "ಕನ್ನಡ": Locale('ka', 'IN'),
+      "தமிழ்": Locale('ta', 'IN'),
+      "తెలుగు": Locale('te', 'IN'),
+    };
     return Scaffold(
       body: StoreConnector<AppState, _ViewModel>(
-          onInit: (store) {},
-          model: _ViewModel(),
-          builder: (context, snapshot) {
-            return Scaffold(
-              body: Column(children: [
+        onInit: (store) {},
+        model: _ViewModel(),
+        builder: (context, snapshot) {
+          return Scaffold(
+            body: Column(
+              children: [
                 // Rectangle 1560
                 Container(
                   width: MediaQuery.of(context).size.width,
@@ -46,62 +49,48 @@ class _LanguageScreenState extends State<LanguageScreen> {
                 ),
                 // Choose your Preferred Language
 
-                ListTile(
-                  title: Text("English",
-                      style: const TextStyle(
-                          color: const Color(0xff2e2e2e),
-                          fontWeight: FontWeight.w400,
-                          fontFamily: "Poppins",
-                          fontStyle: FontStyle.normal,
-                          fontSize: 20.0),
-                      textAlign: TextAlign.left),
-                  trailing: Icon(Icons.arrow_forward_ios),
-                  onTap: () {
-                    EasyLocalization.of(context).locale = Locale('en', 'US');
-                    snapshot.navigateToPhoneNumberPage(
-                        (arguments != null) ? arguments['fromAccount'] : false);
-                  },
+                ListView.builder(
+                  itemCount: locales.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) => ListTile(
+                    tileColor:
+                        context.locale == locales[locales.keys.elementAt(index)]
+                            ? AppColors.icColors
+                            : Colors.white,
+                    title: Text(
+                      locales.keys.elementAt(index),
+                      style: TextStyle(
+                        color: context.locale ==
+                                locales[locales.keys.elementAt(index)]
+                            ? Colors.white
+                            : Colors.black,
+                        fontWeight: FontWeight.w400,
+                        fontFamily: "Poppins",
+                        fontStyle: FontStyle.normal,
+                        fontSize: 20.toFont,
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                    trailing: Icon(
+                      Icons.arrow_forward_ios,
+                      color: context.locale ==
+                              locales[locales.keys.elementAt(index)]
+                          ? Colors.white
+                          : Colors.black,
+                    ),
+                    onTap: () {
+                      context.locale = locales[locales.keys.elementAt(index)];
+                      snapshot.navigateToPhoneNumberPage((arguments != null)
+                          ? arguments['fromAccount']
+                          : false);
+                    },
+                  ),
                 ),
-
-                // English
-
-                // മലയാളം
-                ListTile(
-                  title: Text("മലയാളം",
-                      style: const TextStyle(
-                          color: const Color(0xff2e2e2e),
-                          fontWeight: FontWeight.w300,
-                          fontFamily: "Gotham",
-                          fontStyle: FontStyle.normal,
-                          fontSize: 20.0),
-                      textAlign: TextAlign.left),
-                  trailing: Icon(Icons.arrow_forward_ios),
-                  onTap: () {
-                    EasyLocalization.of(context).locale = Locale('ml', 'IN');
-                    snapshot.navigateToPhoneNumberPage(
-                        (arguments != null) ? arguments['fromAccount'] : false);
-                  },
-                ),
-                // ಕನ್ನಡ
-                ListTile(
-                  title: Text("ಕನ್ನಡ",
-                      style: const TextStyle(
-                          color: const Color(0xff2e2e2e),
-                          fontWeight: FontWeight.w300,
-                          fontFamily: "Gotham",
-                          fontStyle: FontStyle.normal,
-                          fontSize: 20.0),
-                      textAlign: TextAlign.left),
-                  trailing: Icon(Icons.arrow_forward_ios),
-                  onTap: () {
-                    EasyLocalization.of(context).locale = Locale('ka', 'IN');
-                    snapshot.navigateToPhoneNumberPage(
-                        (arguments != null) ? arguments['fromAccount'] : false);
-                  },
-                ),
-              ]),
-            );
-          }),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

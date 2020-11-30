@@ -1,47 +1,59 @@
 import 'dart:async';
-
 import 'package:async_redux/async_redux.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:esamudaayapp/modules/AgentHome/view/my_home.dart';
 import 'package:esamudaayapp/modules/AgentOrderDetail/view/order_detail.dart';
 import 'package:esamudaayapp/modules/Profile/views/profile_view.dart';
 import 'package:esamudaayapp/modules/accounts/views/accounts_view.dart';
-
 import 'package:esamudaayapp/modules/login/actions/login_actions.dart';
 import 'package:esamudaayapp/modules/login/views/login_View.dart';
-
 import 'package:esamudaayapp/modules/register/view/register_view.dart';
-
 import 'package:esamudaayapp/presentations/alert.dart';
 import 'package:esamudaayapp/presentations/check_user_widget.dart';
 import 'package:esamudaayapp/presentations/splash_screen.dart';
 import 'package:esamudaayapp/redux/states/app_state.dart';
 import 'package:esamudaayapp/store.dart';
 import 'package:esamudaayapp/utilities/push_notification.dart';
+import 'package:esamudaayapp/utilities/sizeconfig.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'modules/language/view/language_view.dart';
 import 'modules/otp/view/otp_view.dart';
+import 'services/crashylitics_delegate.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   NavigateAction.setNavigatorKey(navigatorKey);
+  runZonedGuarded(
+    () async {
+      runApp(EasyLocalization(
+        child: MyAppBase(),
+        supportedLocales: [
+          Locale('en', 'US'),
+          Locale('hi', 'IN'),
+          Locale('ka', 'IN'),
+          Locale('te', 'IN'),
+          Locale('ta', 'IN')
+        ],
+        path: 'assets/languages',
+      ));
+    },
+    (Object error, StackTrace stackTrace) {
+      debugPrint(
+          '********************************************** ${error.toString()}');
+      debugPrint('********************************************** $stackTrace');
 
-  runApp(EasyLocalization(
-    child: MyAppBase(),
-    supportedLocales: [
-      Locale('en', 'US'),
-      Locale('ka', 'IN'),
-      Locale('ml', 'IN'),
-      Locale('ta', 'IN')
-    ],
-    path: 'assets/languages',
-  ));
+      /// Whenever an error occurs, call the `recordError` function. This sends
+      /// Dart errors to crashlytics
+
+      CrashlyticsDelegate.recordError(error, stackTrace);
+    },
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -58,8 +70,9 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    // TODO: implement initState
     PushNotificationsManager().init();
+    CrashlyticsDelegate.initializeCrashlytics();
+
     super.initState();
   }
 
@@ -69,6 +82,7 @@ class _MyAppState extends State<MyApp> {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
+    SizeConfig().init(context);
     return StoreConnector<AppState, _ViewModel>(
         model: _ViewModel(),
         onInit: (store) {
@@ -148,17 +162,10 @@ class MyAppBase extends StatelessWidget {
           "/mobileNumber": (BuildContext context) => new LoginView(),
           "/registration": (BuildContext context) => new Registration(),
           "/myHomeView": (BuildContext context) => new MyHomeView(),
-
           "/AccountsView": (BuildContext context) => AccountsView(),
           "/orderDetail": (BuildContext context) => OrderDetailScreen(),
-
-//          "/ManageAddresses": (BuildContext context) => ManageAddresses(),
-
           "/SMAlertView": (BuildContext context) => SMAlertView(),
-
           "/profile": (BuildContext context) => ProfileView(),
-
-//          "/SelectAddressView": (BuildContext context) => SelectAddressView()
         },
       ),
     );

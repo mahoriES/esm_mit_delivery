@@ -1,164 +1,102 @@
 {
-
-  "common": {
-    "closed": "Closed",
-    "view_store": "View Store"
-  },
-
   "screen_language": {
-    "title": "உங்களுக்கு விருப்பமான மொழியைத் தேர்வுசெய்க"
-
+    "title": "உங்கள் விருப்பமான மொழியைத் தேர்வுசெய்க"
   },
-
+  "error_messages": {
+    "load_failed": "ஏற்றுவதில் தோல்வி! மீண்டும் கிளிக் செய்க!",
+    "release_to_load_more": "மேலும் ஏற்ற வெளியிட",
+    "no_more_data": "மேலும் தரவு இல்லை"
+  },
   "screen_phone": {
     "get_otp": "OTP ஐப் பெறுக",
-    "hint_text": " உங்களுடைய கைபேசி எண்ணை உள்ளிடவும்",
-    "valid_phone_error_message": "Please enter valid phone number",
-    "new_user": "கணக்கு இல்லையா? ",
-    "register_now": "இப்போதுபதிவு செய்யுங்கள்",
-    "login_here": "Login here",
-    "already_customer": "Already have an account ? ",
+    "hint_text": "உங்கள் மொபைல் எண்ணைத் தட்டச்சு செய்க",
+    "valid_phone_error_message": "செல்லுபடியாகும் தொலைபேசி எண்ணை உள்ளிடவும்",
+    "new_user": "பேங்க் அக்கௌன்ட் இல்லையா? ",
+    "register_now": "இப்போது பதிவு செய்யுங்கள்",
+    "login_here": "இங்கே உள்நுழைக",
+    "already_customer": "ஏற்கனவே ஒரு அக்கௌன்ட் உள்ளதா? ",
     "sign_up": "பதிவுபெறுக",
     "login": "உள்நுழைய"
   },
-
   "screen_otp": {
-    "get_otp": "Get OTP",
-    "resend_otp": "OTP ஐ மீண்டும் அனுப்பு",
+    "get_otp": "OTP ஐப் பெறுக",
+    "resend_otp": "OTP ஐ மீண்டும் அனுப்பவும்",
     "hint_text": "அனுப்பப்பட்ட OTP ஐ உள்ளிடவும்",
-    "resend_text": "Resend in",
-    "sec": "sec",
+    "resend_text": "மீண்டும் அனுப்பவும்",
+    "sec": "நொடி",
     "verify": "சரிபார்க்கவும்",
     "error": {
-      "plz_verify_otp": "Please enter OTP"
+      "plz_verify_otp": "OTP ஐ உள்ளிடவும்"
     }
   },
-
   "screen_register": {
-    "title": "Complete your registration",
+    "title": "உங்கள் பதிவை முடிக்கவும்",
     "address": {
       "title": "முகவரி",
-      "empty_error": "Please enter your address."
+      "empty_error": "உங்கள் முகவரியை உள்ளிடவும்.."
     },
     "pin_code": {
-      "title": "Circle",
-      "validation_error": "Please enter valid circle",
-      "empty_error": "Please enter your circle."
+      "title": "வட்டம்",
+      "validation_error": "செல்லுபடியாகும் வட்டத்தை உள்ளிடவும்",
+      "empty_error": "உங்கள் வட்டத்தை உள்ளிடவும்.."
     },
     "register": "பதிவு",
-    "update": "Update",
+    "update": "புதுப்பிப்பு",
     "name": {
-      "title": "Full Name",
-      "validation_error": "Please enter valid name",
-      "empty_error": "Please enter your full name."
+      "title": "முழு பெயர்",
+      "validation_error": "சரியான பெயரை உள்ளிடவும்",
+      "empty_error": "தயவுசெய்து உங்கள் முழு பெயரையும் பதிவுசெய்யவும்.."
     }
   },
-
   "screen_home": {
     "tab_bar": {
-      "all_order": "புதிய ஆர்டர்கள்",
-      "in_progress": "செயலில் உள்ளது",
+      "new_order": "புதிய ஆர்டர்கள்",
+      "in_progress": "முன்னேற்றத்தில்",
       "completed": "நிறைவு",
-      "account": "கணக்கு"
+      "accepted": "ஏற்றுக்கொள்ளப்பட்டது"
     },
-    "store_near_you": "உங்களுக்கு அருகிலுள்ள கடைகள்"
-
+    "Agent_Name": "முகவரின் பெயர்",
+    "Order_ID": "ஆர்டர் ஐடி",
+    "Amount": "தொகை",
+    "Completed": "நிறைவு",
+    "Distance": "தூரம்",
+    "Rejected": "நிராகரிக்கப்பட்டது",
+    "In_progress": "முன்னேற்றத்தில்",
+    "Not_Started": "துவங்கவில்லை",
+    "Ordered_Products": "ஆர்டர் செய்யப்பட்ட தயாரிப்புகள்",
+    "Total_Cost": "மொத்த செலவு",
+    "New": "புதியது",
+    "accept": "ஏற்றுக்கொள்",
+    "pickup": "எடு",
+    "drop": "கைவிட",
+    "reject": "reject",
+    "item": "item",
+    "pickup_images": "Pickup Images",
+    "drop_images": "Drop Images",
+    "confirm_action_mesage": "Are you sure you want to {actionName} order {orderNumber} ?",
+    "confirm": "உறுதிப்படுத்தவும்"
   },
-
-  "screen_search": {
-    "search": "Search"
-  },
-
-  "shop": {
-    "delivery_ok" : "டெலிவரி கிடைக்கிறது",
-    "delivery_no" : "Delivery Not Available",
-    "item_category": "Item Categories",
-    "pickup_order": "Pickup Order"
-  },
-
-  "product_list": {
-    "search_placeholder" : "Search for item"
-  },
-
-  "cart": {
-    "title": "கூடை",
-    "view_cart": "VIEW ITEMS",
-    "total": "TOTAL",
-    "payment_details": "Payment Details",
-    "total_amount": "Total amount",
-    "delivery": "Delivery",
-    "pickup": "Pickup",
-    "note": "Note",
-    "store_address": "Store address",
-    "confirm_order_detail": "Confirm your order and wait for notification from merchant on order screen",
-    "confirm_order": "CONFIRM ORDER",
-    "add_more": "Add more",
-    "empty_cart": "Empty Cart",
-    "empty_hint": "Look like you haven't added anything to your cart yet",
-    "please_collect": "Please collect order from the store when its ready"
-  },
-
-  "screen_account":{
-    "title": "கணக்கு",
+  "screen_account": {
+    "title": "அக்கௌன்ட்t",
     "profile": "சுயவிவரம்",
-    "recommend": "Recommend A Store",
-    "about": "About",
+    "about": "பற்றி",
     "language": "மொழி",
     "logout": "வெளியேறு",
-    "alert_data": "Are you sure ! do you want to logout?",
-    "cancel": "Cancel"
+    "alert_data": "சொல்வது உறுதியா ! நீங்கள் வெளியேற விரும்புகிறீர்களா?",
+    "cancel": "ரத்துசெய்",
+    "Edit": "தொகு",
+    "version": "Version"
   },
-
   "screen_recommended": {
-      "title": "Recommend A Store",
-    "name": "Shop Name",
-    "address": "Shop Address",
-    "phone": "Shop phone number",
-    "recommend": "Recommend"
+    "title": "ஒரு கடையை பரிந்துரைக்கவும்",
+    "name": "கடை பெயர்",
+    "address": "கடை முகவரி",
+    "phone": "தொலைபேசி எண்",
+    "recommend": "பரிந்துரை"
   },
-
-  "screen_order": {
-    "title": "Orders",
-    "payment_details": "Payment Details",
-    "item_total": "Item Total",
-    "total": "Total amount",
-    "pending": "Pending",
-    "not_found": "No Order Found",
-    "empty_content": "Look like you haven’t order anything yet Lets start !",
-    "cancelled": "Cancelled",
-    "completed": "Completed",
-    "confirmed": "Confirmed",
-    "not_available": "Items Not Available",
-    "cancel_order": "Cancel order",
-    "re_order": "Re-Order",
-    "payment": "Payment",
-    "update_order": "Update Order",
-    "missing": "Missing Items",
-    "please_pay": "Please pay your bill amount to the merchant directly using Cash, Card or UPI",
-    "rate": "Rate us",
-    "rate_ok": "Rating submitted successfully",
-    "rate_our": "Rate our service",
-    "feedback": "Please enter a feedback",
-    "write_feedback": "Write your feedback",
-    "ok": "Ok",
-    "submit": "Submit"
-  },
-
   "screen_support": {
-    "title": "Support",
-    "issue":"select issues",
-    "the_order":"Merchant is not confirming the order",
-    "my_order":"Cancel my order",
-    "delayed?":"Why is my order delayed?",
-    "Leakage":"Leakage in the order",
-    "Items_are":"Items are missing in the order",
-    "Wrong_order":"Wrong order delivered",
-    "spoilt":"Items are stale or spoilt",
-    "not_received":"Order not received",
-    "submit": "Submit",
-    "type_hint": "Type in your text",
-    "select_issue_error": "Please select an issue."
+    "No_contact_details_found": "தொடர்பு விவரங்கள் எதுவும் கிடைக்கவில்லை.",
+    "Upload_Pick_Up_Images": "பிக் அப் படங்களை பதிவேற்றுக",
+    "Upload_Drop_Images": "டிராப் படங்களை பதிவேற்றவும்"
   }
-
-
 }

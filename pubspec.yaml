@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+5
+version: 1.0.0+10
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -31,41 +31,20 @@ dependencies:
   modal_progress_hud: ^0.1.3
   shared_preferences: ^0.5.6+2
   flutter_redux_dev_tools: ^0.4.0
-  flutter_offline: ^0.3.0
-  path_provider: any
-  http: ^0.12.0+4
   dio: ^3.0.8
-  connectivity: ^0.4.8+1
-  intl: ^0.16.0
-  easy_alert: ^0.0.8
-    #  flutter_secure_storage: ^3.3.1+1
-  carousel_slider: ^1.4.1
-  flutter_country_picker: ^0.1.6
-  redux_persist_flutter: ^0.8.2
-  cached_network_image: ^2.0.0
-    #  cached_network_image: ^1.1.3
-  equatable: ^1.1.0
+  cached_network_image: ^2.3.3
   async_redux: ^2.5.4
-  flutter_slidable: ^0.5.4
   easy_localization: ^2.1.0+2
   regexed_validator: ^1.0.2
   fluttertoast: ^4.0.1
-  expandable: ^4.1.3
-  dio_cookie_manager: ^1.0.0
-  cookie_jar: ^1.0.1
   google_maps_place_picker: ^0.9.4
-  flutter_rating_bar: ^3.0.1+1
   firebase_messaging: ^6.0.15
-  date_format: ^1.0.8
   image_picker:
-  geolocator: ^5.3.2+2
-  location: ^3.0.2
-  location_permissions: ^3.0.0+1
   url_launcher: ^5.4.11
   pull_to_refresh: ^1.6.0
-  sentry: ^3.0.1
-
-#  map_launcher: ^0.6.0
+  firebase_crashlytics: ^0.2.2
+  firebase_core: ^0.5.0+1
+  package_info: ^0.4.3+2
 
 dev_dependencies:
   flutter_test:
@@ -92,9 +71,7 @@ flutter:
     - assets/images/phone.png
     - assets/images/path.png
     - assets/images/naviagtion.png
-    - assets/languages/en-US.json
-    - assets/languages/ka-IN.json
-    - assets/languages/ml-IN.json
+    - assets/languages/
     - assets/images/Component 6 – 1.png
     - assets/images/app_main_icon.png
     - assets/images/location_1_add.png

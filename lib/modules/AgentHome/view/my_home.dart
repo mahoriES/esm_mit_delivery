@@ -14,8 +14,6 @@ import 'package:flutter/material.dart';
 import 'custom_appbar.dart';
 
 class MyHomeView extends StatelessWidget {
-  final PageStorageBucket bucket = PageStorageBucket();
-
   final List<String> tabTitles = [
     "new_order",
     "accepted",
@@ -32,6 +30,9 @@ class MyHomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Locale locale = EasyLocalization.of(context).locale;
+    debugPrint("************************ build => ${locale.languageCode}");
+
     // SizeConfig service needs to be initialized only once before being used anywhere throughout the app.
     SizeConfig().init(context);
     return StoreConnector<AppState, _ViewModel>(
@@ -115,12 +116,7 @@ class MyHomeView extends StatelessWidget {
                 ),
               ),
             ),
-            body: PageStorage(
-              bucket: bucket,
-              child: AgentHome(
-                orderType: tabType[snapshot.currentIndex],
-              ),
-            ),
+            body: AgentHome(orderType: tabType[snapshot.currentIndex]),
           );
         });
   }
