@@ -97,6 +97,7 @@
     "screen_support": {
         "No_contact_details_found": "कोई संपर्क विवरण नहीं मिला",
         "Upload_Pick_Up_Images": "पिक अप इमेज अपलोड करें",
-        "Upload_Drop_Images": "ड्रॉप इमेज अपलोड करें"
+        "Upload_Drop_Images": "ड्रॉप इमेज अपलोड करें",
+        "maps_error": "मैप नहीं खोल सके"
     }
 }

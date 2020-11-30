@@ -71,9 +71,9 @@
     "drop": "డ్రాప్",
     "reject": "reject",
     "item": "item",
-    "pickup_images": "Pickup Images",
-    "drop_images": "Drop Images",
-    "confirm_action_mesage": "Are you sure you want to {actionName} order {orderNumber} ?",
+    "pickup_images": "పికప్ చిత్రాలు",
+    "drop_images": "డ్రాప్ ఇమగెస్",
+    "confirm_action_mesage": "మీరు ఖచ్చితంగా {actionName} order {orderNumber} to చేయాలనుకుంటున్నారా?",
     "confirm": "నిర్ధారించండి"
   },
   "screen_account": {
@@ -85,7 +85,7 @@
     "alert_data": "మీరు చెప్పేది నిజమా ! మీరు లాగ్ అవుట్ చేయాలనుకుంటున్నారా?",
     "cancel": "రద్దు చేయండి",
     "Edit": "ఎడిట్",
-    "version": "Version"
+    "version": "వెర్షన్"
   },
   "screen_recommended": {
     "title": "దుకాణాన్ని సిఫార్సు చేయండి",
@@ -97,6 +97,7 @@
   "screen_support": {
     "No_contact_details_found": "సంప్రదింపు వివరాలు కనుగొనబడలేదు.",
     "Upload_Pick_Up_Images": "పిక్ అప్ చిత్రాలను అప్‌లోడ్ చేయండి",
-    "Upload_Drop_Images": "డ్రాప్ చిత్రాలను అప్‌లోడ్ చేయండి"
+    "Upload_Drop_Images": "డ్రాప్ చిత్రాలను అప్‌లోడ్ చేయండి",
+    "maps_error": "మ్యాప్‌లను తెరవడం సాధ్యం కాలేదు"
   }
 }

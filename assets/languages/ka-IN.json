@@ -71,9 +71,9 @@
     "drop": "ಬಿಡಿ",
     "reject": "நிராகரி",
     "item": "பொருள்",
-    "pickup_images": "Pickup Images",
-    "drop_images": "Drop Images",
-    "confirm_action_mesage": "Are you sure you want to {actionName} order {orderNumber} ?",
+    "pickup_images": "ಪಿಕಪ್ ಚಿತ್ರಗಳು",
+    "drop_images": "ಡ್ರಾಪ್ಗಾಗಿ ಚಿತ್ರಗಳು    ",
+    "confirm_action_mesage": "ನೀವು ಆದೇಶವನ್ನು {actionName} ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ {orderNumber}?",
     "confirm": "ಖಚಿತಪಡಿಸಿ"
   },
   "screen_account": {
@@ -85,7 +85,7 @@
     "alert_data": "ನೀವು ಲಾಗ್ ಔಟ್ ಮಾಡಲು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?",
     "cancel": "ರದ್ದುಮಾಡಿ",
     "Edit": "ತಿದ್ದು",
-    "version": "Version"
+    "version": "ಆವೃತ್ತಿ"
   },
   "screen_recommended": {
     "title": "ಅಂಗಡಿಯನ್ನು ಶಿಫಾರಸು ಮಾಡಿ",
@@ -97,6 +97,7 @@
   "screen_support": {
     "No_contact_details_found": "ಯಾವುದೇ ಸಂಪರ್ಕ ವಿವರಗಳು ಕಂಡುಬಂದಿಲ್ಲ.",
     "Upload_Pick_Up_Images": "ಪಿಕ್-ಅಪ್ ಚಿತ್ರಗಳನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ",
-    "Upload_Drop_Images": "ಡ್ರಾಪ್ ಚಿತ್ರಗಳನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ"
+    "Upload_Drop_Images": "ಡ್ರಾಪ್ ಚಿತ್ರಗಳನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ",
+    "maps_error": "ನಕ್ಷೆಗಳನ್ನು ತೆರೆಯಲಾಗಲಿಲ್ಲ"
   }
 }

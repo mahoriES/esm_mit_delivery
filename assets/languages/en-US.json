@@ -97,6 +97,7 @@
   "screen_support": {
     "No_contact_details_found": "No contact details found.",
     "Upload_Pick_Up_Images": "Upload Pick Up Images",
-    "Upload_Drop_Images": "Upload Drop Images"
+    "Upload_Drop_Images": "Upload Drop Images",
+    "maps_error": "Could not open maps"
   }
 }
