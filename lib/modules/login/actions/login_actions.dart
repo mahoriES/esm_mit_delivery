@@ -51,11 +51,16 @@ class GetOtpAction extends ReduxAction<AppState> {
   @override
   FutureOr<AppState> reduce() async {
     var response = await APIManager.shared.request(
-        url: request.isSignUp
-            ? ApiURL.generateOtpRegisterUrl
-            : ApiURL.generateOTPUrl,
-        params: request.toJson(),
-        requestType: request.isSignUp ? RequestType.post : RequestType.get);
+      url:
+          // request.isSignUp
+          //     ? ApiURL.generateOtpRegisterUrl
+          //     :
+          ApiURL.generateOTPUrl,
+      params: request.toJson(),
+      requestType:
+          // request.isSignUp ? RequestType.post :
+          RequestType.get,
+    );
 
     if (response.status == ResponseStatus.success200) {
       Fluttertoast.showToast(msg: response.data['token']);

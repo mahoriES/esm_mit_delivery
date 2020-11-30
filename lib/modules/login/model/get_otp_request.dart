@@ -1,9 +1,13 @@
 class GenerateOTPRequest {
   String phone;
   String third_party_id;
-  bool isSignUp;
+  // bool isSignUp;
 
-  GenerateOTPRequest({this.isSignUp, this.phone, this.third_party_id});
+  GenerateOTPRequest({
+    // this.isSignUp,
+    this.phone,
+    this.third_party_id,
+  });
 
   GenerateOTPRequest.fromJson(Map<String, dynamic> json) {
     phone = json['phone'];

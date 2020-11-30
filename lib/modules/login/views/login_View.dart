@@ -117,19 +117,21 @@ class _LoginViewState extends State<LoginView> {
                                       child: child,
                                     ),
                                     duration: const Duration(milliseconds: 200),
-                                    child: snapshot.isSignUp
-                                        ? Text("screen_phone.sign_up",
-                                                key: ValueKey(1),
-                                                style: const TextStyle(
-                                                    color:
-                                                        const Color(0xff797979),
-                                                    fontWeight: FontWeight.w500,
-                                                    fontFamily: "Avenir",
-                                                    fontStyle: FontStyle.normal,
-                                                    fontSize: 18.0),
-                                                textAlign: TextAlign.left)
-                                            .tr()
-                                        : Text("screen_phone.login",
+                                    child:
+                                        // snapshot.isSignUp
+                                        //     ? Text("screen_phone.sign_up",
+                                        //             key: ValueKey(1),
+                                        //             style: const TextStyle(
+                                        //                 color:
+                                        //                     const Color(0xff797979),
+                                        //                 fontWeight: FontWeight.w500,
+                                        //                 fontFamily: "Avenir",
+                                        //                 fontStyle: FontStyle.normal,
+                                        //                 fontSize: 18.0),
+                                        //             textAlign: TextAlign.left)
+                                        //         .tr()
+                                        //     :
+                                        Text("screen_phone.login",
                                                 key: ValueKey(2),
                                                 style: const TextStyle(
                                                     color:
@@ -213,9 +215,10 @@ class _LoginViewState extends State<LoginView> {
                                 if (validator.phone(phoneController.text) &&
                                     phoneController.text.length == 10) {
                                   snapshot.getOtpAction(GenerateOTPRequest(
-                                      phone: "+91" + phoneController.text,
-                                      third_party_id: thirdPartyId,
-                                      isSignUp: snapshot.isSignUp));
+                                    phone: "+91" + phoneController.text,
+                                    third_party_id: thirdPartyId,
+                                    // isSignUp: snapshot.isSignUp,
+                                  ));
                                 } else {}
                               },
                               child: Hero(
@@ -340,17 +343,20 @@ class _ViewModel extends BaseModel<AppState> {
   Function(GenerateOTPRequest request) getOtpAction;
   bool isPhoneNumberValid;
 
-  Function(bool isSignup) updateIsSignUp;
-  bool isSignUp;
+  // Function(bool isSignup) updateIsSignUp;
+  // bool isSignUp;
   _ViewModel.build(
       {this.navigateToOTPPage,
       this.isPhoneNumberValid,
       this.getOtpAction,
-      this.isSignUp,
+      // this.isSignUp,
       this.loadingStatus,
-      this.updateIsSignUp,
+      // this.updateIsSignUp,
       this.updatePushToken})
-      : super(equals: [loadingStatus, isSignUp]);
+      : super(equals: [
+          loadingStatus,
+          // isSignUp,
+        ]);
 
   @override
   BaseModel fromStore() {
@@ -364,12 +370,13 @@ class _ViewModel extends BaseModel<AppState> {
         getOtpAction: (request) {
           dispatch(GetOtpAction(request: request, fromResend: false));
         },
-        updateIsSignUp: (isSignUp) {
-          dispatch(UpdateIsSignUpAction(isSignUp: isSignUp));
-        },
-        updatePushToken: (token) {
-          globals.deviceToken = token;
-        },
-        isSignUp: state.authState.isSignUp);
+      // updateIsSignUp: (isSignUp) {
+      //   dispatch(UpdateIsSignUpAction(isSignUp: isSignUp));
+      // },
+      updatePushToken: (token) {
+        globals.deviceToken = token;
+      },
+      // isSignUp: state.authState.isSignUp,
+    );
   }
 }
