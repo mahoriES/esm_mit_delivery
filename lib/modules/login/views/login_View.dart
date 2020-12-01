@@ -9,6 +9,7 @@ import 'package:esamudaayapp/utilities/global.dart' as globals;
 import 'package:esamudaayapp/utilities/stringConstants.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:regexed_validator/regexed_validator.dart';
 
@@ -219,7 +220,10 @@ class _LoginViewState extends State<LoginView> {
                                     third_party_id: thirdPartyId,
                                     // isSignUp: snapshot.isSignUp,
                                   ));
-                                } else {}
+                                } else {
+                                  Fluttertoast.showToast(
+                                      msg: "Please enter valid phone number");
+                                }
                               },
                               child: Hero(
                                 tag: '#getOtp',

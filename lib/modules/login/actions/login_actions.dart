@@ -68,8 +68,12 @@ class GetOtpAction extends ReduxAction<AppState> {
     } else {
       
        if (response.data['message'] != null) {
-      Fluttertoast.showToast(msg: response.data['message']);
-
+        String errorMessage = response.data['message'] ?? "";
+        if (errorMessage.contains("Signup")) {
+          errorMessage =
+              "Account does not exist. Please contact eSamudaay circle promoter to onboard with us";
+        }
+        Fluttertoast.showToast(msg: errorMessage);
       } else if(response.data['detail']!= null) {
               Fluttertoast.showToast(msg: response.data['detail']);
 
