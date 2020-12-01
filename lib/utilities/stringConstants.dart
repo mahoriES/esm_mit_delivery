@@ -34,6 +34,6 @@ const thirdPartyId = "5d730376-72ed-478c-8d5e-1a3a6aee9815";
 class StringConstants {
   static final mapsUrl = (double lat, double lon) => Platform.isIOS
       ? 'https://maps.apple.com/?sll=$lat,$lon'
-      : "https://www.google.com/maps/dir/?api=1&destination=$lat,$lon&dir_action=navigate";
+      : "https://www.google.com/maps/dir/?api=1&destination=$lat,$lon";
   static final contactUrl = (String number) => "tel://$number";
 }

@@ -166,7 +166,7 @@ class _ViewModel extends BaseModel<AppState> {
 
     debugPrint("launch maps with $lat $lon");
 
-    String mapUrl = StringConstants.mapsUrl(lat, lon);
+    String mapUrl = Uri.encodeFull(StringConstants.mapsUrl(lat, lon));
 
     bool canLaunchMap = await canLaunch(mapUrl);
 
