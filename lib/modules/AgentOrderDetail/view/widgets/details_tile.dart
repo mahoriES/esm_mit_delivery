@@ -85,7 +85,7 @@ class DetailsTileWidget extends StatelessWidget {
                             : "merchantCallButton",
                         onPressed: () => snapshot.makePhoneCall(
                           () => Fluttertoast.showToast(
-                            msg: 'screen_support.maps_error'.tr(),
+                            msg: 'screen_support.No_contact_details_found'.tr(),
                           ),
                         ),
                         child: Image.asset('assets/images/phone.png'),
@@ -100,7 +100,7 @@ class DetailsTileWidget extends StatelessWidget {
                             : "pickupAddressButton",
                         onPressed: () => snapshot.launchMaps(
                           () => Fluttertoast.showToast(
-                            msg: 'screen_support.No_contact_details_found'.tr(),
+                            msg: 'screen_support.maps_error'.tr(),
                           ),
                         ),
                         child: Image.asset('assets/images/naviagtion.png'),
@@ -158,24 +158,26 @@ class _ViewModel extends BaseModel<AppState> {
 
   bool get isAddressAvailable => getAddress != null;
 
-  launchMaps(VoidCallback showError) async {
+  void launchMaps(VoidCallback showError) async {
     PickupPnt location =
-        showCustomerDetails ? selectedOrder.dropPnt : selectedOrder.pickupPnt;
-    double lat = location.lat;
-    double lon = location.lon;
+        showCustomerDetails ? selectedOrder?.dropPnt : selectedOrder?.pickupPnt;
+    double lat = location?.lat;
+    double lon = location?.lon;
+
+    debugPrint("launch maps with $lat $lon");
 
     String mapUrl = StringConstants.mapsUrl(lat, lon);
 
     bool canLaunchMap = await canLaunch(mapUrl);
 
-    if (canLaunchMap) {
+    if (lat != null && lon != null && canLaunchMap) {
       await launch(mapUrl);
     } else {
       showError();
     }
   }
 
-  makePhoneCall(VoidCallback showError) async {
+  void makePhoneCall(VoidCallback showError) async {
     final String _url = StringConstants.contactUrl(getContact);
     if (isContactAvailable && await canLaunch(_url)) {
       await launch(_url);
