@@ -18,7 +18,6 @@ class AuthState {
   final User user;
   final bool isPhoneNumberValid;
   final bool isOtpEntered;
-  // final bool isSignUp;
 
   AuthState(
       {@required this.getOtpRequest,
@@ -30,7 +29,6 @@ class AuthState {
       @required this.token,
       @required this.isLoggedIn,
       @required this.validateOTPRequest,
-      // @required this.isSignUp,
       @required this.updateCustomerDetailsRequest,
       @required this.deviceToken});
 
@@ -46,7 +44,6 @@ class AuthState {
       getOtpRequest: null,
       validateOTPRequest: null,
       updateCustomerDetailsRequest: null,
-      // isSignUp: false,
       deviceToken: "",
     );
   }
@@ -87,7 +84,6 @@ class AuthState {
       validateOTPRequest: validateOTPRequest ?? this.validateOTPRequest,
       updateCustomerDetailsRequest:
           updateCustomerDetailsRequest ?? this.updateCustomerDetailsRequest,
-      // isSignUp: isSignUp ?? this.isSignUp,
     );
   }
 }

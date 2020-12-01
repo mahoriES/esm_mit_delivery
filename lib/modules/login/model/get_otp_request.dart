@@ -1,10 +1,8 @@
 class GenerateOTPRequest {
   String phone;
   String third_party_id;
-  // bool isSignUp;
 
   GenerateOTPRequest({
-    // this.isSignUp,
     this.phone,
     this.third_party_id,
   });
