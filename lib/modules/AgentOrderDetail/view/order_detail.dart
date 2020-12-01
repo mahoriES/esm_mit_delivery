@@ -95,7 +95,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                     ),
                                     Text(
                                       CommonMethods.convertDateFromString(
-                                          snapshot.selectedOrder.order.created),
+                                          snapshot.selectedOrder.created),
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 12.toFont,
