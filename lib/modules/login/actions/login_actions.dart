@@ -51,23 +51,24 @@ class GetOtpAction extends ReduxAction<AppState> {
   @override
   FutureOr<AppState> reduce() async {
     var response = await APIManager.shared.request(
-        url: request.isSignUp
-            ? ApiURL.generateOtpRegisterUrl
-            : ApiURL.generateOTPUrl,
-        params: request.toJson(),
-        requestType: request.isSignUp ? RequestType.post : RequestType.get);
+      url: ApiURL.generateOTPUrl,
+      params: request.toJson(),
+      requestType: RequestType.get,
+    );
 
     if (response.status == ResponseStatus.success200) {
       Fluttertoast.showToast(msg: response.data['token']);
       fromResend ? dispatch : dispatch(NavigateAction.pushNamed("/otpScreen"));
     } else {
-      
-       if (response.data['message'] != null) {
-      Fluttertoast.showToast(msg: response.data['message']);
-
-      } else if(response.data['detail']!= null) {
-              Fluttertoast.showToast(msg: response.data['detail']);
-
+      if (response.data['message'] != null) {
+        String errorMessage = response.data['message'] ?? "";
+        if (errorMessage.contains("Signup")) {
+          errorMessage =
+              "Account does not exist. Please contact eSamudaay circle promoter to onboard with us";
+        }
+        Fluttertoast.showToast(msg: errorMessage);
+      } else if (response.data['detail'] != null) {
+        Fluttertoast.showToast(msg: response.data['detail']);
       }
       //throw UserException(response.data['status']);
     }

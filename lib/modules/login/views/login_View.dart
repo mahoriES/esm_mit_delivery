@@ -9,6 +9,7 @@ import 'package:esamudaayapp/utilities/global.dart' as globals;
 import 'package:esamudaayapp/utilities/stringConstants.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:regexed_validator/regexed_validator.dart';
 
@@ -117,29 +118,16 @@ class _LoginViewState extends State<LoginView> {
                                       child: child,
                                     ),
                                     duration: const Duration(milliseconds: 200),
-                                    child: snapshot.isSignUp
-                                        ? Text("screen_phone.sign_up",
-                                                key: ValueKey(1),
-                                                style: const TextStyle(
-                                                    color:
-                                                        const Color(0xff797979),
-                                                    fontWeight: FontWeight.w500,
-                                                    fontFamily: "Avenir",
-                                                    fontStyle: FontStyle.normal,
-                                                    fontSize: 18.0),
-                                                textAlign: TextAlign.left)
-                                            .tr()
-                                        : Text("screen_phone.login",
-                                                key: ValueKey(2),
-                                                style: const TextStyle(
-                                                    color:
-                                                        const Color(0xff797979),
-                                                    fontWeight: FontWeight.w500,
-                                                    fontFamily: "Avenir",
-                                                    fontStyle: FontStyle.normal,
-                                                    fontSize: 18.0),
-                                                textAlign: TextAlign.left)
-                                            .tr(),
+                                    child: Text("screen_phone.login",
+                                            key: ValueKey(2),
+                                            style: const TextStyle(
+                                                color: const Color(0xff797979),
+                                                fontWeight: FontWeight.w500,
+                                                fontFamily: "Avenir",
+                                                fontStyle: FontStyle.normal,
+                                                fontSize: 18.0),
+                                            textAlign: TextAlign.left)
+                                        .tr(),
                                   ),
                                 ],
                               ),
@@ -213,10 +201,13 @@ class _LoginViewState extends State<LoginView> {
                                 if (validator.phone(phoneController.text) &&
                                     phoneController.text.length == 10) {
                                   snapshot.getOtpAction(GenerateOTPRequest(
-                                      phone: "+91" + phoneController.text,
-                                      third_party_id: thirdPartyId,
-                                      isSignUp: snapshot.isSignUp));
-                                } else {}
+                                    phone: "+91" + phoneController.text,
+                                    third_party_id: thirdPartyId,
+                                  ));
+                                } else {
+                                  Fluttertoast.showToast(
+                                      msg: "Please enter valid phone number");
+                                }
                               },
                               child: Hero(
                                 tag: '#getOtp',
@@ -340,36 +331,29 @@ class _ViewModel extends BaseModel<AppState> {
   Function(GenerateOTPRequest request) getOtpAction;
   bool isPhoneNumberValid;
 
-  Function(bool isSignup) updateIsSignUp;
-  bool isSignUp;
   _ViewModel.build(
       {this.navigateToOTPPage,
       this.isPhoneNumberValid,
       this.getOtpAction,
-      this.isSignUp,
       this.loadingStatus,
-      this.updateIsSignUp,
       this.updatePushToken})
-      : super(equals: [loadingStatus, isSignUp]);
+      : super(equals: [loadingStatus]);
 
   @override
   BaseModel fromStore() {
     // TODO: implement fromStore
     return _ViewModel.build(
-        loadingStatus: state.authState.loadingStatus,
-        navigateToOTPPage: () {
-          dispatch(NavigateAction.pushNamed('/otpScreen'));
-        },
-        isPhoneNumberValid: state.authState.isPhoneNumberValid,
-        getOtpAction: (request) {
-          dispatch(GetOtpAction(request: request, fromResend: false));
-        },
-        updateIsSignUp: (isSignUp) {
-          dispatch(UpdateIsSignUpAction(isSignUp: isSignUp));
-        },
-        updatePushToken: (token) {
-          globals.deviceToken = token;
-        },
-        isSignUp: state.authState.isSignUp);
+      loadingStatus: state.authState.loadingStatus,
+      navigateToOTPPage: () {
+        dispatch(NavigateAction.pushNamed('/otpScreen'));
+      },
+      isPhoneNumberValid: state.authState.isPhoneNumberValid,
+      getOtpAction: (request) {
+        dispatch(GetOtpAction(request: request, fromResend: false));
+      },
+      updatePushToken: (token) {
+        globals.deviceToken = token;
+      },
+    );
   }
 }

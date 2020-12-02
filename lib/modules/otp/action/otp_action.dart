@@ -31,10 +31,6 @@ class OTPAction extends ReduxAction<AppState> {
 }
 
 class ValidateOtpAction extends ReduxAction<AppState> {
-  final bool isSignUp;
-
-  ValidateOtpAction({this.isSignUp});
-
   @override
   FutureOr<AppState> reduce() async {
     //6282742294//8113970370
