@@ -5,7 +5,8 @@
   "error_messages": {
     "load_failed": "ಲೋಡ್ ವಿಫಲವಾಗಿದೆ! ಮರುಪ್ರಯತ್ನ ಕ್ಲಿಕ್ ಮಾಡಿ!",
     "release_to_load_more": "ಹೆಚ್ಚು ಲೋಡ್ ಮಾಡಲು ಬಿಡುಗಡೆ ಮಾಡಿ",
-    "no_more_data": "ಹೆಚ್ಚಿನ ಡೇಟಾ ಇಲ್ಲ"
+    "no_more_data": "ಹೆಚ್ಚಿನ ಡೇಟಾ ಇಲ್ಲ",
+    "signup_error": "Account does not exist. Please contact eSamudaay circle promoter to onboard with us"
   },
   "screen_phone": {
     "get_otp": "ಒಟಿಪಿ ಪಡೆಯಿರಿ",

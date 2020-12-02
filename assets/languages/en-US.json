@@ -5,7 +5,8 @@
   "error_messages": {
     "load_failed": "Load Failed!Click retry!",
     "release_to_load_more": "release to load more",
-    "no_more_data": "No more Data"
+    "no_more_data": "No more Data",
+    "signup_error": "Account does not exist. Please contact eSamudaay circle promoter to onboard with us"
   },
   "screen_phone": {
     "get_otp": "Get OTP",

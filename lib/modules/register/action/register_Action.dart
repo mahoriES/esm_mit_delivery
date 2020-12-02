@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:async_redux/async_redux.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:esamudaayapp/models/User.dart';
 import 'package:esamudaayapp/models/loading_status.dart';
 import 'package:esamudaayapp/modules/login/actions/login_actions.dart';
@@ -25,9 +26,7 @@ class GetUserDetailAction extends ReduxAction<AppState> {
       GetProfileResponse authResponse =
           GetProfileResponse.fromJson(response.data);
       if (authResponse.agent == null) {
-        Fluttertoast.showToast(
-            msg:
-                "Account does not exist. Please contact eSamudaay circle promoter to onboard with us");
+        Fluttertoast.showToast(msg: tr("error_messages.signup_error"));
       } else {
         await UserManager.saveToken(token: authResponse.agent.token);
 
