@@ -8,6 +8,7 @@ import 'package:esamudaayapp/modules/AgentOrderDetail/action/order_action.dart';
 import 'package:esamudaayapp/modules/AgentOrderDetail/model/pick_image.dart';
 import 'package:esamudaayapp/modules/AgentOrderDetail/model/transit_models.dart';
 import 'package:esamudaayapp/modules/AgentOrderDetail/view/image_view.dart';
+import 'package:esamudaayapp/modules/AgentOrderDetail/view/widgets/details_tile.dart';
 import 'package:esamudaayapp/presentations/confirm_dialogue.dart';
 import 'package:esamudaayapp/presentations/loading_widget.dart';
 import 'package:esamudaayapp/presentations/status_icon.dart';
@@ -192,141 +193,17 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                           ],
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.all(20.toFont),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Flexible(
-                              child: RichText(
-                                text: TextSpan(
-                                  text: snapshot
-                                          .selectedOrder.order.customerName +
-                                      "\n",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16.toFont,
-                                    fontFamily: 'Avenir',
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  children: [
-                                    TextSpan(
-                                      text: snapshot.selectedOrder.order
-                                          .customerPhones.first,
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 14.toFont,
-                                        fontFamily: 'Avenir',
-                                        fontWeight: FontWeight.normal,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            FloatingActionButton(
-                              heroTag: "callButton",
-                              onPressed: () {
-                                _makePhoneCall(
-                                    mobile:
-                                        "tel:${snapshot.selectedOrder.order.customerPhones.first}");
-                              },
-                              child: Image.asset('assets/images/phone.png'),
-                              backgroundColor: AppColors.icColors,
-                            )
-                          ],
-                        ),
+                      SizedBox(height: 20.toHeight),
+                      // merchant details component
+                      DetailsTileWidget(
+                        showCustomerDetails: false,
                       ),
-                      Padding(
-                        padding: EdgeInsets.all(20.toFont),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Flexible(
-                              child: RichText(
-                                text: TextSpan(
-                                  text: tr("screen_home.pickup") + "\n",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16.toFont,
-                                    fontFamily: 'Avenir',
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  children: [
-                                    TextSpan(
-                                      text: snapshot.selectedOrder.order
-                                          .pickupAddress.prettyAddress,
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 14.toFont,
-                                        fontFamily: 'Avenir',
-                                        fontWeight: FontWeight.normal,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            FloatingActionButton(
-                              heroTag: "pickupButton",
-                              onPressed: () {
-                                LocationPoint location = snapshot.selectedOrder
-                                    .order.pickupAddress.locationPoint;
-                                _launchMaps(location.lat.toString(),
-                                    location.lon.toString());
-                              },
-                              child:
-                                  Image.asset('assets/images/naviagtion.png'),
-                              backgroundColor: AppColors.icColors,
-                            )
-                          ],
-                        ),
+                      SizedBox(height: 20.toHeight),
+                      // customer details component
+                      DetailsTileWidget(
+                        showCustomerDetails: true,
                       ),
-                      Padding(
-                        padding: EdgeInsets.all(20.toFont),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Flexible(
-                              child: RichText(
-                                text: TextSpan(
-                                  text: tr("screen_home.drop") + "\n",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16.toFont,
-                                    fontFamily: 'Avenir',
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  children: [
-                                    TextSpan(
-                                      text: snapshot.selectedOrder.order
-                                          .deliveryAddress.prettyAddress,
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 14.toFont,
-                                        fontFamily: 'Avenir',
-                                        fontWeight: FontWeight.normal,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            FloatingActionButton(
-                              heroTag: "dropLocationButton",
-                              onPressed: () {
-                                LocationPoint location = snapshot.selectedOrder
-                                    .order.deliveryAddress.locationPoint;
-                                _launchMaps(location.lat.toString(),
-                                    location.lon.toString());
-                              },
-                              child:
-                                  Image.asset('assets/images/naviagtion.png'),
-                              backgroundColor: AppColors.icColors,
-                            )
-                          ],
-                        ),
-                      ),
+                      SizedBox(height: 20.toHeight),
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 20.toWidth),
                         width: double.infinity,

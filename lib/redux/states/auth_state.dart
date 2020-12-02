@@ -18,7 +18,6 @@ class AuthState {
   final User user;
   final bool isPhoneNumberValid;
   final bool isOtpEntered;
-  final bool isSignUp;
 
   AuthState(
       {@required this.getOtpRequest,
@@ -30,7 +29,6 @@ class AuthState {
       @required this.token,
       @required this.isLoggedIn,
       @required this.validateOTPRequest,
-      @required this.isSignUp,
       @required this.updateCustomerDetailsRequest,
       @required this.deviceToken});
 
@@ -46,7 +44,6 @@ class AuthState {
       getOtpRequest: null,
       validateOTPRequest: null,
       updateCustomerDetailsRequest: null,
-      isSignUp: false,
       deviceToken: "",
     );
   }
@@ -75,18 +72,18 @@ class AuthState {
       bool isSignUp,
       String deviceToken}) {
     return new AuthState(
-        deviceToken: token,
-        user: user ?? this.user,
-        isLoginSkipped: isLoginSkipped ?? this.isLoginSkipped,
-        loadingStatus: loadingStatus ?? this.loadingStatus,
-        token: token ?? this.token,
-        isLoggedIn: isLoggedIn ?? this.isLoggedIn,
-        isPhoneNumberValid: isPhoneNumberValid ?? this.isPhoneNumberValid,
-        isOtpEntered: isOtpEntered ?? this.isOtpEntered,
-        getOtpRequest: getOtpRequest ?? this.getOtpRequest,
-        validateOTPRequest: validateOTPRequest ?? this.validateOTPRequest,
-        updateCustomerDetailsRequest:
-            updateCustomerDetailsRequest ?? this.updateCustomerDetailsRequest,
-        isSignUp: isSignUp ?? this.isSignUp);
+      deviceToken: token,
+      user: user ?? this.user,
+      isLoginSkipped: isLoginSkipped ?? this.isLoginSkipped,
+      loadingStatus: loadingStatus ?? this.loadingStatus,
+      token: token ?? this.token,
+      isLoggedIn: isLoggedIn ?? this.isLoggedIn,
+      isPhoneNumberValid: isPhoneNumberValid ?? this.isPhoneNumberValid,
+      isOtpEntered: isOtpEntered ?? this.isOtpEntered,
+      getOtpRequest: getOtpRequest ?? this.getOtpRequest,
+      validateOTPRequest: validateOTPRequest ?? this.validateOTPRequest,
+      updateCustomerDetailsRequest:
+          updateCustomerDetailsRequest ?? this.updateCustomerDetailsRequest,
+    );
   }
 }

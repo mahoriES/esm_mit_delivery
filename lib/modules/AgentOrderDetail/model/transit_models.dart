@@ -95,6 +95,15 @@ class TransitDetails {
     }
     return data;
   }
+
+  String get customerContact =>
+      this.order.customerPhones == null || this.order.customerPhones.isEmpty
+          ? null
+          : this.order.customerPhones.first;
+  String get businessContact =>
+      this.order.businessPhones == null || this.order.businessPhones.isEmpty
+          ? null
+          : this.order.businessPhones.first;
 }
 
 class PickupPnt {

@@ -69,11 +69,11 @@
     "accept": "ஏற்றுக்கொள்",
     "pickup": "எடு",
     "drop": "கைவிட",
-    "reject": "reject",
-    "item": "item",
-    "pickup_images": "Pickup Images",
-    "drop_images": "Drop Images",
-    "confirm_action_mesage": "Are you sure you want to {actionName} order {orderNumber} ?",
+    "reject": "நிராகரிக்கவும்",
+    "item": "பொருள்",
+    "pickup_images": "படங்கள் பிக்கப் செய்யவும்",
+    "drop_images": "படங்களை ட்ராப் செய்யவும்",
+    "confirm_action_mesage": "order {orderNumber} ஐ {ActionName} செய்ய விரும்புகிறீர்களா?",
     "confirm": "உறுதிப்படுத்தவும்"
   },
   "screen_account": {
@@ -85,7 +85,7 @@
     "alert_data": "சொல்வது உறுதியா ! நீங்கள் வெளியேற விரும்புகிறீர்களா?",
     "cancel": "ரத்துசெய்",
     "Edit": "தொகு",
-    "version": "Version"
+    "version": "பதிப்பு"
   },
   "screen_recommended": {
     "title": "ஒரு கடையை பரிந்துரைக்கவும்",
@@ -97,6 +97,7 @@
   "screen_support": {
     "No_contact_details_found": "தொடர்பு விவரங்கள் எதுவும் கிடைக்கவில்லை.",
     "Upload_Pick_Up_Images": "பிக் அப் படங்களை பதிவேற்றுக",
-    "Upload_Drop_Images": "டிராப் படங்களை பதிவேற்றவும்"
+    "Upload_Drop_Images": "டிராப் படங்களை பதிவேற்றவும்",
+    "maps_error": "வரைபடங்களைத் திறக்க முடியவில்லை"
   }
 }
