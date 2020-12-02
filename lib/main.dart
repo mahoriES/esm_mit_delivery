@@ -7,7 +7,6 @@ import 'package:esamudaayapp/modules/Profile/views/profile_view.dart';
 import 'package:esamudaayapp/modules/accounts/views/accounts_view.dart';
 import 'package:esamudaayapp/modules/login/actions/login_actions.dart';
 import 'package:esamudaayapp/modules/login/views/login_View.dart';
-import 'package:esamudaayapp/modules/register/view/register_view.dart';
 import 'package:esamudaayapp/presentations/alert.dart';
 import 'package:esamudaayapp/presentations/check_user_widget.dart';
 import 'package:esamudaayapp/presentations/splash_screen.dart';
@@ -160,7 +159,6 @@ class MyAppBase extends StatelessWidget {
           "/language": (BuildContext context) => new LanguageScreen(),
           "/otpScreen": (BuildContext context) => new OtpScreen(),
           "/mobileNumber": (BuildContext context) => new LoginView(),
-          "/registration": (BuildContext context) => new Registration(),
           "/myHomeView": (BuildContext context) => new MyHomeView(),
           "/AccountsView": (BuildContext context) => AccountsView(),
           "/orderDetail": (BuildContext context) => OrderDetailScreen(),
