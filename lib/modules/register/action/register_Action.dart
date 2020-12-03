@@ -4,6 +4,7 @@ import 'package:async_redux/async_redux.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:esamudaayapp/models/User.dart';
 import 'package:esamudaayapp/models/loading_status.dart';
+import 'package:esamudaayapp/modules/accounts/action/account_action.dart';
 import 'package:esamudaayapp/modules/login/actions/login_actions.dart';
 import 'package:esamudaayapp/modules/otp/action/otp_action.dart';
 import 'package:esamudaayapp/modules/register/model/register_request_model.dart';
@@ -27,6 +28,7 @@ class GetUserDetailAction extends ReduxAction<AppState> {
           GetProfileResponse.fromJson(response.data);
       if (authResponse.agent == null) {
         Fluttertoast.showToast(msg: tr("error_messages.signup_error"));
+        dispatch(LogoutAction());
       } else {
         await UserManager.saveToken(token: authResponse.agent.token);
 
