@@ -61,7 +61,18 @@ class DetailsTileWidget extends StatelessWidget {
                     if (snapshot.isAddressAvailable) ...[
                       SizedBox(height: 4.toHeight),
                       Text(
-                        snapshot.getAddress,
+                        snapshot.getAddressWithHousePrefix,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 14,
+                          fontFamily: 'Avenir',
+                        ),
+                      ),
+                    ],
+                    if (snapshot.isAddressLandmarkAvailable) ...[
+                      SizedBox(height: 4.toHeight),
+                      Text(
+                        "Landmark : ${snapshot.getAddressLandmark}",
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 14,
@@ -152,11 +163,26 @@ class _ViewModel extends BaseModel<AppState> {
 
   bool get isContactAvailable => getContact != null;
 
-  String get getAddress => showCustomerDetails
+  String get _getAddress => showCustomerDetails
       ? selectedOrder.order.deliveryAddress?.prettyAddress
       : selectedOrder.order.pickupAddress?.prettyAddress;
 
-  bool get isAddressAvailable => getAddress != null;
+  String get _getAddressHouse => showCustomerDetails
+      ? selectedOrder.order.deliveryAddress?.geoAddr?.house
+      : selectedOrder.order.pickupAddress?.geoAddr?.house;
+
+  String get getAddressLandmark => showCustomerDetails
+      ? selectedOrder.order.deliveryAddress?.geoAddr?.landmark
+      : selectedOrder.order.pickupAddress?.geoAddr?.landmark;
+
+  String get getAddressWithHousePrefix =>
+      (_isAddressHouseAvailable ? "$_getAddressHouse, " : "") + _getAddress;
+
+  bool get isAddressAvailable => _getAddress != null;
+
+  bool get _isAddressHouseAvailable => _getAddressHouse != null;
+
+  bool get isAddressLandmarkAvailable => getAddressLandmark != null;
 
   void launchMaps(VoidCallback showError) async {
     PickupPnt location =
