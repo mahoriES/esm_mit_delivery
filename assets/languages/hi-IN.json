@@ -3,9 +3,10 @@
         "title": "अपनी पसंदीदा भाषा चुनें"
     },
     "error_messages": {
-        "load_failed": "Load Failed!Click retry!",
-        "release_to_load_more": "release to load more",
-        "no_more_data": "और डेटा नहीं है"
+        "load_failed": "लोड विफल हो गया! रिट्राइ पर क्लिक करें!",
+        "release_to_load_more": "अधिक लोड करने के लिए रिलीज़ करें",
+        "no_more_data": "और डेटा नहीं है",
+        "signup_error": "अकाउंट मौजूद नहीं है। ऑनबोर्ड होने के लिए कृपया eSamudaay सर्कल प्रमोटर से संपर्क करें"
     },
     "screen_phone": {
         "get_otp": "ओटीपी प्राप्त करें",

@@ -115,7 +115,7 @@ class _AgentHomeState extends State<AgentHome> {
                           child: _OrdersListView(
                             orderId: _details.order.orderShortNumber,
                             date: CommonMethods.convertDateFromString(
-                                _details.order.created),
+                                _details.created),
                             // convert amount in rupees by dividing with 100
                             amount: (_details.order.orderTotal / 100)
                                 .toStringAsFixed(2),

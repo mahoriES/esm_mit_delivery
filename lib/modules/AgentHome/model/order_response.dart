@@ -208,18 +208,24 @@ class DeliveryAddress {
 class GeoAddr {
   String city;
   String pincode;
+  String landmark;
+  String house;
 
-  GeoAddr({this.city, this.pincode});
+  GeoAddr({this.city, this.pincode, this.landmark, this.house});
 
   GeoAddr.fromJson(Map<String, dynamic> json) {
     city = json['city'];
     pincode = json['pincode'];
+    landmark = json['landmark'];
+    house = json['house'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['city'] = this.city;
     data['pincode'] = this.pincode;
+    data['landmark'] = this.landmark;
+    data['house'] = this.house;
     return data;
   }
 }

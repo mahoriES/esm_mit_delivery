@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:async_redux/async_redux.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:esamudaayapp/models/User.dart';
 import 'package:esamudaayapp/models/loading_status.dart';
 import 'package:esamudaayapp/modules/login/model/get_otp_request.dart';
@@ -63,8 +64,7 @@ class GetOtpAction extends ReduxAction<AppState> {
       if (response.data['message'] != null) {
         String errorMessage = response.data['message'] ?? "";
         if (errorMessage.contains("Signup")) {
-          errorMessage =
-              "Account does not exist. Please contact eSamudaay circle promoter to onboard with us";
+          errorMessage = tr("error_messages.signup_error");
         }
         Fluttertoast.showToast(msg: errorMessage);
       } else if (response.data['detail'] != null) {

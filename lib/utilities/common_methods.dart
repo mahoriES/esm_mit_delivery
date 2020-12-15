@@ -14,7 +14,7 @@ class CommonMethods {
   }
 
   static String convertDateFromString(String strDate) {
-    DateTime todayDate = DateTime.parse(strDate);
+    DateTime todayDate = DateTime.parse(strDate).toLocal();
 
     return DateFormat('dd MMM yyyy , hh:mm a').format(todayDate);
   }
