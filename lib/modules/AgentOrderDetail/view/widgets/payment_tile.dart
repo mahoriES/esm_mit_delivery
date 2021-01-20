@@ -24,7 +24,7 @@ class PaymentTile extends StatelessWidget {
         SizedBox(width: 8.toWidth),
         Flexible(
           child: Text(
-            order.dPaymentString,
+            order?.dPaymentString ?? "",
             style: Theme.of(context).textTheme.bodyText1.copyWith(
                   color: order.isPaymentDone ? Colors.green : Colors.red,
                 ),

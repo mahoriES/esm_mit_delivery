@@ -77,6 +77,13 @@
         "confirm_action_mesage": "क्या आप वाकई ऑर्डर {orderNumber} {actionName} करना चाहते हैं?",
         "confirm": "पुष्टि करें"
     },
+    "payment_status": {
+        "done": "रु {} का भुगतान {} के माध्यम से किया",
+        "pending": "भुगतान लंबित",
+        "rejected": "भुगतान अस्वीकृत",
+        "refunded": "भुगतान रिफंड किया गया",
+        "initiated": "भुगतान प्रक्रिया शुरू की गई"
+    },
     "screen_account": {
         "title": "अकाउंट",
         "profile": "प्रोफ़ाइल",

@@ -77,6 +77,13 @@
     "confirm_action_mesage": "ನೀವು ಆದೇಶವನ್ನು {actionName} ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ {orderNumber}?",
     "confirm": "ಖಚಿತಪಡಿಸಿ"
   },
+  "payment_status": {
+    "done": "ಪಾವತಿಸಿದ ರೂ. {}  {} ಬಳಸಿ",
+    "pending": "ಪಾವತಿ ಬಾಕಿ ಇದೆ",
+    "rejected": "ಪಾವತಿ ತಿರಸ್ಕರಿಸಲಾಗಿದೆ",
+    "refunded": "ಪಾವತಿ ಮರುಪಾವತಿ ಮಾಡಲಾಗಿದೆ",
+    "initiated": "ಪಾವತಿ ಪ್ರಾರಂಭಿಸಲಾಗಿದೆ"
+  },
   "screen_account": {
     "title": "ಖಾತೆ",
     "profile": "ಪ್ರೊಫೈಲ್",
