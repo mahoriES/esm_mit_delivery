@@ -77,6 +77,13 @@
     "confirm_action_mesage": "order {orderNumber} ஐ {ActionName} செய்ய விரும்புகிறீர்களா?",
     "confirm": "உறுதிப்படுத்தவும்"
   },
+  "payment_status": {
+    "done": "கட்டணம் {} பயன்படுத்தி {}",
+    "pending": "கட்டணம் நிலுவையில் உள்ளது",
+    "rejected": "கட்டணம் நிராகரிக்கப்பட்டது",
+    "refunded": "கட்டணம் திரும்பப் தரப்பட்டது",
+    "initiated": "கட்டணம் தொடங்கப்பட்டது"
+  },
   "screen_account": {
     "title": "அக்கௌன்ட்t",
     "profile": "சுயவிவரம்",

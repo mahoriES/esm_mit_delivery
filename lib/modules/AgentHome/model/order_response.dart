@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:esamudaayapp/modules/AgentOrderDetail/model/transit_models.dart';
 
 class OrderStatusStrings {
@@ -81,6 +82,7 @@ class Order {
   DeliveryAddress deliveryAddress;
   String created;
   List<OrderItems> orderItems;
+  PaymentInfo paymentInfo;
 
   Order(
       {this.orderId,
@@ -97,7 +99,8 @@ class Order {
       this.pickupAddress,
       this.deliveryAddress,
       this.orderItems,
-      this.created});
+      this.created,
+      this.paymentInfo});
 
   Order.fromJson(Map<String, dynamic> json) {
     orderId = json['order_id'];
@@ -134,6 +137,9 @@ class Order {
         ? new DeliveryAddress.fromJson(json['delivery_address'])
         : null;
     created = json['created'];
+    paymentInfo = json['payment_info'] != null
+        ? new PaymentInfo.fromJson(json['payment_info'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -160,7 +166,34 @@ class Order {
       data['delivery_address'] = this.deliveryAddress.toJson();
     }
     data['created'] = this.created;
+    if (this.paymentInfo != null) {
+      data['payment_info'] = this.paymentInfo.toJson();
+    }
     return data;
+  }
+
+  bool get isPaymentDone {
+    return this.paymentInfo.status == PaymentStatus.APPROVED ||
+        this.paymentInfo.status == PaymentStatus.SUCCESS;
+  }
+
+  double get orderTotalInRupees => (this.orderTotal ?? 0) / 100;
+
+  String get dPaymentString {
+    return isPaymentDone
+        ? tr("payment_status.done",
+            args: [orderTotalInRupees.toStringAsFixed(2), dPaymentMethod])
+        : this.paymentInfo.status == PaymentStatus.REFUNDED
+            ? tr("payment_status.refunded")
+            : this.paymentInfo.status == PaymentStatus.INITIATED
+                ? tr("payment_status.initiated")
+                : this.paymentInfo.status == PaymentStatus.REJECTED
+                    ? tr("payment_status.rejected")
+                    : tr("payment_status.pending");
+  }
+
+  String get dPaymentMethod {
+    return this.paymentInfo?.via ?? "";
   }
 }
 
@@ -390,4 +423,50 @@ class BusinessImages {
     data['content_type'] = this.contentType;
     return data;
   }
+}
+
+class PaymentInfo {
+  String upi;
+  String status;
+  String dt;
+  int amount;
+  String via;
+
+  PaymentInfo({
+    this.upi,
+    this.status,
+    this.dt,
+    this.amount,
+    this.via,
+  });
+
+  PaymentInfo.fromJson(Map<String, dynamic> json) {
+    upi = json['upi'];
+    status = json['status'];
+    dt = json['dt'];
+    amount = json['amount'];
+    via = json['via'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['upi'] = this.upi;
+    data['status'] = this.status;
+    data['dt'] = this.dt;
+    data['amount'] = this.amount;
+    data['via'] = this.via;
+    return data;
+  }
+}
+
+class PaymentStatus {
+  static const PENDING = 'PENDING';
+  static const SUCCESS = 'SUCCESS';
+  static const FAIL = 'FAIL';
+  static const REFUNDED = 'REFUNDED';
+
+  //  Old Statuses:
+  static const INITIATED = 'INITIATED';
+  static const APPROVED = 'APPROVED';
+  static const REJECTED = 'REJECTED';
 }

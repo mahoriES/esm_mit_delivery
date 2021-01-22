@@ -9,6 +9,7 @@ import 'package:esamudaayapp/modules/AgentOrderDetail/model/pick_image.dart';
 import 'package:esamudaayapp/modules/AgentOrderDetail/model/transit_models.dart';
 import 'package:esamudaayapp/modules/AgentOrderDetail/view/image_view.dart';
 import 'package:esamudaayapp/modules/AgentOrderDetail/view/widgets/details_tile.dart';
+import 'package:esamudaayapp/modules/AgentOrderDetail/view/widgets/payment_tile.dart';
 import 'package:esamudaayapp/presentations/confirm_dialogue.dart';
 import 'package:esamudaayapp/presentations/loading_widget.dart';
 import 'package:esamudaayapp/presentations/status_icon.dart';
@@ -68,128 +69,143 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                           color: const Color(0xffffffff),
                         ),
                         padding: EdgeInsets.all(20.toFont),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            StatusIcon(
-                              snapshot.selectedOrder.status,
-                              snapshot.selectedOrder.order.orderStatus,
-                              hasStatusName: false,
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding:
-                                    EdgeInsets.symmetric(horizontal: 8.toWidth),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      '${tr("screen_home.Order_ID")} ${snapshot.selectedOrder.order.orderShortNumber},',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16.toFont,
-                                        fontFamily: 'Avenir',
-                                      ),
-                                    ),
-                                    Text(
-                                      CommonMethods.convertDateFromString(
-                                          snapshot.selectedOrder.created),
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 12.toFont,
-                                        fontFamily: 'Avenir',
-                                      ),
-                                    ),
-                                    if (snapshot.selectedOrder.order
-                                                .orderStatus ==
-                                            OrderStatusStrings.orderCompleted &&
-                                        status ==
-                                            OrderStatusStrings.accepted) ...[
-                                      RichText(
-                                        text: TextSpan(
-                                          children: [
-                                            TextSpan(
-                                              text: tr("screen_home.Completed"),
-                                              style: TextStyle(
-                                                color: Color(0xff505050),
-                                                fontSize: 12,
-                                                fontFamily: 'Avenir',
-                                                fontWeight: FontWeight.w900,
-                                              ),
-                                            ),
-                                            TextSpan(
-                                              text: CommonMethods
-                                                  .convertDateFromString(
-                                                      snapshot.selectedOrder
-                                                          .order.created),
-                                              style: TextStyle(
-                                                color: Color(0xff959595),
-                                                fontSize: 12,
-                                                fontFamily: 'CircularStd-Book',
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                    RichText(
-                                      text: TextSpan(
-                                        children: [
-                                          TextSpan(
-                                            text:
-                                                '${tr('screen_home.Distance')} ',
-                                            style: TextStyle(
-                                              color: Color(0xff505050),
-                                              fontSize: 12,
-                                              fontFamily: 'Avenir',
-                                              fontWeight: FontWeight.w900,
-                                            ),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                StatusIcon(
+                                  snapshot.selectedOrder.status,
+                                  snapshot.selectedOrder.order.orderStatus,
+                                  hasStatusName: false,
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 8.toWidth),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(
+                                          '${tr("screen_home.Order_ID")} ${snapshot.selectedOrder.order.orderShortNumber},',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16.toFont,
+                                            fontFamily: 'Avenir',
                                           ),
-                                          TextSpan(
-                                            text:
-                                                ': ${CommonMethods.getDistanceinFormat(snapshot.selectedOrder.distanceInMeters)}',
-                                            style: TextStyle(
-                                              color: Color(0xff959595),
-                                              fontSize: 12,
-                                              fontFamily: 'CircularStd-Book',
+                                        ),
+                                        Text(
+                                          CommonMethods.convertDateFromString(
+                                              snapshot.selectedOrder.created),
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 12.toFont,
+                                            fontFamily: 'Avenir',
+                                          ),
+                                        ),
+                                        if (snapshot.selectedOrder.order
+                                                    .orderStatus ==
+                                                OrderStatusStrings
+                                                    .orderCompleted &&
+                                            status ==
+                                                OrderStatusStrings
+                                                    .accepted) ...[
+                                          RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: tr(
+                                                      "screen_home.Completed"),
+                                                  style: TextStyle(
+                                                    color: Color(0xff505050),
+                                                    fontSize: 12,
+                                                    fontFamily: 'Avenir',
+                                                    fontWeight: FontWeight.w900,
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                  text: CommonMethods
+                                                      .convertDateFromString(
+                                                          snapshot.selectedOrder
+                                                              .order.created),
+                                                  style: TextStyle(
+                                                    color: Color(0xff959595),
+                                                    fontSize: 12,
+                                                    fontFamily:
+                                                        'CircularStd-Book',
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ],
+                                        RichText(
+                                          text: TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text:
+                                                    '${tr('screen_home.Distance')} ',
+                                                style: TextStyle(
+                                                  color: Color(0xff505050),
+                                                  fontSize: 12,
+                                                  fontFamily: 'Avenir',
+                                                  fontWeight: FontWeight.w900,
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text:
+                                                    ': ${CommonMethods.getDistanceinFormat(snapshot.selectedOrder.distanceInMeters)}',
+                                                style: TextStyle(
+                                                  color: Color(0xff959595),
+                                                  fontSize: 12,
+                                                  fontFamily:
+                                                      'CircularStd-Book',
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Column(
+                                  children: <Widget>[
+                                    Text(
+                                      // convert amount in rupees by dividing with 100
+                                      'Rs.${(snapshot.selectedOrder.order.orderTotal / 100).toStringAsFixed(2)}',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 12,
+                                        fontFamily: 'Avenir',
+                                      ),
+                                    ),
+                                    Text(
+                                      snapshot.selectedOrder.order.orderItems !=
+                                              null
+                                          ? snapshot.selectedOrder.order
+                                                  .orderItems.length
+                                                  .toString() +
+                                              " ${tr('screen_home.item')}"
+                                          : "0" + " ${tr('screen_home.item')}",
+                                      style: TextStyle(
+                                        color: Color(0xff9d9797),
+                                        fontFamily: 'Avenir',
+                                        fontWeight: FontWeight.w500,
                                       ),
                                     ),
                                   ],
-                                ),
-                              ),
-                            ),
-                            Column(
-                              children: <Widget>[
-                                Text(
-                                  // convert amount in rupees by dividing with 100
-                                  'Rs.${(snapshot.selectedOrder.order.orderTotal / 100).toStringAsFixed(2)}',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 12,
-                                    fontFamily: 'Avenir',
-                                  ),
-                                ),
-                                Text(
-                                  snapshot.selectedOrder.order.orderItems !=
-                                          null
-                                      ? snapshot.selectedOrder.order.orderItems
-                                              .length
-                                              .toString() +
-                                          " ${tr('screen_home.item')}"
-                                      : "0" + " ${tr('screen_home.item')}",
-                                  style: TextStyle(
-                                    color: Color(0xff9d9797),
-                                    fontFamily: 'Avenir',
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
+                                )
                               ],
-                            )
+                            ),
+                            SizedBox(height: 10.toHeight),
+                            if (status != OrderStatusStrings.dropped) ...[
+                              PaymentTile(snapshot.selectedOrder.order),
+                            ]
                           ],
                         ),
                       ),

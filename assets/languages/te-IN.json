@@ -77,6 +77,13 @@
     "confirm_action_mesage": "మీరు ఖచ్చితంగా {actionName} order {orderNumber} to చేయాలనుకుంటున్నారా?",
     "confirm": "నిర్ధారించండి"
   },
+  "payment_status": {
+    "done": "చెల్లించిన రూ. {} ఉపయోగించి {}",
+    "pending": "చెల్లింపు పెండింగ్‌లో ఉంది",
+    "rejected": "చెల్లింపు తిరస్కరించబడింది",
+    "refunded": "చెల్లింపు తిరిగి ఇవ్వబడింది",
+    "initiated": "చెల్లింపు ప్రారంభించబడింది"
+  },
   "screen_account": {
     "title": "ఖాతా",
     "profile": "ప్రొఫైల్",
