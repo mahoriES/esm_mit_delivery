@@ -18,6 +18,8 @@ import 'package:path/path.dart';
 import 'package:async/async.dart';
 
 class GetOrderDetailsAction extends ReduxAction<AppState> {
+  LoadingStatus finalStatus = LoadingStatus.success;
+
   @override
   FutureOr<AppState> reduce() async {
     var response = await APIManager.shared.request(
@@ -25,11 +27,16 @@ class GetOrderDetailsAction extends ReduxAction<AppState> {
             '${state.homePageState.selectedOrder.requestId}',
         params: {"": ""},
         requestType: RequestType.get);
-    if (response.status == ResponseStatus.error404)
-      throw UserException(response.data['message']);
-    else if (response.status == ResponseStatus.error500)
-      throw UserException('Something went wrong');
-    else {
+    if (response.status == ResponseStatus.error404) {
+      finalStatus = LoadingStatus.error;
+      // refetch the orders list in case any requests are already accepted or completed.
+      dispatch(
+          GetAgentOrderList(filter: state.homePageState.selectedOrder.status));
+      return null;
+    } else if (response.status == ResponseStatus.error500) {
+      finalStatus = LoadingStatus.error;
+      return null;
+    } else {
       var responseModel = TransitDetails.fromJson(response.data);
       return state.copyWith(
           homePageState:
@@ -45,12 +52,14 @@ class GetOrderDetailsAction extends ReduxAction<AppState> {
 
   @override
   void after() {
-    dispatch(ChangeLoadingStatusAction(LoadingStatus.success));
+    dispatch(ChangeLoadingStatusAction(finalStatus));
     super.after();
   }
 }
 
 class GetTransitDetailsAction extends ReduxAction<AppState> {
+  LoadingStatus finalStatus = LoadingStatus.success;
+
   @override
   FutureOr<AppState> reduce() async {
     var response = await APIManager.shared.request(
@@ -58,13 +67,16 @@ class GetTransitDetailsAction extends ReduxAction<AppState> {
             '/${state.homePageState.selectedOrder.transitId}',
         params: {"": ""},
         requestType: RequestType.get);
-    if (response.status == ResponseStatus.error404)
-      //throw UserException(response.data['message']);
+    if (response.status == ResponseStatus.error404) {
+      finalStatus = LoadingStatus.error;
+      // refetch the orders list in case any requests are already accepted or completed.
+      dispatch(
+          GetAgentOrderList(filter: state.homePageState.selectedOrder.status));
       return null;
-    else if (response.status == ResponseStatus.error500)
+    } else if (response.status == ResponseStatus.error500) {
+      finalStatus = LoadingStatus.error;
       return null;
-//      throw UserException('Something went wrong');
-    else {
+    } else {
       var responseModel = TransitDetails.fromJson(response.data);
       return state.copyWith(
           homePageState:
@@ -80,12 +92,14 @@ class GetTransitDetailsAction extends ReduxAction<AppState> {
 
   @override
   void after() {
-    dispatch(ChangeLoadingStatusAction(LoadingStatus.success));
+    dispatch(ChangeLoadingStatusAction(finalStatus));
     super.after();
   }
 }
 
 class AcceptOrderAction extends ReduxAction<AppState> {
+  LoadingStatus finalStatus = LoadingStatus.success;
+
   @override
   FutureOr<AppState> reduce() async {
     var response = await APIManager.shared.request(
@@ -94,11 +108,15 @@ class AcceptOrderAction extends ReduxAction<AppState> {
       params: {},
       requestType: RequestType.post,
     );
-    if (response.status == ResponseStatus.error404)
-      throw UserException(response.data['message']);
-    else if (response.status == ResponseStatus.error500)
-      throw UserException('Something went wrong');
-    else if (response.status == ResponseStatus.success200) {
+    if (response.status == ResponseStatus.error404) {
+      finalStatus = LoadingStatus.error;
+      // refetch the orders list in case any requests are already accepted or completed.
+      dispatch(GetAgentOrderList(filter: OrderStatusStrings.pending));
+      return null;
+    } else if (response.status == ResponseStatus.error500) {
+      finalStatus = LoadingStatus.error;
+      return null;
+    } else if (response.status == ResponseStatus.success200) {
       var responseModel = TransitDetails.fromJson(response.data);
       // disptach these events to refresh the orders list
       dispatch(GetAgentOrderList(filter: OrderStatusStrings.accepted));
@@ -120,12 +138,14 @@ class AcceptOrderAction extends ReduxAction<AppState> {
 
   @override
   void after() {
-    dispatch(ChangeLoadingStatusAction(LoadingStatus.success));
+    dispatch(ChangeLoadingStatusAction(finalStatus));
     super.after();
   }
 }
 
 class PickOrderAction extends ReduxAction<AppState> {
+  LoadingStatus finalStatus = LoadingStatus.success;
+
   final PickImage pickImage;
 
   PickOrderAction({this.pickImage});
@@ -137,11 +157,15 @@ class PickOrderAction extends ReduxAction<AppState> {
       params: {}, //pickImage?.toJson(),
       requestType: RequestType.post,
     );
-    if (response.status == ResponseStatus.error404)
-      throw UserException(response.data['message']);
-    else if (response.status == ResponseStatus.error500)
-      throw UserException('Something went wrong');
-    else {
+    if (response.status == ResponseStatus.error404) {
+      finalStatus = LoadingStatus.error;
+      // refetch the orders list in case any requests are already accepted or completed.
+      dispatch(GetAgentOrderList(filter: OrderStatusStrings.accepted));
+      return null;
+    } else if (response.status == ResponseStatus.error500) {
+      finalStatus = LoadingStatus.error;
+      return null;
+    } else {
       var responseModel = TransitDetails.fromJson(response.data);
       // disptach these events to refresh the orders list
       dispatch(GetAgentOrderList(filter: OrderStatusStrings.accepted));
@@ -162,12 +186,14 @@ class PickOrderAction extends ReduxAction<AppState> {
 
   @override
   void after() {
-    dispatch(ChangeLoadingStatusAction(LoadingStatus.success));
+    dispatch(ChangeLoadingStatusAction(finalStatus));
     super.after();
   }
 }
 
 class DropOrderAction extends ReduxAction<AppState> {
+  LoadingStatus finalStatus = LoadingStatus.success;
+
   final DropImage dropImage;
 
   DropOrderAction({this.dropImage});
@@ -180,11 +206,15 @@ class DropOrderAction extends ReduxAction<AppState> {
       params: {},
       requestType: RequestType.post,
     );
-    if (response.status == ResponseStatus.error404)
-      throw UserException(response.data['message']);
-    else if (response.status == ResponseStatus.error500)
-      throw UserException('Something went wrong');
-    else {
+    if (response.status == ResponseStatus.error404) {
+      finalStatus = LoadingStatus.error;
+      // refetch the orders list in case any requests are already accepted or completed.
+      dispatch(GetAgentOrderList(filter: OrderStatusStrings.picked));
+      return null;
+    } else if (response.status == ResponseStatus.error500) {
+      finalStatus = LoadingStatus.error;
+      return null;
+    } else {
       var responseModel = TransitDetails.fromJson(response.data);
       // disptach these events to refresh the orders list
       dispatch(GetAgentTransitOrderList(filter: OrderStatusStrings.picked));
@@ -204,12 +234,14 @@ class DropOrderAction extends ReduxAction<AppState> {
 
   @override
   void after() {
-    dispatch(ChangeLoadingStatusAction(LoadingStatus.success));
+    dispatch(ChangeLoadingStatusAction(finalStatus));
     super.after();
   }
 }
 
 class RejectOrderAction extends ReduxAction<AppState> {
+  LoadingStatus finalStatus = LoadingStatus.success;
+
   @override
   FutureOr<AppState> reduce() async {
     var response = await APIManager.shared.request(
@@ -218,11 +250,15 @@ class RejectOrderAction extends ReduxAction<AppState> {
       params: {},
       requestType: RequestType.delete,
     );
-    if (response.status == ResponseStatus.error404)
-      throw UserException(response.data['message']);
-    else if (response.status == ResponseStatus.error500)
-      throw UserException('Something went wrong');
-    else {
+    if (response.status == ResponseStatus.error404) {
+      finalStatus = LoadingStatus.error;
+      // refetch the orders list in case any requests are already accepted or completed.
+      dispatch(GetAgentOrderList(filter: OrderStatusStrings.pending));
+      return null;
+    } else if (response.status == ResponseStatus.error500) {
+      finalStatus = LoadingStatus.error;
+      return null;
+    } else {
       var responseModel = TransitDetails.fromJson(response.data);
       // disptach these events to refresh the orders list
       dispatch(GetAgentOrderList(filter: OrderStatusStrings.pending));
@@ -241,7 +277,7 @@ class RejectOrderAction extends ReduxAction<AppState> {
 
   @override
   void after() {
-    dispatch(ChangeLoadingStatusAction(LoadingStatus.success));
+    dispatch(ChangeLoadingStatusAction(finalStatus));
     super.after();
   }
 }
@@ -307,6 +343,8 @@ class UpdateOrderImagesAction extends ReduxAction<AppState> {
   final List<ImageResponse> imageResponse;
   UpdateOrderImagesAction(this.imageResponse);
 
+  LoadingStatus finalStatus = LoadingStatus.success;
+
   @override
   FutureOr<AppState> reduce() async {
     var response = await APIManager.shared.request(
@@ -318,11 +356,16 @@ class UpdateOrderImagesAction extends ReduxAction<AppState> {
       },
       requestType: RequestType.put,
     );
-    if (response.status == ResponseStatus.error404)
-      throw UserException(response.data['message']);
-    else if (response.status == ResponseStatus.error500)
-      throw UserException('Something went wrong');
-    else {
+    if (response.status == ResponseStatus.error404) {
+      finalStatus = LoadingStatus.error;
+      // refetch the orders list in case any requests are already accepted or completed.
+      dispatch(
+          GetAgentOrderList(filter: state.homePageState.selectedOrder.status));
+      return null;
+    } else if (response.status == ResponseStatus.error500) {
+      finalStatus = LoadingStatus.error;
+      return null;
+    } else {
       var responseModel = TransitDetails.fromJson(response.data);
 
       return state.copyWith(
@@ -340,7 +383,7 @@ class UpdateOrderImagesAction extends ReduxAction<AppState> {
 
   @override
   void after() {
-    dispatch(ChangeLoadingStatusAction(LoadingStatus.success));
+    dispatch(ChangeLoadingStatusAction(finalStatus));
     super.after();
   }
 }

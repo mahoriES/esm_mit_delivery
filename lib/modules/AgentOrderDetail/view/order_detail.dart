@@ -23,6 +23,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+// TODO : change RS. to ₹
 class OrderDetailScreen extends StatefulWidget {
   @override
   _OrderDetailScreenState createState() => _OrderDetailScreenState();
@@ -49,9 +50,15 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
             store.dispatch(GetTransitDetailsAction());
           }
         },
+        onDidChange: (snapshot) {
+          if (snapshot.loadingStatus == LoadingStatus.error) {
+            Fluttertoast.showToast(msg: "Your order's list may have updated");
+            Navigator.pop(context);
+          }
+        },
         builder: (context, snapshot) {
           String status = snapshot.selectedOrder.status;
-          return snapshot.loadingStatus == LoadingStatus.loading
+          return snapshot.loadingStatus != LoadingStatus.success
               ? LoadingWidget()
               : SingleChildScrollView(
                   child: Column(
