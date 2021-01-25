@@ -34,10 +34,10 @@ class AppUpdateService {
 
       _isUpdateAvailable = appUpdateInfo?.updateAvailable ?? false;
 
-      _updateType = (appUpdateInfo?.immediateUpdateAllowed ?? false)
-          ? _UPDATE_TYPE.IMMEDIATE
-          : (appUpdateInfo?.flexibleUpdateAllowed ?? false)
-              ? _UPDATE_TYPE.FLEXIBLE
+      _updateType = (appUpdateInfo?.flexibleUpdateAllowed ?? false)
+          ? _UPDATE_TYPE.FLEXIBLE
+          : (appUpdateInfo?.immediateUpdateAllowed ?? false)
+              ? _UPDATE_TYPE.IMMEDIATE
               : _UPDATE_TYPE.NONE;
 
       _isSelectedLater = false;

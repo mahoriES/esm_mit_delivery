@@ -37,7 +37,7 @@ class _MyHomeViewState extends State<MyHomeView> {
 
   @override
   void initState() {
-    if (!AppUpdateService.isSelectedLater) {
+    if (!(AppUpdateService?.isSelectedLater ?? false)) {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         AppUpdateService.showUpdateDialog(context).then((value) {
           if (AppUpdateService.isSelectedLater) {
@@ -73,66 +73,74 @@ class _MyHomeViewState extends State<MyHomeView> {
             appBar: CustomAppbar(
               name: snapshot.user?.firstName ?? "",
             ),
-            bottomSheet: AppUpdateService.isSelectedLater
-                ? AppUpdateBanner(
-                    updateMessage: tr('app_update.banner_msg'),
-                    updateButtonText: tr('app_update.update').toUpperCase(),
-                  )
-                : null,
             bottomNavigationBar: BottomAppBar(
-              child: Container(
-                height: 60.toHeight,
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: List.generate(
-                    tabTitles.length,
-                    (index) => Expanded(
-                      child: Container(
-                        height: 60.toHeight,
-                        decoration: BoxDecoration(
-                          border: Border(
-                            top: BorderSide(
-                              color: snapshot.currentIndex == index
-                                  ? AppColors.icColors
-                                  : Colors.transparent,
-                              width: 3,
-                            ),
-                          ),
-                        ),
-                        child: Container(
-                          margin: EdgeInsets.only(top: 10.toHeight),
-                          decoration: BoxDecoration(
-                            border: Border(
-                              right:
-                                  BorderSide(color: Colors.grey[300], width: 1),
-                            ),
-                          ),
-                          child: FlatButton(
-                            padding: EdgeInsets.all(10.toWidth),
-                            onPressed: () {
-                              snapshot.updateCurrentIndex(index);
-
-                              if (snapshot.orders[tabType[index]] == null) {
-                                (tabType[index] == OrderStatusStrings.pending ||
-                                        tabType[index] ==
-                                            OrderStatusStrings.accepted)
-                                    ? snapshot.getOrderList(tabType[index])
-                                    : snapshot.getTransitList(tabType[index]);
-                              }
-                            },
-                            child: FittedBox(
-                              child: new Text(
-                                tr('screen_home.tab_bar.${tabTitles[index]}'),
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w800,
-                                  fontFamily: "Avenir",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 13.toFont,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  AppUpdateService.isSelectedLater
+                      ? AppUpdateBanner(
+                          updateMessage: tr('app_update.banner_msg'),
+                          updateButtonText:
+                              tr('app_update.update').toUpperCase(),
+                        )
+                      : SizedBox.shrink(),
+                  Container(
+                    height: 60.toHeight,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: List.generate(
+                        tabTitles.length,
+                        (index) => Expanded(
+                          child: Container(
+                            height: 60.toHeight,
+                            decoration: BoxDecoration(
+                              border: Border(
+                                top: BorderSide(
                                   color: snapshot.currentIndex == index
                                       ? AppColors.icColors
-                                      : Colors.black,
+                                      : Colors.transparent,
+                                  width: 3,
                                 ),
-                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            child: Container(
+                              margin: EdgeInsets.only(top: 10.toHeight),
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  right: BorderSide(
+                                      color: Colors.grey[300], width: 1),
+                                ),
+                              ),
+                              child: FlatButton(
+                                padding: EdgeInsets.all(10.toWidth),
+                                onPressed: () {
+                                  snapshot.updateCurrentIndex(index);
+
+                                  if (snapshot.orders[tabType[index]] == null) {
+                                    (tabType[index] ==
+                                                OrderStatusStrings.pending ||
+                                            tabType[index] ==
+                                                OrderStatusStrings.accepted)
+                                        ? snapshot.getOrderList(tabType[index])
+                                        : snapshot
+                                            .getTransitList(tabType[index]);
+                                  }
+                                },
+                                child: FittedBox(
+                                  child: new Text(
+                                    tr('screen_home.tab_bar.${tabTitles[index]}'),
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w800,
+                                      fontFamily: "Avenir",
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 13.toFont,
+                                      color: snapshot.currentIndex == index
+                                          ? AppColors.icColors
+                                          : Colors.black,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
@@ -140,14 +148,10 @@ class _MyHomeViewState extends State<MyHomeView> {
                       ),
                     ),
                   ),
-                ),
+                ],
               ),
             ),
-            body: Container(
-              margin: EdgeInsets.only(
-                  bottom: AppUpdateService.isSelectedLater ? 84 : 0),
-              child: AgentHome(orderType: tabType[snapshot.currentIndex]),
-            ),
+            body: AgentHome(orderType: tabType[snapshot.currentIndex]),
           );
         });
   }

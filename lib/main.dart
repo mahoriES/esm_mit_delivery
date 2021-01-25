@@ -27,9 +27,10 @@ import 'services/crashylitics_delegate.dart';
 final navigatorKey = GlobalKey<NavigatorState>();
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   NavigateAction.setNavigatorKey(navigatorKey);
+  await AppUpdateService.checkAppUpdateAvailability();
   runZonedGuarded(
     () async {
       runApp(EasyLocalization(
@@ -90,7 +91,6 @@ class _MyAppState extends State<MyApp> {
           store.dispatch(CheckTokenAction());
 //          store.dispatch(GetCartFromLocal());
           store.dispatch(GetUserFromLocalStorageAction());
-          await AppUpdateService.checkAppUpdateAvailability();
         },
         builder: (context, snapshot) {
           return CustomSplashScreen(
