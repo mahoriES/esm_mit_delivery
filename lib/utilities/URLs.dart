@@ -17,4 +17,6 @@ class ApiURL {
   static const imageUpload = baseURL + "api/v1/media/photo/";
   static const getTransitIdURL = "api/v1/delivery/transits";
   static const putImageInOrder = "/api/v1/delivery/transits/";
+  static final updatePaymentStatus =
+      (String orderId) => "/api/v1/orders/$orderId/payment";
 }
