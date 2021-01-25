@@ -5,6 +5,8 @@ import 'package:esamudaayapp/modules/AgentHome/action/AgentAction.dart';
 import 'package:esamudaayapp/modules/AgentHome/model/order_response.dart';
 import 'package:esamudaayapp/modules/AgentHome/view/AgentHome.dart';
 import 'package:esamudaayapp/modules/accounts/views/accounts_view.dart';
+import 'package:esamudaayapp/modules/app_update/app_update_banner.dart';
+import 'package:esamudaayapp/modules/app_update/app_update_service.dart';
 import 'package:esamudaayapp/modules/login/actions/login_actions.dart';
 import 'package:esamudaayapp/redux/states/app_state.dart';
 import 'package:esamudaayapp/utilities/colors.dart';
@@ -13,7 +15,12 @@ import 'package:flutter/material.dart';
 
 import 'custom_appbar.dart';
 
-class MyHomeView extends StatelessWidget {
+class MyHomeView extends StatefulWidget {
+  @override
+  _MyHomeViewState createState() => _MyHomeViewState();
+}
+
+class _MyHomeViewState extends State<MyHomeView> {
   final List<String> tabTitles = [
     "new_order",
     "accepted",
@@ -27,6 +34,20 @@ class MyHomeView extends StatelessWidget {
     OrderStatusStrings.picked,
     OrderStatusStrings.dropped,
   ];
+
+  @override
+  void initState() {
+    if (!AppUpdateService.isSelectedLater) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        AppUpdateService.showUpdateDialog(context).then((value) {
+          if (AppUpdateService.isSelectedLater) {
+            setState(() {});
+          }
+        });
+      });
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +73,12 @@ class MyHomeView extends StatelessWidget {
             appBar: CustomAppbar(
               name: snapshot.user?.firstName ?? "",
             ),
+            bottomSheet: AppUpdateService.isSelectedLater
+                ? AppUpdateBanner(
+                    updateMessage: tr('app_update.banner_msg'),
+                    updateButtonText: tr('app_update.update').toUpperCase(),
+                  )
+                : null,
             bottomNavigationBar: BottomAppBar(
               child: Container(
                 height: 60.toHeight,
@@ -116,7 +143,11 @@ class MyHomeView extends StatelessWidget {
                 ),
               ),
             ),
-            body: AgentHome(orderType: tabType[snapshot.currentIndex]),
+            body: Container(
+              margin: EdgeInsets.only(
+                  bottom: AppUpdateService.isSelectedLater ? 84 : 0),
+              child: AgentHome(orderType: tabType[snapshot.currentIndex]),
+            ),
           );
         });
   }

@@ -12,12 +12,14 @@ import 'package:esamudaayapp/presentations/check_user_widget.dart';
 import 'package:esamudaayapp/presentations/splash_screen.dart';
 import 'package:esamudaayapp/redux/states/app_state.dart';
 import 'package:esamudaayapp/store.dart';
+import 'package:esamudaayapp/themes/custom_theme.dart';
 import 'package:esamudaayapp/utilities/push_notification.dart';
 import 'package:esamudaayapp/utilities/sizeconfig.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'modules/app_update/app_update_service.dart';
 import 'modules/language/view/language_view.dart';
 import 'modules/otp/view/otp_view.dart';
 import 'services/crashylitics_delegate.dart';
@@ -84,10 +86,11 @@ class _MyAppState extends State<MyApp> {
     SizeConfig().init(context);
     return StoreConnector<AppState, _ViewModel>(
         model: _ViewModel(),
-        onInit: (store) {
+        onInit: (store) async {
           store.dispatch(CheckTokenAction());
 //          store.dispatch(GetCartFromLocal());
           store.dispatch(GetUserFromLocalStorageAction());
+          await AppUpdateService.checkAppUpdateAvailability();
         },
         builder: (context, snapshot) {
           return CustomSplashScreen(
@@ -129,42 +132,45 @@ class MyAppBase extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreProvider<AppState>(
       store: store,
-      child: MaterialApp(
-        navigatorObservers: [routeObserver],
-        localizationsDelegates: [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          EasyLocalization.of(context).delegate,
-        ],
-        supportedLocales: EasyLocalization.of(context).supportedLocales,
-        locale: EasyLocalization.of(context).locale,
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-            splashColor: Colors.transparent,
-            highlightColor: Colors.transparent,
-            primarySwatch: Colors.blue,
-            fontFamily: "JTLeonor",
-            appBarTheme: AppBarTheme(
+      child: CustomTheme(
+        initialThemeType: THEME_TYPES.LIGHT,
+        child: MaterialApp(
+          navigatorObservers: [routeObserver],
+          localizationsDelegates: [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            EasyLocalization.of(context).delegate,
+          ],
+          supportedLocales: EasyLocalization.of(context).supportedLocales,
+          locale: EasyLocalization.of(context).locale,
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              primarySwatch: Colors.blue,
+              fontFamily: "JTLeonor",
+              appBarTheme: AppBarTheme(
 //              color: FreshNetColors.green,
-                )),
-        home: UserExceptionDialog<AppState>(
-          child: MyApp(),
-          onShowUserExceptionDialog: (context, excpn) {
-            print('sdas');
+                  )),
+          home: UserExceptionDialog<AppState>(
+            child: MyApp(),
+            onShowUserExceptionDialog: (context, excpn) {
+              print('sdas');
+            },
+          ),
+          navigatorKey: navigatorKey,
+          routes: <String, WidgetBuilder>{
+            "/loginView": (BuildContext context) => new LoginView(),
+            "/language": (BuildContext context) => new LanguageScreen(),
+            "/otpScreen": (BuildContext context) => new OtpScreen(),
+            "/mobileNumber": (BuildContext context) => new LoginView(),
+            "/myHomeView": (BuildContext context) => new MyHomeView(),
+            "/AccountsView": (BuildContext context) => AccountsView(),
+            "/orderDetail": (BuildContext context) => OrderDetailScreen(),
+            "/SMAlertView": (BuildContext context) => SMAlertView(),
+            "/profile": (BuildContext context) => ProfileView(),
           },
         ),
-        navigatorKey: navigatorKey,
-        routes: <String, WidgetBuilder>{
-          "/loginView": (BuildContext context) => new LoginView(),
-          "/language": (BuildContext context) => new LanguageScreen(),
-          "/otpScreen": (BuildContext context) => new OtpScreen(),
-          "/mobileNumber": (BuildContext context) => new LoginView(),
-          "/myHomeView": (BuildContext context) => new MyHomeView(),
-          "/AccountsView": (BuildContext context) => AccountsView(),
-          "/orderDetail": (BuildContext context) => OrderDetailScreen(),
-          "/SMAlertView": (BuildContext context) => SMAlertView(),
-          "/profile": (BuildContext context) => ProfileView(),
-        },
       ),
     );
   }
@@ -223,9 +229,11 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void navigationPageHome() {
     Navigator.of(context).pushReplacementNamed('/loginView');
+    AppUpdateService.showUpdateDialog(context);
   }
 
   void navigationPageWel() {
     Navigator.of(context).pushReplacementNamed('/language');
+    AppUpdateService.showUpdateDialog(context);
   }
 }
