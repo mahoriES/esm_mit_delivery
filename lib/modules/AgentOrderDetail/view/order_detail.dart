@@ -210,9 +210,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                               ],
                             ),
                             SizedBox(height: 10.toHeight),
-                            if (status != OrderStatusStrings.dropped) ...[
-                              PaymentTile(snapshot.selectedOrder.order),
-                            ]
+                            PaymentTile(snapshot.selectedOrder.order),
                           ],
                         ),
                       ),
@@ -337,6 +335,18 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                     snapshot.dropOrder();
                                   }
                                 },
+                                shouldConfirmPayment:
+                                    status == OrderStatusStrings.picked &&
+                                        (!snapshot
+                                            .selectedOrder.order.isPaymentDone),
+                                paymentConfirmationMessage: tr(
+                                  "screen_home.confirm_payment_message",
+                                  namedArgs: {
+                                    "amount": snapshot
+                                        .selectedOrder.order.orderTotalInRupees
+                                        .toString()
+                                  },
+                                ),
                               ),
                       ],
                     ],
@@ -466,10 +476,14 @@ class _BottomActionButton extends StatelessWidget {
   final String statusString;
   final String orderShortNumber;
   final Function() onConfirm;
+  final bool shouldConfirmPayment;
+  final String paymentConfirmationMessage;
   const _BottomActionButton(
     this.statusString,
     this.orderShortNumber,
     this.onConfirm, {
+    this.shouldConfirmPayment = false,
+    this.paymentConfirmationMessage,
     Key key,
   }) : super(key: key);
 
@@ -488,6 +502,8 @@ class _BottomActionButton extends StatelessWidget {
               },
             ),
             onConfirm: onConfirm,
+            shouldConfirmPayment: shouldConfirmPayment,
+            paymentConfirmationMessage: paymentConfirmationMessage,
           ),
         );
       },

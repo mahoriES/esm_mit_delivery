@@ -74,7 +74,8 @@
     "item": "பொருள்",
     "pickup_images": "ಪಿಕಪ್ ಚಿತ್ರಗಳು",
     "drop_images": "ಡ್ರಾಪ್ಗಾಗಿ ಚಿತ್ರಗಳು    ",
-    "confirm_action_mesage": "ನೀವು ಆದೇಶವನ್ನು {actionName} ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ {orderNumber}?",
+    "confirm_action_mesage": "ನೀವು ಆದೇಶವನ್ನು {actionName} ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ #{orderNumber}?",
+    "confirm_payment_message": "I have received the COD payment of Rs.{amount} for this order",
     "confirm": "ಖಚಿತಪಡಿಸಿ"
   },
   "payment_status": {
