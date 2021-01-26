@@ -173,8 +173,8 @@ class Order {
   }
 
   bool get isPaymentDone {
-    return this.paymentInfo.status == PaymentStatus.APPROVED ||
-        this.paymentInfo.status == PaymentStatus.SUCCESS;
+    return this.paymentInfo?.status == PaymentStatus.APPROVED ||
+        this.paymentInfo?.status == PaymentStatus.SUCCESS;
   }
 
   double get orderTotalInRupees => (this.orderTotal ?? 0) / 100;

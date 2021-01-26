@@ -74,7 +74,8 @@
     "item": "ఐటెం",
     "pickup_images": "పికప్ చిత్రాలు",
     "drop_images": "డ్రాప్ ఇమగెస్",
-    "confirm_action_mesage": "మీరు ఖచ్చితంగా {actionName} order {orderNumber} to చేయాలనుకుంటున్నారా?",
+    "confirm_action_mesage": "మీరు ఖచ్చితంగా {actionName} order #{orderNumber} to చేయాలనుకుంటున్నారా?",
+    "confirm_payment_message": "I have received the COD payment of Rs.{amount} for this order",
     "confirm": "నిర్ధారించండి"
   },
   "payment_status": {
