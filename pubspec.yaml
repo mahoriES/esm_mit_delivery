@@ -44,7 +44,10 @@ dependencies:
   firebase_crashlytics: ^0.2.2
   firebase_core: ^0.5.0+1
   package_info: ^0.4.3+2
-  in_app_update: ^1.1.15
+  esamudaay_themes:
+    path: "../esamudaay_themes"
+  esamudaay_app_update:
+    path: "../esamudaay_app_update"
 
 dev_dependencies:
   flutter_test:

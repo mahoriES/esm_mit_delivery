@@ -1,16 +1,19 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:esamudaay_themes/esamudaay_themes.dart';
 import 'package:esamudaayapp/models/User.dart';
 import 'package:esamudaayapp/modules/AgentHome/action/AgentAction.dart';
 import 'package:esamudaayapp/modules/AgentHome/model/order_response.dart';
 import 'package:esamudaayapp/modules/AgentHome/view/AgentHome.dart';
 import 'package:esamudaayapp/modules/accounts/views/accounts_view.dart';
-import 'package:esamudaayapp/modules/app_update/app_update_banner.dart';
-import 'package:esamudaayapp/modules/app_update/app_update_service.dart';
+import 'package:esamudaay_app_update/app_update_banner.dart';
+import 'package:esamudaay_app_update/esamudaay_app_update.dart';
 import 'package:esamudaayapp/modules/login/actions/login_actions.dart';
 import 'package:esamudaayapp/redux/states/app_state.dart';
 import 'package:esamudaayapp/utilities/colors.dart';
+import 'package:esamudaayapp/utilities/image_path_constants.dart';
 import 'package:esamudaayapp/utilities/sizeconfig.dart';
+import 'package:esamudaayapp/utilities/stringConstants.dart';
 import 'package:flutter/material.dart';
 
 import 'custom_appbar.dart';
@@ -39,7 +42,20 @@ class _MyHomeViewState extends State<MyHomeView> {
   void initState() {
     if (!(AppUpdateService?.isSelectedLater ?? false)) {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        AppUpdateService.showUpdateDialog(context).then((value) {
+        AppUpdateService.showUpdateDialog(
+          context: context,
+          title: tr('app_update.title'),
+          message: tr('app_update.popup_msg'),
+          laterButtonText: tr('app_update.later'),
+          updateButtonText: tr('app_update.update'),
+          customThemeData: CustomTheme.of(context),
+          packageName: StringConstants.packageName,
+          logoImage: Image.asset(
+            ImagePathConstants.appLogo,
+            height: 42,
+            fit: BoxFit.contain,
+          ),
+        ).then((value) {
           if (AppUpdateService.isSelectedLater) {
             setState(() {});
           }
@@ -82,6 +98,8 @@ class _MyHomeViewState extends State<MyHomeView> {
                           updateMessage: tr('app_update.banner_msg'),
                           updateButtonText:
                               tr('app_update.update').toUpperCase(),
+                          customThemeData: CustomTheme.of(context),
+                          packageName: StringConstants.packageName,
                         )
                       : SizedBox.shrink(),
                   Container(

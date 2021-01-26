@@ -12,14 +12,16 @@ import 'package:esamudaayapp/presentations/check_user_widget.dart';
 import 'package:esamudaayapp/presentations/splash_screen.dart';
 import 'package:esamudaayapp/redux/states/app_state.dart';
 import 'package:esamudaayapp/store.dart';
-import 'package:esamudaayapp/themes/custom_theme.dart';
+import 'package:esamudaay_themes/esamudaay_themes.dart';
+import 'package:esamudaayapp/utilities/image_path_constants.dart';
 import 'package:esamudaayapp/utilities/push_notification.dart';
 import 'package:esamudaayapp/utilities/sizeconfig.dart';
+import 'package:esamudaayapp/utilities/stringConstants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'modules/app_update/app_update_service.dart';
+import 'package:esamudaay_app_update/esamudaay_app_update.dart';
 import 'modules/language/view/language_view.dart';
 import 'modules/otp/view/otp_view.dart';
 import 'services/crashylitics_delegate.dart';
@@ -30,7 +32,7 @@ final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   NavigateAction.setNavigatorKey(navigatorKey);
-  await AppUpdateService.checkAppUpdateAvailability();
+  await AppUpdateService.checkAppUpdateAvailability(isTesting: true);
   runZonedGuarded(
     () async {
       runApp(EasyLocalization(
@@ -133,7 +135,7 @@ class MyAppBase extends StatelessWidget {
     return StoreProvider<AppState>(
       store: store,
       child: CustomTheme(
-        initialThemeType: THEME_TYPES.LIGHT,
+        initialThemeType: THEME_TYPES.DELIVERY_APP_PRIMARY_THEME,
         child: MaterialApp(
           navigatorObservers: [routeObserver],
           localizationsDelegates: [
@@ -229,11 +231,37 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void navigationPageHome() {
     Navigator.of(context).pushReplacementNamed('/loginView');
-    AppUpdateService.showUpdateDialog(context);
+    AppUpdateService.showUpdateDialog(
+      context: context,
+      title: tr('app_update.title'),
+      message: tr('app_update.popup_msg'),
+      laterButtonText: tr('app_update.later'),
+      updateButtonText: tr('app_update.update'),
+      customThemeData: CustomTheme.of(context),
+      packageName: StringConstants.packageName,
+      logoImage: Image.asset(
+        ImagePathConstants.appLogo,
+        height: 42,
+        fit: BoxFit.contain,
+      ),
+    );
   }
 
   void navigationPageWel() {
     Navigator.of(context).pushReplacementNamed('/language');
-    AppUpdateService.showUpdateDialog(context);
+    AppUpdateService.showUpdateDialog(
+      context: context,
+      title: tr('app_update.title'),
+      message: tr('app_update.popup_msg'),
+      laterButtonText: tr('app_update.later'),
+      updateButtonText: tr('app_update.update'),
+      customThemeData: CustomTheme.of(context),
+      packageName: StringConstants.packageName,
+      logoImage: Image.asset(
+        ImagePathConstants.appLogo,
+        height: 42,
+        fit: BoxFit.contain,
+      ),
+    );
   }
 }
