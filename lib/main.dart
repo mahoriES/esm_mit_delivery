@@ -32,7 +32,9 @@ final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   NavigateAction.setNavigatorKey(navigatorKey);
-  await AppUpdateService.checkAppUpdateAvailability(isTesting: true);
+  // check if app_update is available.
+  await AppUpdateService.checkAppUpdateAvailability();
+
   runZonedGuarded(
     () async {
       runApp(EasyLocalization(
@@ -89,7 +91,7 @@ class _MyAppState extends State<MyApp> {
     SizeConfig().init(context);
     return StoreConnector<AppState, _ViewModel>(
         model: _ViewModel(),
-        onInit: (store) async {
+        onInit: (store) {
           store.dispatch(CheckTokenAction());
 //          store.dispatch(GetCartFromLocal());
           store.dispatch(GetUserFromLocalStorageAction());
@@ -135,6 +137,8 @@ class MyAppBase extends StatelessWidget {
     return StoreProvider<AppState>(
       store: store,
       child: CustomTheme(
+        // in esamudaay_themes package, we can define delivery app apecific theme under DELIVERY_APP_PRIMARY_THEME value.
+        // For now this is similar to consumer app only. We may update it later as per the designs.
         initialThemeType: THEME_TYPES.DELIVERY_APP_PRIMARY_THEME,
         child: MaterialApp(
           navigatorObservers: [routeObserver],
@@ -231,6 +235,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void navigationPageHome() {
     Navigator.of(context).pushReplacementNamed('/loginView');
+    // If launch screen is login , then show app_update prompt here.
     AppUpdateService.showUpdateDialog(
       context: context,
       title: tr('app_update.title'),
@@ -249,6 +254,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void navigationPageWel() {
     Navigator.of(context).pushReplacementNamed('/language');
+    // If launch screen is onboarding , then show app_update prompt here.
     AppUpdateService.showUpdateDialog(
       context: context,
       title: tr('app_update.title'),

@@ -40,7 +40,16 @@ class _MyHomeViewState extends State<MyHomeView> {
 
   @override
   void initState() {
-    if (!(AppUpdateService?.isSelectedLater ?? false)) {
+    // If user reached the home screen via login :
+    //    1. If appUpdate is available then user must have already seen the prompt and selected later, so 'isSelectedLater = true' already.
+    //    2. If appUpdate is not available then 'isSelectedLater = false' by default.
+    // If home-screen is the launch screen then 'isSelectedLater = false' by default.
+
+    // If isSelectedLater is false then show app update prompt to user.
+    // if update is not available, showUpdateDialog will return null;
+    // otherwise user will have to either update the app or
+    // select later (if flexible update is allowed).
+    if (!AppUpdateService.isSelectedLater) {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         AppUpdateService.showUpdateDialog(
           context: context,
@@ -56,6 +65,8 @@ class _MyHomeViewState extends State<MyHomeView> {
             fit: BoxFit.contain,
           ),
         ).then((value) {
+          // If user selects later option then rebuild the screen to show persistent app upadet banner at bottom
+          // using setState here instead of redux because this will be called only once in whole App lifecycle.
           if (AppUpdateService.isSelectedLater) {
             setState(() {});
           }
