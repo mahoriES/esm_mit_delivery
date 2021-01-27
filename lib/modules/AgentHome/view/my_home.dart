@@ -57,7 +57,7 @@ class _MyHomeViewState extends State<MyHomeView> {
           message: tr('app_update.popup_msg'),
           laterButtonText: tr('app_update.later'),
           updateButtonText: tr('app_update.update'),
-          customThemeData: CustomTheme.of(context),
+          customThemeData: EsamudaayTheme.of(context),
           packageName: StringConstants.packageName,
           logoImage: Image.asset(
             ImagePathConstants.appLogo,
@@ -109,7 +109,7 @@ class _MyHomeViewState extends State<MyHomeView> {
                           updateMessage: tr('app_update.banner_msg'),
                           updateButtonText:
                               tr('app_update.update').toUpperCase(),
-                          customThemeData: CustomTheme.of(context),
+                          customThemeData: EsamudaayTheme.of(context),
                           packageName: StringConstants.packageName,
                         )
                       : SizedBox.shrink(),

@@ -136,7 +136,7 @@ class MyAppBase extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreProvider<AppState>(
       store: store,
-      child: CustomTheme(
+      child: EsamudaayTheme(
         // in esamudaay_themes package, we can define delivery app apecific theme under DELIVERY_APP_PRIMARY_THEME value.
         // For now this is similar to consumer app only. We may update it later as per the designs.
         initialThemeType: THEME_TYPES.DELIVERY_APP_PRIMARY_THEME,
@@ -242,7 +242,7 @@ class _SplashScreenState extends State<SplashScreen> {
       message: tr('app_update.popup_msg'),
       laterButtonText: tr('app_update.later'),
       updateButtonText: tr('app_update.update'),
-      customThemeData: CustomTheme.of(context),
+      customThemeData: EsamudaayTheme.of(context),
       packageName: StringConstants.packageName,
       logoImage: Image.asset(
         ImagePathConstants.appLogo,
@@ -261,7 +261,7 @@ class _SplashScreenState extends State<SplashScreen> {
       message: tr('app_update.popup_msg'),
       laterButtonText: tr('app_update.later'),
       updateButtonText: tr('app_update.update'),
-      customThemeData: CustomTheme.of(context),
+      customThemeData: EsamudaayTheme.of(context),
       packageName: StringConstants.packageName,
       logoImage: Image.asset(
         ImagePathConstants.appLogo,
