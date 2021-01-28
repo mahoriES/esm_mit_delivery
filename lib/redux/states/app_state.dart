@@ -6,8 +6,14 @@ class AppState {
   final bool isLoading;
   final AuthState authState;
   final HomePageState homePageState;
+  final bool isSelectedAppUpdateLater;
 
-  const AppState({this.authState, this.isLoading, this.homePageState});
+  const AppState({
+    this.authState,
+    this.isLoading,
+    this.homePageState,
+    this.isSelectedAppUpdateLater,
+  });
 
   static AppState fromJson(dynamic json) => AppState(
         isLoading: json == null ? false : json["isLoading"],
@@ -24,17 +30,21 @@ class AppState {
   factory AppState.initial() => AppState(
       authState: AuthState.initial(),
       isLoading: false,
-      homePageState: HomePageState.initial());
+      homePageState: HomePageState.initial(),
+      isSelectedAppUpdateLater: false);
 
   AppState copyWith({
     AuthState authState,
     bool isLoading,
     HomePageState homePageState,
+    bool isSelectedAppUpdateLater,
   }) {
     return AppState(
       authState: authState ?? this.authState,
       isLoading: isLoading ?? this.isLoading,
       homePageState: homePageState ?? this.homePageState,
+      isSelectedAppUpdateLater:
+          isSelectedAppUpdateLater ?? this.isSelectedAppUpdateLater,
     );
   }
 
@@ -45,6 +55,7 @@ class AppState {
           runtimeType == other.runtimeType &&
           authState == other.authState &&
           homePageState == other.homePageState &&
+          isSelectedAppUpdateLater == other.isSelectedAppUpdateLater &&
           isLoading == other.isLoading;
 
   @override

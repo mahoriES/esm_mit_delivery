@@ -9,21 +9,16 @@ import 'package:esamudaayapp/modules/accounts/views/accounts_view.dart';
 import 'package:esamudaay_app_update/app_update_banner.dart';
 import 'package:esamudaay_app_update/esamudaay_app_update.dart';
 import 'package:esamudaayapp/modules/login/actions/login_actions.dart';
+import 'package:esamudaayapp/redux/actions/general_actions.dart';
 import 'package:esamudaayapp/redux/states/app_state.dart';
 import 'package:esamudaayapp/utilities/colors.dart';
-import 'package:esamudaayapp/utilities/image_path_constants.dart';
 import 'package:esamudaayapp/utilities/sizeconfig.dart';
 import 'package:esamudaayapp/utilities/stringConstants.dart';
 import 'package:flutter/material.dart';
 
 import 'custom_appbar.dart';
 
-class MyHomeView extends StatefulWidget {
-  @override
-  _MyHomeViewState createState() => _MyHomeViewState();
-}
-
-class _MyHomeViewState extends State<MyHomeView> {
+class MyHomeView extends StatelessWidget {
   final List<String> tabTitles = [
     "new_order",
     "accepted",
@@ -37,44 +32,6 @@ class _MyHomeViewState extends State<MyHomeView> {
     OrderStatusStrings.picked,
     OrderStatusStrings.dropped,
   ];
-
-  @override
-  void initState() {
-    // If user reached the home screen via login :
-    //    1. If appUpdate is available then user must have already seen the prompt and selected later, so 'isSelectedLater = true' already.
-    //    2. If appUpdate is not available then 'isSelectedLater = false' by default.
-    // If home-screen is the launch screen then 'isSelectedLater = false' by default.
-
-    // If isSelectedLater is false then show app update prompt to user.
-    // if update is not available, showUpdateDialog will return null;
-    // otherwise user will have to either update the app or
-    // select later (if flexible update is allowed).
-    if (!AppUpdateService.isSelectedLater) {
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        AppUpdateService.showUpdateDialog(
-          context: context,
-          title: tr('app_update.title'),
-          message: tr('app_update.popup_msg'),
-          laterButtonText: tr('app_update.later'),
-          updateButtonText: tr('app_update.update'),
-          customThemeData: EsamudaayTheme.of(context),
-          packageName: StringConstants.packageName,
-          logoImage: Image.asset(
-            ImagePathConstants.appLogo,
-            height: 42,
-            fit: BoxFit.contain,
-          ),
-        ).then((value) {
-          // If user selects later option then rebuild the screen to show persistent app upadet banner at bottom
-          // using setState here instead of redux because this will be called only once in whole App lifecycle.
-          if (AppUpdateService.isSelectedLater) {
-            setState(() {});
-          }
-        });
-      });
-    }
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,6 +49,9 @@ class _MyHomeViewState extends State<MyHomeView> {
           store.dispatch(GetAgentOrderList(
               filter: tabType[store.state.homePageState.currentIndex]));
         },
+        onInitialBuild: (snapshot) {
+          snapshot.checkForAppUpdate(context);
+        },
         builder: (context, snapshot) {
           return Scaffold(
             drawer: Drawer(
@@ -104,7 +64,7 @@ class _MyHomeViewState extends State<MyHomeView> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  AppUpdateService.isSelectedLater
+                  snapshot.showAppUpdateBanner
                       ? AppUpdateBanner(
                           updateMessage: tr('app_update.banner_msg'),
                           updateButtonText:
@@ -195,6 +155,9 @@ class _ViewModel extends BaseModel<AppState> {
   int currentIndex;
   Function navigateToProfile;
   User user;
+  bool showAppUpdateBanner;
+  Function(BuildContext) checkForAppUpdate;
+
   _ViewModel.build({
     this.getTransitList,
     this.getOrderList,
@@ -202,7 +165,9 @@ class _ViewModel extends BaseModel<AppState> {
     this.updateCurrentIndex,
     this.user,
     this.currentIndex,
-  }) : super(equals: [currentIndex, orders]);
+    this.showAppUpdateBanner,
+    this.checkForAppUpdate,
+  }) : super(equals: [currentIndex, orders, showAppUpdateBanner]);
 
   @override
   BaseModel fromStore() {
@@ -219,6 +184,8 @@ class _ViewModel extends BaseModel<AppState> {
         dispatch(UpdateSelectedTabAction(index));
       },
       currentIndex: state.homePageState.currentIndex,
+      checkForAppUpdate: (context) => dispatch(CheckAppUpdateAction(context)),
+      showAppUpdateBanner: state.isSelectedAppUpdateLater,
     );
   }
 }

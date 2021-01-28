@@ -10,13 +10,12 @@ import 'package:esamudaayapp/modules/login/views/login_View.dart';
 import 'package:esamudaayapp/presentations/alert.dart';
 import 'package:esamudaayapp/presentations/check_user_widget.dart';
 import 'package:esamudaayapp/presentations/splash_screen.dart';
+import 'package:esamudaayapp/redux/actions/general_actions.dart';
 import 'package:esamudaayapp/redux/states/app_state.dart';
 import 'package:esamudaayapp/store.dart';
 import 'package:esamudaay_themes/esamudaay_themes.dart';
-import 'package:esamudaayapp/utilities/image_path_constants.dart';
 import 'package:esamudaayapp/utilities/push_notification.dart';
 import 'package:esamudaayapp/utilities/sizeconfig.dart';
-import 'package:esamudaayapp/utilities/stringConstants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -236,38 +235,12 @@ class _SplashScreenState extends State<SplashScreen> {
   void navigationPageHome() {
     Navigator.of(context).pushReplacementNamed('/loginView');
     // If launch screen is login , then show app_update prompt here.
-    AppUpdateService.showUpdateDialog(
-      context: context,
-      title: tr('app_update.title'),
-      message: tr('app_update.popup_msg'),
-      laterButtonText: tr('app_update.later'),
-      updateButtonText: tr('app_update.update'),
-      customThemeData: EsamudaayTheme.of(context),
-      packageName: StringConstants.packageName,
-      logoImage: Image.asset(
-        ImagePathConstants.appLogo,
-        height: 42,
-        fit: BoxFit.contain,
-      ),
-    );
+    store.dispatch(CheckAppUpdateAction(context));
   }
 
   void navigationPageWel() {
     Navigator.of(context).pushReplacementNamed('/language');
     // If launch screen is onboarding , then show app_update prompt here.
-    AppUpdateService.showUpdateDialog(
-      context: context,
-      title: tr('app_update.title'),
-      message: tr('app_update.popup_msg'),
-      laterButtonText: tr('app_update.later'),
-      updateButtonText: tr('app_update.update'),
-      customThemeData: EsamudaayTheme.of(context),
-      packageName: StringConstants.packageName,
-      logoImage: Image.asset(
-        ImagePathConstants.appLogo,
-        height: 42,
-        fit: BoxFit.contain,
-      ),
-    );
+    store.dispatch(CheckAppUpdateAction(context));
   }
 }
