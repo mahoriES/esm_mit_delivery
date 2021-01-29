@@ -47,10 +47,12 @@ dependencies:
   esamudaay_app_update:
     git:
       url: https://anushka_agrawal@bitbucket.org/ese1/esm_comp_appupdate.git
+      ref: v0.0.1
 
   esamudaay_themes:
     git:
       url: https://anushka_agrawal@bitbucket.org/ese1/esm_comp_themes.git
+      ref: v0.0.1
 
 dev_dependencies:
   flutter_test:
