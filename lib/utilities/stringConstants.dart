@@ -36,4 +36,5 @@ class StringConstants {
       ? 'https://maps.apple.com/?sll=$lat,$lon'
       : "https://www.google.com/maps/dir/?api=1&destination=$lat,$lon";
   static final contactUrl = (String number) => "tel://$number";
+  static const packageName = 'com.esamudaay.agent';
 }

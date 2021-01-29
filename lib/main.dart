@@ -10,14 +10,17 @@ import 'package:esamudaayapp/modules/login/views/login_View.dart';
 import 'package:esamudaayapp/presentations/alert.dart';
 import 'package:esamudaayapp/presentations/check_user_widget.dart';
 import 'package:esamudaayapp/presentations/splash_screen.dart';
+import 'package:esamudaayapp/redux/actions/general_actions.dart';
 import 'package:esamudaayapp/redux/states/app_state.dart';
 import 'package:esamudaayapp/store.dart';
+import 'package:esamudaay_themes/esamudaay_themes.dart';
 import 'package:esamudaayapp/utilities/push_notification.dart';
 import 'package:esamudaayapp/utilities/sizeconfig.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:esamudaay_app_update/esamudaay_app_update.dart';
 import 'modules/language/view/language_view.dart';
 import 'modules/otp/view/otp_view.dart';
 import 'services/crashylitics_delegate.dart';
@@ -25,9 +28,12 @@ import 'services/crashylitics_delegate.dart';
 final navigatorKey = GlobalKey<NavigatorState>();
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   NavigateAction.setNavigatorKey(navigatorKey);
+  // check if app_update is available.
+  await AppUpdateService.checkAppUpdateAvailability();
+
   runZonedGuarded(
     () async {
       runApp(EasyLocalization(
@@ -129,42 +135,47 @@ class MyAppBase extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreProvider<AppState>(
       store: store,
-      child: MaterialApp(
-        navigatorObservers: [routeObserver],
-        localizationsDelegates: [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          EasyLocalization.of(context).delegate,
-        ],
-        supportedLocales: EasyLocalization.of(context).supportedLocales,
-        locale: EasyLocalization.of(context).locale,
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-            splashColor: Colors.transparent,
-            highlightColor: Colors.transparent,
-            primarySwatch: Colors.blue,
-            fontFamily: "JTLeonor",
-            appBarTheme: AppBarTheme(
+      child: EsamudaayTheme(
+        // in esamudaay_themes package, we can define delivery app apecific theme under DELIVERY_APP_PRIMARY_THEME value.
+        // For now this is similar to consumer app only. We may update it later as per the designs.
+        initialThemeType: THEME_TYPES.DELIVERY_APP_PRIMARY_THEME,
+        child: MaterialApp(
+          navigatorObservers: [routeObserver],
+          localizationsDelegates: [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            EasyLocalization.of(context).delegate,
+          ],
+          supportedLocales: EasyLocalization.of(context).supportedLocales,
+          locale: EasyLocalization.of(context).locale,
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              primarySwatch: Colors.blue,
+              fontFamily: "JTLeonor",
+              appBarTheme: AppBarTheme(
 //              color: FreshNetColors.green,
-                )),
-        home: UserExceptionDialog<AppState>(
-          child: MyApp(),
-          onShowUserExceptionDialog: (context, excpn) {
-            print('sdas');
+                  )),
+          home: UserExceptionDialog<AppState>(
+            child: MyApp(),
+            onShowUserExceptionDialog: (context, excpn) {
+              print('sdas');
+            },
+          ),
+          navigatorKey: navigatorKey,
+          routes: <String, WidgetBuilder>{
+            "/loginView": (BuildContext context) => new LoginView(),
+            "/language": (BuildContext context) => new LanguageScreen(),
+            "/otpScreen": (BuildContext context) => new OtpScreen(),
+            "/mobileNumber": (BuildContext context) => new LoginView(),
+            "/myHomeView": (BuildContext context) => new MyHomeView(),
+            "/AccountsView": (BuildContext context) => AccountsView(),
+            "/orderDetail": (BuildContext context) => OrderDetailScreen(),
+            "/SMAlertView": (BuildContext context) => SMAlertView(),
+            "/profile": (BuildContext context) => ProfileView(),
           },
         ),
-        navigatorKey: navigatorKey,
-        routes: <String, WidgetBuilder>{
-          "/loginView": (BuildContext context) => new LoginView(),
-          "/language": (BuildContext context) => new LanguageScreen(),
-          "/otpScreen": (BuildContext context) => new OtpScreen(),
-          "/mobileNumber": (BuildContext context) => new LoginView(),
-          "/myHomeView": (BuildContext context) => new MyHomeView(),
-          "/AccountsView": (BuildContext context) => AccountsView(),
-          "/orderDetail": (BuildContext context) => OrderDetailScreen(),
-          "/SMAlertView": (BuildContext context) => SMAlertView(),
-          "/profile": (BuildContext context) => ProfileView(),
-        },
       ),
     );
   }
@@ -223,9 +234,13 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void navigationPageHome() {
     Navigator.of(context).pushReplacementNamed('/loginView');
+    // If launch screen is login , then show app_update prompt here.
+    store.dispatch(CheckAppUpdateAction(context));
   }
 
   void navigationPageWel() {
     Navigator.of(context).pushReplacementNamed('/language');
+    // If launch screen is onboarding , then show app_update prompt here.
+    store.dispatch(CheckAppUpdateAction(context));
   }
 }
