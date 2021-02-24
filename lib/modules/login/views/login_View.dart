@@ -6,7 +6,7 @@ import 'package:esamudaayapp/modules/login/model/get_otp_request.dart';
 import 'package:esamudaayapp/utilities/colors.dart';
 import 'package:esamudaayapp/utilities/custom_widgets.dart';
 import 'package:esamudaayapp/utilities/global.dart' as globals;
-import 'package:esamudaayapp/utilities/stringConstants.dart';
+import 'package:esamudaayapp/utilities/environment_config.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -202,7 +202,8 @@ class _LoginViewState extends State<LoginView> {
                                     phoneController.text.length == 10) {
                                   snapshot.getOtpAction(GenerateOTPRequest(
                                     phone: "+91" + phoneController.text,
-                                    third_party_id: thirdPartyId,
+                                    third_party_id:
+                                        EnvironmentConfig.thirdPartyID,
                                   ));
                                 } else {
                                   Fluttertoast.showToast(
