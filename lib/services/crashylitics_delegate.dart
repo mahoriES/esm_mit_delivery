@@ -1,7 +1,7 @@
+import 'package:esamudaayapp/utilities/environment_config.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
-import '../utilities/URLs.dart';
 
 class CrashlyticsDelegate {
   static void recordError(dynamic exception, StackTrace stack) {
@@ -17,8 +17,8 @@ class CrashlyticsDelegate {
 
     // You could additionally extend this to allow users to opt-in.
 
-    await FirebaseCrashlytics.instance
-        .setCrashlyticsCollectionEnabled(ApiURL.baseURL == ApiURL.liveURL);
+    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
+        EnvironmentConfig.isProductionEnvironment);
 
     // Pass all uncaught errors to Crashlytics.
 

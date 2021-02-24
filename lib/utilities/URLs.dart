@@ -1,9 +1,12 @@
+import 'package:esamudaayapp/utilities/environment_config.dart';
+
 class ApiURL {
   static const eSamudayDevelopmentURL = "https://api.test.esamudaay.com/";
   static const liveURL = "https://api.esamudaay.com/";
 
-  // change baseURL to liveURL for PROD mode.
-  static const baseURL = eSamudayDevelopmentURL;
+  static const baseURL = EnvironmentConfig.isProductionEnvironment
+      ? liveURL
+      : eSamudayDevelopmentURL;
 
   static const generateOTPUrl = "api/v1/auth/token/";
   static const generateOtpRegisterUrl = "api/v1/auth/user/";
